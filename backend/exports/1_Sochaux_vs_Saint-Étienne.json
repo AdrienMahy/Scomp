@@ -1,0 +1,615 @@
+{
+  "id": "fbc33623-d2c4-4c32-a327-8779bb759bee",
+  "name": "Sochaux vs Saint-\u00c9tienne",
+  "result": "AWAY_TEAM_WIN",
+  "startsAt": "2026-08-08T18:45:00.000Z",
+  "playedAt": "2026-08-08T20:15:00.000Z",
+  "available": true,
+  "isUGDAvailable": true,
+  "rgdStatus": "FINISHED",
+  "ugdStatus": "FINISHED",
+  "round": {
+    "name": "1"
+  },
+  "homeScore": 0,
+  "awayScore": 3,
+  "homeTeamFormation": "4-2-3-1",
+  "awayTeamFormation": "4-2-3-1",
+  "homeTeam": {
+    "brand": "FC Sochaux Montb\u00e9liard",
+    "id": "fe06bb8e-5175-4940-8908-81aa4ab9fd2c"
+  },
+  "awayTeam": {
+    "brand": "AS Saint-\u00c9tienne",
+    "id": "286b1082-46aa-449f-9c6b-cf98f5435417"
+  },
+  "outputFiles": {
+    "items": [
+      {
+        "id": "257c566d-c2c8-4f00-9dfd-cb63830ef010",
+        "fileName": "match_highlights_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+        "fileType": "XML",
+        "version": 2,
+        "isOutdated": true,
+        "file": {
+          "name": "match_highlights_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+          "size": "24.89 KB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/ab015b2a-5897-45a8-8175-625fa51e46a8/match_highlights_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=8e6aa16c7f6dbfef2bae5ac0d7e1b3ff875018314cc43f481b0ac426d3dca845&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22match_highlights_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "9cf9ed56-fda6-446c-bfc1-fc592d87cb77",
+        "fileName": "h2h_set_piece_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+        "fileType": "XML",
+        "version": 2,
+        "isOutdated": false,
+        "file": {
+          "name": "h2h_set_piece_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+          "size": "156.76 KB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/0e2ccd99-f3ac-4652-ab0f-b80fc13df9b0/h2h_set_piece_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=ed0c45f873c220686be0be01401f7e6ea818811669a372f535c359ee48283f65&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22h2h_set_piece_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "f18d4102-76de-4a20-afa5-83388f428aa8",
+        "fileName": "player_player_overview_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+        "fileType": "XML",
+        "version": 2,
+        "isOutdated": false,
+        "file": {
+          "name": "player_player_overview_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+          "size": "6.31 MB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/2000541b-cb30-476d-af31-4eec685fea25/player_player_overview_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=68a36d7a177aeccb3bb0f0e6bd6e8ebcf9ce2c22b1c199e0edd4f15600ce303b&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_player_overview_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "d35b37d1-9244-4361-8688-e023a299e49b",
+        "fileName": "player_goalkeeper_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+        "fileType": "XML",
+        "version": 2,
+        "isOutdated": false,
+        "file": {
+          "name": "player_goalkeeper_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+          "size": "57.99 KB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/e0fdcecd-b2e7-4137-84aa-1d3f17fcd742/player_goalkeeper_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=9d73274fda148742a71da043e8119df6c5ddcd5c9bce32e24e5525668b6ec13d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_goalkeeper_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "b5a4e5a2-4964-4c5a-b3e0-18b867d89a94",
+        "fileName": "player_player_overview_SOC_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+        "fileType": "XML",
+        "version": 2,
+        "isOutdated": false,
+        "file": {
+          "name": "player_player_overview_SOC_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+          "size": "6.77 MB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/2000541b-cb30-476d-af31-4eec685fea25/player_player_overview_SOC_fbc33623-d2c4-4c32-a327-8779bb759bee.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=1bdc72e4e99fa90530807400f34fea29819c9b9a3c3f2ade33c7c5746c599c04&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_player_overview_SOC_fbc33623-d2c4-4c32-a327-8779bb759bee.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "e8d3aa51-4926-49c4-b91f-117669477d09",
+        "fileName": "player_goalkeeper_SOC_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+        "fileType": "XML",
+        "version": 2,
+        "isOutdated": false,
+        "file": {
+          "name": "player_goalkeeper_SOC_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+          "size": "50.93 KB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/e0fdcecd-b2e7-4137-84aa-1d3f17fcd742/player_goalkeeper_SOC_fbc33623-d2c4-4c32-a327-8779bb759bee.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=72000e97520131253eb5fea2d17324b79ef857ac6eabf1ee1fcaaca2ce10441c&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_goalkeeper_SOC_fbc33623-d2c4-4c32-a327-8779bb759bee.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "75000932-8cb8-4bf5-98e1-96bf93543406",
+        "fileName": "fitness_entities_fbc33623-d2c4-4c32-a327-8779bb759bee.json",
+        "fileType": "JSON",
+        "version": 2,
+        "isOutdated": true,
+        "file": {
+          "name": "fitness_entities_fbc33623-d2c4-4c32-a327-8779bb759bee.json",
+          "size": "7.71 MB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/fa18c5cc-24d1-47c2-acc5-a22cb7de517f/fitness_entities_fbc33623-d2c4-4c32-a327-8779bb759bee.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=f1e1cc995d2262cac77cdce8d73e50c2d414910ad5fcf2f382d73ed4e758331b&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22fitness_entities_fbc33623-d2c4-4c32-a327-8779bb759bee.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "0f539d8a-497c-44b5-aeda-44c61c4d65d0",
+        "fileName": "phase_of_play_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+        "fileType": "XML",
+        "version": 3,
+        "isOutdated": false,
+        "file": {
+          "name": "phase_of_play_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml",
+          "size": "319.86 KB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/f43d1352-8f71-46b8-9b91-e435ac96d73b/phase_of_play_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=13455171e725794820e0281f948e68506aee45f43807d0259b10da2bb3fc8340&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22phase_of_play_SOC_STE_fbc33623-d2c4-4c32-a327-8779bb759bee.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "42caee1b-9358-4e2c-bab3-83b0dba9cd6b",
+        "fileName": "distance_covered_fbc33623-d2c4-4c32-a327-8779bb759bee.json",
+        "fileType": "JSON",
+        "version": 2,
+        "isOutdated": true,
+        "file": {
+          "name": "distance_covered_fbc33623-d2c4-4c32-a327-8779bb759bee.json",
+          "size": "97.84 KB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/374b614e-2551-4f77-9a24-f98ee605733c/distance_covered_fbc33623-d2c4-4c32-a327-8779bb759bee.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=914be28d686305aaf8fe21ce1c37fcde2599f0e6ba4b8e7319e5b54a7a6f683d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22distance_covered_fbc33623-d2c4-4c32-a327-8779bb759bee.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      },
+      {
+        "id": "29882c94-4d01-4474-ba30-ecdab4ade066",
+        "fileName": "metadata_fbc33623-d2c4-4c32-a327-8779bb759bee.json",
+        "fileType": "JSON",
+        "version": 2,
+        "isOutdated": true,
+        "file": {
+          "name": "metadata_fbc33623-d2c4-4c32-a327-8779bb759bee.json",
+          "size": "16.8 KB",
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/fbc33623-d2c4-4c32-a327-8779bb759bee/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/47798f73-2551-4931-99c3-6f5e8fc79cab/metadata_fbc33623-d2c4-4c32-a327-8779bb759bee.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=05712ec7168c59216188ebcb7422b73b3374c6a300c65918a10af2e49b61ece0&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22metadata_fbc33623-d2c4-4c32-a327-8779bb759bee.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        }
+      }
+    ]
+  },
+  "squads": [
+    {
+      "teamId": "fe06bb8e-5175-4940-8908-81aa4ab9fd2c",
+      "players": {
+        "items": [
+          {
+            "id": "2808efb8-0866-4403-b6cc-3a5548db4f32",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 30,
+            "player": {
+              "id": "de6f628f-ff46-4b17-9876-8bc956e46697",
+              "firstName": "Alexandre",
+              "lastName": "Pierre"
+            }
+          },
+          {
+            "id": "1bde9902-d9d3-4162-859e-8cbcdb5ae9d5",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 4,
+            "player": {
+              "id": "6c590cd6-e14d-4824-ba70-4426e6907fb4",
+              "firstName": "Arthur",
+              "lastName": "Vitelli"
+            }
+          },
+          {
+            "id": "d2c084ce-573e-4041-bdc8-255e8f6d2c92",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 10,
+            "player": {
+              "id": "2e99a407-9dca-47e9-b86a-5324c2184bce",
+              "firstName": "Boubacar",
+              "lastName": "Fofana"
+            }
+          },
+          {
+            "id": "8647f918-ad8b-4cc4-9c36-f6facffe4832",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 7,
+            "player": {
+              "id": "bcf1e492-6931-4b1a-a9fc-74df6b4c2126",
+              "firstName": "Benjamin",
+              "lastName": "Gomel"
+            }
+          },
+          {
+            "id": "29998d0b-1955-4cb3-bf50-2aea340b0d99",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 17,
+            "player": {
+              "id": "32ffe23a-f658-468b-863e-9e6476a89a79",
+              "firstName": "Benjaloud",
+              "lastName": "Youssouf"
+            }
+          },
+          {
+            "id": "9cb04191-0c2f-46c4-b150-517c775680b4",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 3,
+            "player": {
+              "id": "2f12055e-0e39-4bd0-a3dd-a14ad996aa1a",
+              "firstName": "Dalangunypole",
+              "lastName": "Gomis"
+            }
+          },
+          {
+            "id": "f5685b8c-e51a-415a-9f4e-9c25c7fa7d74",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 42,
+            "player": {
+              "id": "03778aaf-8773-4a53-9543-7e4926be47d8",
+              "firstName": "Dylan",
+              "lastName": "Tavares"
+            }
+          },
+          {
+            "id": "c9da33b7-af2f-4b5b-baa9-e64379f49dd0",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 23,
+            "player": {
+              "id": "f0c0a750-5192-4e1c-95a6-cbf87cc4484f",
+              "firstName": "Julien",
+              "lastName": "Masson"
+            }
+          },
+          {
+            "id": "59e55dd9-2b97-4534-b3d0-6d5b3044b3d7",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 15,
+            "player": {
+              "id": "334992e9-1996-45d4-a67e-928e2482d421",
+              "firstName": "Jonathan",
+              "lastName": "Mexique"
+            }
+          },
+          {
+            "id": "8424ef0a-c9d1-40c5-8dd4-2563bce119fa",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 47,
+            "player": {
+              "id": "35338adf-0ad4-48c9-8966-de056177ad88",
+              "firstName": "Julien",
+              "lastName": "Vetro"
+            }
+          },
+          {
+            "id": "570b3784-670b-4dbc-890f-0f2cf420a94c",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 9,
+            "player": {
+              "id": "f5c73663-18bd-4ca3-af0a-20edf26aaf52",
+              "firstName": "Kapitbafan",
+              "lastName": "Djoco"
+            }
+          },
+          {
+            "id": "aa1f67e4-a3ca-4e74-9be8-da66672e9b55",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 77,
+            "player": {
+              "id": "b4c74b90-9281-4862-872c-f76ca496683a",
+              "firstName": "Lorng",
+              "lastName": "Nomel"
+            }
+          },
+          {
+            "id": "de2b4c37-feb6-469c-a5f2-ca479c70d6c0",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 91,
+            "player": {
+              "id": "6651821d-1058-4763-ada5-8fd909534a1e",
+              "firstName": "Mathis",
+              "lastName": "Clairicia"
+            }
+          },
+          {
+            "id": "b6fd5c75-3c56-4287-8408-e74c997e9223",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 40,
+            "player": {
+              "id": "45ecf62c-9d14-4a36-9d54-3ba180801cac",
+              "firstName": "Mehdi",
+              "lastName": "Jeannin"
+            }
+          },
+          {
+            "id": "430d2a3f-144f-4c75-9be5-17a35efe9550",
+            "isStarting": true,
+            "isCaptain": true,
+            "jerseyNumber": 14,
+            "player": {
+              "id": "9b25b5bf-c8f7-4ebd-833d-9c4c0373329b",
+              "firstName": "Mathieu",
+              "lastName": "Peybernes"
+            }
+          },
+          {
+            "id": "4a38aac0-8f79-4661-af24-412a8c5d90b1",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 26,
+            "player": {
+              "id": "991e82f8-9762-4846-9d6c-cb7bbcdd7b3d",
+              "firstName": "\u00c9lie",
+              "lastName": "N'Gatta"
+            }
+          },
+          {
+            "id": "46b12f03-9817-4430-bfb4-3d218fe75a4d",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 25,
+            "player": {
+              "id": "6df08781-2658-4dcc-a60f-57dbceac3a44",
+              "firstName": null,
+              "lastName": null
+            }
+          },
+          {
+            "id": "26be62b2-8415-4b2b-a90d-34f7511a4177",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 97,
+            "player": {
+              "id": "21aba54c-c4ca-4b92-a6e1-00d2762e41ce",
+              "firstName": "Saad",
+              "lastName": "Agouzoul"
+            }
+          },
+          {
+            "id": "81d3d9ba-9afa-4ef2-8dfa-6a46311356ea",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 5,
+            "player": {
+              "id": "2c7a7295-7324-4b5f-8aab-6dde300eeb89",
+              "firstName": "Samy",
+              "lastName": "Baghdadi"
+            }
+          },
+          {
+            "id": "9eb58919-e8c2-467e-b3e7-bc01f2c04329",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 19,
+            "player": {
+              "id": "7f40e678-8943-4c7d-b6fa-882663cd85e8",
+              "firstName": "Victor",
+              "lastName": "Lobry"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "teamId": "286b1082-46aa-449f-9c6b-cf98f5435417",
+      "players": {
+        "items": [
+          {
+            "id": "a8e26a1c-b6d4-46e1-8260-3930fbb8fc70",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 32,
+            "player": {
+              "id": "9bbcdc4c-74d7-4625-8105-8289bbaca7d1",
+              "firstName": "adam",
+              "lastName": "baallal"
+            }
+          },
+          {
+            "id": "14f0ba80-6be9-4ead-b4bf-65c2d58edc03",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 20,
+            "player": {
+              "id": "79c0da4f-2a0f-451c-9053-a4a4c9d32c4a",
+              "firstName": "Augustine",
+              "lastName": "Boakye"
+            }
+          },
+          {
+            "id": "ca829d5f-8ef6-4ca8-a31c-341034001aeb",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 14,
+            "player": {
+              "id": "39f4be6a-f6f0-4c7f-ac64-1de0fe52b447",
+              "firstName": "Aron",
+              "lastName": "Csongvai"
+            }
+          },
+          {
+            "id": "a784b831-6358-406f-bf24-89ec9668072a",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 30,
+            "player": {
+              "id": "e84afe60-b018-46df-aa9f-e9065c90d784",
+              "firstName": "Gautier",
+              "lastName": "Larsonneur"
+            }
+          },
+          {
+            "id": "2c7111e5-bbec-4116-9623-c7afc2d29889",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 7,
+            "player": {
+              "id": "6f155705-3380-49f0-8559-32a26d228ca5",
+              "firstName": "Irvin",
+              "lastName": "Cardona"
+            }
+          },
+          {
+            "id": "78b366ba-fe9a-4b78-96cb-fa5a2a839e97",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 10,
+            "player": {
+              "id": "7032b744-3c4f-4a5c-965c-f14fe2e2ca1e",
+              "firstName": "Jakob",
+              "lastName": "Breum"
+            }
+          },
+          {
+            "id": "b6adf66d-a3d1-4039-bdd1-6112ae5fa4a8",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 17,
+            "player": {
+              "id": "fe592693-a539-4879-89f5-265af2ad9581",
+              "firstName": "Joshua",
+              "lastName": "Duffus"
+            }
+          },
+          {
+            "id": "d713faaf-b48d-4811-b78d-0dfb00fad5ee",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 13,
+            "player": {
+              "id": "d766d507-11fa-4950-ac75-08582679857c",
+              "firstName": "Joao Diogo",
+              "lastName": "Fonseca Ferreira"
+            }
+          },
+          {
+            "id": "d1d4918c-bd1d-40ec-ab91-5c32c265d138",
+            "isStarting": true,
+            "isCaptain": true,
+            "jerseyNumber": 26,
+            "player": {
+              "id": "99b0c1f0-010f-41b7-9bd7-7bd4c8ab9ffe",
+              "firstName": "Julien",
+              "lastName": "Le Cardinal"
+            }
+          },
+          {
+            "id": "8b3e187c-1cad-4173-8077-fbf4cfc5bd5d",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 23,
+            "player": {
+              "id": "2acf067c-130c-4ed1-a57a-2e7dbffe5b57",
+              "firstName": "K\u00e9vin",
+              "lastName": "Pedro"
+            }
+          },
+          {
+            "id": "21842bf8-76ed-40b4-8137-7964715c4e2d",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 27,
+            "player": {
+              "id": "a33e3449-47c6-43d2-874a-2b84c8690f97",
+              "firstName": "Luan",
+              "lastName": "Gadegbeku"
+            }
+          },
+          {
+            "id": "b13b4b92-a686-4869-bd8d-d7ddb2f4dd79",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 9,
+            "player": {
+              "id": "3e5544a3-5c0f-4375-86a5-3dde3d048209",
+              "firstName": "Lucas",
+              "lastName": "Stassin"
+            }
+          },
+          {
+            "id": "66c06487-224f-4d6e-83f3-03df43f66ab8",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 6,
+            "player": {
+              "id": "f4ab964b-d4b9-44a3-9cd6-afd4088807be",
+              "firstName": "Maxime",
+              "lastName": "Bernauer"
+            }
+          },
+          {
+            "id": "3f9dda73-7cc8-4d3d-ba5d-c34f7779e73d",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 1,
+            "player": {
+              "id": "0e2af8b8-03d1-4e84-88f1-7d14486679a2",
+              "firstName": "Mamour",
+              "lastName": "Ndiaye"
+            }
+          },
+          {
+            "id": "75e04156-156e-460e-8e06-864024978cac",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 37,
+            "player": {
+              "id": "b9bfba24-deee-4049-baef-0401d9548eae",
+              "firstName": null,
+              "lastName": null
+            }
+          },
+          {
+            "id": "e84e773d-de15-443d-a457-39f04964d504",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 18,
+            "player": {
+              "id": "3e053a2d-8b10-4cb2-a183-b6d0e3b6ce06",
+              "firstName": "Sohaib",
+              "lastName": "Nair"
+            }
+          },
+          {
+            "id": "c44cf2dc-4ae9-4a88-8cd8-e7681818e8d1",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 2,
+            "player": {
+              "id": "ecbc96af-5b0f-422c-b6a9-bd7cd48cb88b",
+              "firstName": "Strahinja",
+              "lastName": "Stojkovi\u0107"
+            }
+          },
+          {
+            "id": "2aad41a4-1b5a-4b6a-a600-0835880077c9",
+            "isStarting": true,
+            "isCaptain": false,
+            "jerseyNumber": 8,
+            "player": {
+              "id": "7dc1c7be-bfb5-4fd2-afff-2e8469f52514",
+              "firstName": "Thierno Mamadou Lamarana",
+              "lastName": "Ballo"
+            }
+          },
+          {
+            "id": "567f3762-f067-44ec-ac94-8d86dede4fe1",
+            "isStarting": false,
+            "isCaptain": false,
+            "jerseyNumber": 22,
+            "player": {
+              "id": "b95032ed-077c-41b4-8b0f-0b340fcef2c9",
+              "firstName": "Zuriko",
+              "lastName": "Davitashvili"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "providers": {
+    "items": [
+      {
+        "id": "35f66680-cd87-465c-b9a5-490fde7179a5",
+        "externalId": "36d05tj513myog3lcn1rcxvkk",
+        "provider": {
+          "id": "49fdb6d4-3183-48d2-91f7-6b92c2839b93",
+          "name": "Stats"
+        }
+      },
+      {
+        "id": "d47548fa-2b95-4ccd-8f5c-dcb9346a9349",
+        "externalId": "13998628",
+        "provider": {
+          "id": "34d0d685-2a63-493d-928b-a3efad6d5fbe",
+          "name": "Second Spectrum"
+        }
+      }
+    ]
+  }
+}

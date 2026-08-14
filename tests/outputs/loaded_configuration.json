@@ -1,0 +1,295 @@
+{
+  "api_url": "https://api-v2.sportsdynamics.eu/graphql",
+  "auth_header": "X-API-Key",
+  "competitions": [
+    {
+      "Provider": "Second Spectrum",
+      "Leagues": [
+        {
+          "Name": "Ligue 1",
+          "competitionId": "6714b37b-84ae-4124-8d8b-6149892ef4e1",
+          "Seasons": [
+            {
+              "name": "2025 - 2026",
+              "gameGroupId": "c06e19e0-f4cf-440d-97ed-355435e821a9"
+            },
+            {
+              "name": "2024 - 2025",
+              "gameGroupId": "077fa01d-cdaa-43b6-840e-0258a8bcae9e"
+            },
+            {
+              "name": "2023 - 2024",
+              "gameGroupId": "dcad3db2-cf8a-4bb4-9d9b-7c4ec841dad9"
+            }
+          ]
+        },
+        {
+          "Name": "Ligue 2",
+          "competitionId": "8b3bb830-fcb1-4b2b-b254-32e821822f9a",
+          "Seasons": [
+            {
+              "name": "2026 - 2027",
+              "gameGroupId": "9ba71f7a-e293-456d-a352-2e8eb9275392"
+            },
+            {
+              "name": "2025 - 2026",
+              "gameGroupId": "83a2a1ed-3539-4a15-8128-c525c19ead72"
+            },
+            {
+              "name": "2024 - 2025",
+              "gameGroupId": "e84d9564-f5b6-4a68-a98e-674a8482d6f1"
+            },
+            {
+              "name": "2023 - 2024",
+              "gameGroupId": "fbcec388-8b03-4a3b-a1af-f7f9ebcd4a2a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Provider": "Perform",
+      "Leagues": [
+        {
+          "Name": "Ligue 1",
+          "competitionId": "dm5ka0os1e3dxcp3vh05kmp33",
+          "Seasons": [
+            {
+              "name": "2025 - 2026",
+              "seasonId": "dbxs75cag7zyip5re0ppsanmc"
+            },
+            {
+              "name": "2024 - 2025",
+              "seasonId": "a7htj8rtzib7a2xx7b3xs04d0"
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": "bew0mp74n9712w9ns3dsxrf2s"
+            },
+            {
+              "name": "2022 - 2023",
+              "seasonId": "b5rz3ukb6kvo9m5neiptb0avo"
+            },
+            {
+              "name": "2021 - 2022",
+              "seasonId": "buq1p8cf83xr4f0fygagjxn2s"
+            },
+            {
+              "name": "2020 - 2021",
+              "seasonId": "5rr3izkmap6j5hfen757fq44q"
+            },
+            {
+              "name": "2019 - 2020",
+              "seasonId": "c093mualj8smktf75gtgjn9ey"
+            }
+          ]
+        },
+        {
+          "Name": "Ligue 2",
+          "competitionId": "4w7x0s5gfs5abasphlha5de8k",
+          "Seasons": [
+            {
+              "name": "2026 - 2027",
+              "seasonId": "b4rd8q7zjvernie5778azl7v8"
+            },
+            {
+              "name": "2025 - 2026",
+              "seasonId": "f12tw9djrb2bvlzrtg4hhme50"
+            },
+            {
+              "name": "2024 - 2025",
+              "seasonId": "54w17q3wlhzm2v2kuwlh4s650"
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": "1bxao9nvztm4yq9szf9tdm2ac"
+            },
+            {
+              "name": "2022 - 2023",
+              "seasonId": "9fnagws7im3xgzorfdj2tqfis"
+            },
+            {
+              "name": "2021 - 2022",
+              "seasonId": "9jvocsyhdb3uprn568256c6j8"
+            }
+          ]
+        },
+        {
+          "Name": "Play-offs 1/2",
+          "competitionId": "5x72znp2e24y6hzqz6cdetxih",
+          "Seasons": [
+            {
+              "name": "2024 - 2025",
+              "seasonId": "84pabrppu3gcsrfio9nsmzk0k"
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": "atw11riuyq87tq0zaq9vpa0ic"
+            },
+            {
+              "name": "2022 - 2023",
+              "seasonId": "atw11riuyq87tq0zaq9vpa0ic"
+            },
+            {
+              "name": "2021 - 2022",
+              "seasonId": "4xqc5ixl7howv7zg2h5cuosus"
+            },
+            {
+              "name": "2020 - 2021",
+              "seasonId": "apufxeeohq5ujvwlb6dn32aui"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Provider": "SportsDynamics",
+      "Leagues": [
+        {
+          "Name": "Ligue 2",
+          "competitionId": "b4bda75a-946f-4206-93e0-1545c319b04c",
+          "Seasons": [
+            {
+              "name": "2026 - 2027",
+              "seasonId": 2026
+            },
+            {
+              "name": "2025 - 2026",
+              "seasonId": 2025
+            },
+            {
+              "name": "2024 - 2025",
+              "seasonId": 2024
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": 2023
+            }
+          ]
+        },
+        {
+          "Name": "Ligue 1",
+          "competitionId": "c6622467-55cb-4eda-bb77-f42ea74da9eb",
+          "Seasons": [
+            {
+              "name": "2024 - 2025",
+              "seasonId": 2024
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": 2023
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Provider": "Footovision",
+      "Leagues": [
+        {
+          "Name": "Ligue 1",
+          "competitionId": 2,
+          "Seasons": [
+            {
+              "name": "2024 - 2025",
+              "seasonId": 11
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": 10
+            },
+            {
+              "name": "2022 - 2023",
+              "seasonId": 9
+            }
+          ]
+        },
+        {
+          "Name": "Ligue 2",
+          "competitionId": 8,
+          "Seasons": [
+            {
+              "name": "2024 - 2025",
+              "seasonId": 11
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": 10
+            },
+            {
+              "name": "2022 - 2023",
+              "seasonId": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Provider": "SkillCorner",
+      "Leagues": [
+        {
+          "Name": "Ligue 1",
+          "competitionId": 3,
+          "Seasons": [
+            {
+              "name": "2024 - 2025",
+              "seasonId": 95,
+              "editionId": 906
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": 28,
+              "editionId": 548
+            },
+            {
+              "name": "2022 - 2023",
+              "seasonId": 21,
+              "editionId": 392
+            },
+            {
+              "name": "2021 - 2022",
+              "seasonId": 8,
+              "editionId": 242
+            },
+            {
+              "name": "2020 - 2021",
+              "seasonId": 7,
+              "editionId": 141
+            }
+          ]
+        },
+        {
+          "Name": "Ligue 2",
+          "competitionId": 12,
+          "Seasons": [
+            {
+              "name": "2024 - 2025",
+              "seasonId": 95,
+              "editionId": null
+            },
+            {
+              "name": "2023 - 2024",
+              "seasonId": 28,
+              "editionId": null
+            },
+            {
+              "name": "2022 - 2023",
+              "seasonId": 21,
+              "editionId": null
+            },
+            {
+              "name": "2021 - 2022",
+              "seasonId": 8,
+              "editionId": null
+            },
+            {
+              "name": "2020 - 2021",
+              "seasonId": 7,
+              "editionId": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

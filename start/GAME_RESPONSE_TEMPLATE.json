@@ -1,0 +1,166 @@
+{
+  "_description": "Complete SportsDynamics API Game Response Structure - Template with all fields",
+  "_source": "https://api-v2.sportsdynamics.eu/graphql",
+  "_request": "query getGames($filters: [GameFilter!], $pagination: PaginationInput, $sort: [GameSortPaginationInput!])",
+  
+  "game": {
+    "id": "54e906b3-123a-4da0-bdae-332b25ddd77e",
+    "name": "Nantes vs Red Star",
+    "result": "AWAY_TEAM_WIN",
+    "comment": "Result status: AWAY_TEAM_WIN | HOME_TEAM_WIN | DRAW | NOT_STARTED | CANCELLED",
+    
+    "startsAt": "2026-08-08T18:45:00.000Z",
+    "comment_startsAt": "Scheduled start time (ISO 8601 with Z timezone)",
+    
+    "playedAt": "2026-08-08T20:15:00.000Z",
+    "comment_playedAt": "Actual played time (ISO 8601 with Z timezone)",
+    
+    "homeScore": 0,
+    "awayScore": 1,
+    
+    "round": {
+      "id": "round-id-uuid",
+      "name": "1",
+      "comment": "Round number or name as string"
+    },
+    
+    "homeTeam": {
+      "id": "f32406d3-a94a-4e50-883f-2eef5e1f2722",
+      "brand": "Nantes",
+      "comment": "Home team info"
+    },
+    
+    "awayTeam": {
+      "id": "6c3c1394-19c5-4315-aea3-6ec57d722a0c",
+      "brand": "Red Star",
+      "comment": "Away team info"
+    },
+    
+    "outputFiles": {
+      "items": [
+        {
+          "id": "output-file-uuid",
+          "fileName": "Nantes-vs-RedStar-2026-08-08.mp4",
+          "fileType": "VIDEO",
+          "comment_fileType": "VIDEO | STATS | OTHER",
+          "version": 1,
+          "isOutdated": false,
+          "file": {
+            "id": "file-uuid",
+            "name": "Nantes-vs-RedStar-2026-08-08.mp4",
+            "size": 1024000000,
+            "comment_size": "File size in bytes",
+            "url": "https://cdn.sportsdynamics.eu/videos/Nantes-vs-RedStar-2026-08-08.mp4"
+          }
+        }
+      ]
+    },
+    
+    "squads": {
+      "items": [
+        {
+          "teamId": "f32406d3-a94a-4e50-883f-2eef5e1f2722",
+          "comment": "Home or Away team UUID",
+          
+          "players": {
+            "items": [
+              {
+                "id": "squad-player-uuid",
+                "isStarting": true,
+                "isCaptain": false,
+                "jerseyNumber": 1,
+                "player": {
+                  "id": "player-uuid",
+                  "firstName": "Alban",
+                  "lastName": "Lafont"
+                }
+              },
+              {
+                "id": "squad-player-uuid-2",
+                "isStarting": false,
+                "isCaptain": false,
+                "jerseyNumber": 32,
+                "player": {
+                  "id": "player-uuid-2",
+                  "firstName": "Backup",
+                  "lastName": "Player"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "teamId": "6c3c1394-19c5-4315-aea3-6ec57d722a0c",
+          "comment": "Away team squad",
+          "players": {
+            "items": [
+              {
+                "id": "away-squad-player-uuid",
+                "isStarting": true,
+                "isCaptain": true,
+                "jerseyNumber": 10,
+                "player": {
+                  "id": "away-player-uuid",
+                  "firstName": "Away",
+                  "lastName": "Captain"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    
+    "providers": {
+      "comment": "Data providers for this match",
+      "items": [
+        {
+          "id": "provider-link-uuid",
+          "externalId": "3560mz781jetgwvzm0yfq7zmc",
+          "comment_externalId": "Provider's internal ID for this match",
+          "provider": {
+            "id": "provider-uuid",
+            "name": "Stats",
+            "comment": "Provider type: Stats | Second Spectrum | Perform | etc"
+          }
+        },
+        {
+          "id": "provider-link-uuid-2",
+          "externalId": "2693fe65-2461-41f3-80e6-b26cae250185",
+          "provider": {
+            "id": "provider-uuid-2",
+            "name": "Second Spectrum"
+          }
+        }
+      ]
+    }
+  },
+  
+  "_notes": {
+    "field_mapping": {
+      "startsAt": "→ parsed to Python datetime",
+      "playedAt": "→ parsed to Python datetime",
+      "homeScore/awayScore": "→ stored as integers",
+      "id": "→ primary key (game UUID)",
+      "name": "→ human readable 'Team1 vs Team2'",
+      "result": "→ match result status",
+      "round.name": "→ round number as string"
+    },
+    "currently_used_fields": [
+      "id",
+      "name", 
+      "result",
+      "startsAt",
+      "playedAt",
+      "homeScore",
+      "awayScore",
+      "homeTeam.id",
+      "awayTeam.id",
+      "round.name",
+      "outputFiles",
+      "squads",
+      "providers"
+    ],
+    "all_raw_data_stored_in": "raw_data (JSON blob in database for future use)"
+  }
+}

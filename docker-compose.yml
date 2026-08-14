@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:16-alpine
+    container_name: scomp_postgres
+    environment:
+      POSTGRES_USER: scrapper
+      POSTGRES_PASSWORD: scomp_dev_password
+      POSTGRES_DB: scomp_dev
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - scomp_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scrapper"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # FastAPI Backend Service
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: scomp_api
+    environment:
+      # Database Configuration
+      DB_TYPE: postgresql
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: scomp_dev
+      POSTGRES_USERNAME: scrapper
+      POSTGRES_PASSWORD: scomp_dev_password
+      DATABASE_URL: postgresql://scrapper:scomp_dev_password@postgres:5432/scomp_dev
+      
+      # Migrations
+      RUN_MIGRATIONS: "true"
+      
+      # SportsDynamics API
+      SPORTSDYNAMICS_API_KEY: ${SPORTSDYNAMICS_API_KEY}
+      SPORTSDYNAMICS_API_URL: https://api-v2.sportsdynamics.eu/graphql
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - scomp_network
+    volumes:
+      - ./backend:/app/backend
+      - ./backend/exports:/app/backend/exports
+      - ./start:/app/start
+    restart: unless-stopped
+
+# Volumes (persistent data)
+volumes:
+  postgres_data:
+    driver: local
+
+# Networks (service communication)
+networks:
+  scomp_network:
+    driver: bridge
+

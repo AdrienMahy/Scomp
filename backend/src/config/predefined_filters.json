@@ -1,0 +1,100 @@
+{
+  "queries": {
+    "get_competitions": {
+      "name": "Get Competitions",
+      "description": "Fetch all available competitions",
+      "endpoint": "getCompetitions",
+      "filters": {},
+      "pagination": {
+        "enabled": true,
+        "limit": 100,
+        "page": 1
+      }
+    },
+    "get_seasons": {
+      "name": "Get Seasons",
+      "description": "Fetch seasons for a competition",
+      "endpoint": "getSeasons",
+      "filters": {
+        "competition_id": {
+          "label": "Competition ID",
+          "description": "ID of the competition",
+          "type": "string",
+          "required": true,
+          "operator": "equals",
+          "graphql_path": "competition.id"
+        }
+      },
+      "pagination": {
+        "enabled": true,
+        "limit": 100,
+        "page": 1
+      }
+    },
+    "get_games": {
+      "name": "Get Games",
+      "description": "Fetch games for a season with full details",
+      "endpoint": "getGames",
+      "filters": {
+        "available": {
+          "label": "Available",
+          "description": "Whether game is available",
+          "type": "boolean",
+          "required": false,
+          "operator": "equals",
+          "graphql_path": "available"
+        },
+        "competition_id": {
+          "label": "Competition ID",
+          "description": "ID of the competition",
+          "type": "string",
+          "required": false,
+          "operator": "equals",
+          "graphql_path": "competition.id"
+        },
+        "round": {
+          "label": "Round",
+          "description": "Names of the rounds/matchdays",
+          "type": "array",
+          "required": false,
+          "operator": "in",
+          "graphql_path": "round.name",
+          "note": "Provide as array: ['Round 1', 'Round 2', 'Round 3']"
+        },
+        "season": {
+          "label": "Season",
+          "description": "Season years",
+          "type": "array",
+          "required": false,
+          "operator": "in",
+          "graphql_path": "season.season",
+          "note": "Provide as array: ['2024', '2025']"
+        }
+      },
+      "pagination": {
+        "enabled": true,
+        "limit": 100,
+        "page": 1
+      }
+    },
+    "get_clubs": {
+      "name": "Get Clubs",
+      "description": "Fetch all clubs with their information",
+      "endpoint": "getClubs",
+      "filters": {},
+      "pagination": {
+        "enabled": true,
+        "limit": 100,
+        "page": 1
+      }
+    }
+  },
+  "notes": {
+    "filter_usage": "Provide values matching the 'type' field to build filters automatically",
+    "boolean": "Provide true/false",
+    "string": "Provide single string value",
+    "string_array": "Provide array for 'in' operator: ['value1', 'value2']",
+    "datetime": "Provide ISO8601 format: 2024-01-01T00:00:00Z",
+    "required_filters": "If a filter is 'required: true', you must provide a value"
+  }
+}

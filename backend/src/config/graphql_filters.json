@@ -1,0 +1,112 @@
+{
+  "queries": {
+    "get_competitions": {
+      "name": "Get Competitions",
+      "description": "Fetch all available competitions",
+      "endpoint": "getCompetitions",
+      "filters": {
+        "enabled": false,
+        "available_filters": []
+      },
+      "pagination": {
+        "enabled": true,
+        "limit": 100,
+        "page": 1
+      },
+      "sorting": {
+        "enabled": false,
+        "fields": []
+      },
+      "example_filters": {}
+    },
+    "get_seasons": {
+      "name": "Get Seasons",
+      "description": "Fetch seasons for a competition",
+      "endpoint": "getSeasons",
+      "filters": {
+        "enabled": true,
+        "required_filters": [],
+        "available_filters": []
+      },
+      "pagination": {
+        "enabled": true,
+        "limit": 100,
+        "page": 1
+      },
+      "sorting": {
+        "enabled": true,
+        "fields": []
+      },
+      "example_filters": {}
+    },
+    "get_games": {
+      "name": "Get Games",
+      "description": "Fetch games for a season with full details",
+      "endpoint": "getGames",
+      "filters": {
+        "enabled": true,
+        "required_filters": [],
+        "optional_filters": [],
+        "available_filters": []
+      },
+      "pagination": {
+        "enabled": true,
+        "limit": 100,
+        "page": 1
+      },
+      "sorting": {
+        "enabled": true,
+        "fields": []
+      },
+      "example_filters": {}
+    },
+    "get_clubs": {
+      "name": "Get Clubs",
+      "description": "Fetch all clubs with their information",
+      "endpoint": "getClubs",
+      "filters": {
+        "enabled": false,
+        "available_filters": []
+      },
+      "pagination": {
+        "enabled": true,
+        "limit": 100,
+        "page": 1
+      },
+      "sorting": {
+        "enabled": true,
+        "fields": []
+      },
+      "example_filters": {}
+    }
+  },
+  "filter_operators": {
+    "comparison": {
+      "equals": "Exact match",
+      "in": "Match any value in array",
+      "not": "Not equal",
+      "gt": "Greater than",
+      "gte": "Greater than or equal",
+      "lt": "Less than",
+      "lte": "Less than or equal"
+    },
+    "string": {
+      "contains": "String contains",
+      "startsWith": "String starts with",
+      "endsWith": "String ends with",
+      "mode": "Case sensitive or insensitive"
+    },
+    "date": {
+      "gte": "After date",
+      "lte": "Before date",
+      "between": "Between two dates"
+    }
+  },
+  "common_filter_patterns": {},
+  "notes": {
+    "api_limitation": "Current API Key has 403 Forbidden on getCompetitions, getSeasons, and getClubs - check permissions with provider",
+    "optional_fields": "Add or remove fields from the 'response_fields' section to control what data is returned",
+    "pagination": "Use 'limit' and 'page' to paginate results - adjust based on API rate limits",
+    "filters": "Modify the filters object to enable/disable and add/remove available filter options"
+  }
+}
