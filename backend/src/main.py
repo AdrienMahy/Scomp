@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config.database import init_db
-from .web.routes import competitions, games, tasks
+from .web.routes import competitions, games, tasks, teams
 
 # Logging
 logging.basicConfig(level=logging.INFO)
@@ -29,6 +29,7 @@ app.add_middleware(
 # Include routers
 app.include_router(competitions.router)
 app.include_router(games.router)
+app.include_router(teams.router)
 app.include_router(tasks.router)
 
 
