@@ -1,0 +1,4350 @@
+{
+    "status": "success",
+    "count": 85,
+    "updated": 85,
+    "clubs": [
+        {
+            "id": "3c74d00b-e974-4e42-bbdd-cb14060c83de",
+            "name": "AJ Auxerre",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3c74d00b-e974-4e42-bbdd-cb14060c83de.png",
+            "games": [
+                {
+                    "id": "3fbfa400-c2c1-4c5b-a213-5d8fbaf836ae",
+                    "name": "Paris Saint-Germain FC vs AJ Auxerre"
+                },
+                {
+                    "id": "d88fd9c4-df73-4ffe-b289-c815318c54d3",
+                    "name": "AJ Auxerre vs FC Nantes"
+                },
+                {
+                    "id": "117ccf5a-6547-4da2-8ca8-ac580957b919",
+                    "name": "AJ Auxerre vs Le Havre AC"
+                },
+                {
+                    "id": "44d15d8d-3b82-4d0a-8b92-45c8655e4091",
+                    "name": "RC Lens vs AJ Auxerre"
+                },
+                {
+                    "id": "4c608d2f-0602-41e4-9842-e10060711695",
+                    "name": "Lille OSC M\u00e9tropole vs AJ Auxerre"
+                },
+                {
+                    "id": "b1af19b2-5e39-4d34-a0db-951009b863fc",
+                    "name": "AJ Auxerre vs Olympique Lyonnais"
+                },
+                {
+                    "id": "aa62f1c6-e3e8-4e7a-981c-1ef74aa49271",
+                    "name": "Stade Rennais FC vs AJ Auxerre"
+                },
+                {
+                    "id": "2a24d8e9-eb4c-491d-ad39-30942d41c944",
+                    "name": "AJ Auxerre vs Montpellier HSC"
+                },
+                {
+                    "id": "634d78e9-5209-4169-ab30-c59787bda57e",
+                    "name": "OGC Nice vs AJ Auxerre"
+                },
+                {
+                    "id": "aa4ed5bc-e3d9-4845-8a1a-8fa70944b3d3",
+                    "name": "Stade de Reims vs AJ Auxerre"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "67e3e79e-a6c9-4f58-a9d0-cfb71b19d85b",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "9bxav814mkuhueiyivyive82d",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "138",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "57",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "167",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "60f34826-b01d-4a12-9e27-dc8ef6f8d8e0",
+            "name": "Algeria",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/60f34826-b01d-4a12-9e27-dc8ef6f8d8e0.png",
+            "games": [
+                {
+                    "id": "4d4e3487-682d-46d3-87fc-3e6d5f4aeaad",
+                    "name": "Switzerland vs Algeria"
+                },
+                {
+                    "id": "d410257e-671f-4e63-bb58-b6af4e731db3",
+                    "name": "Algeria vs Austria"
+                },
+                {
+                    "id": "a2205f4a-c8fc-4f0d-b2f7-6985107f94b3",
+                    "name": "Jordan vs Algeria"
+                },
+                {
+                    "id": "43fbd43d-b225-49ec-b053-319e39123064",
+                    "name": "Argentina vs Algeria"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "29a5cba1-8a71-4678-aeb4-eaa1cecb739e",
+            "name": "Amiens SC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/29a5cba1-8a71-4678-aeb4-eaa1cecb739e.png",
+            "games": [
+                {
+                    "id": "cad3116d-fe9e-4248-ab35-4aaee2936877",
+                    "name": "Saint-\u00c9tienne vs Amiens SC"
+                },
+                {
+                    "id": "825cbc50-8b5e-40d1-b88a-0a1b17d87458",
+                    "name": "Amiens SC vs Red Star"
+                },
+                {
+                    "id": "2bbc7faf-8d52-4604-94b3-1e8fe8c75aee",
+                    "name": "Amiens SC vs Montpellier"
+                },
+                {
+                    "id": "cf5d3e69-cc49-4d77-853a-da69c283e95e",
+                    "name": "Rodez vs Amiens SC"
+                },
+                {
+                    "id": "a723178b-85b5-4513-b537-5f33b72e373c",
+                    "name": "Amiens SC vs Pau"
+                },
+                {
+                    "id": "2bd36e62-9287-4c88-992d-1813c883ca41",
+                    "name": "Bastia vs Amiens SC"
+                },
+                {
+                    "id": "8c44daf0-8db4-4627-9d3e-151b397c6745",
+                    "name": "Amiens SC vs Le Mans"
+                },
+                {
+                    "id": "d08acaaa-a4a9-46dc-b2ca-4be151a034fe",
+                    "name": "Guingamp vs Amiens SC"
+                },
+                {
+                    "id": "5aa191c9-ccf9-4891-84e0-b832cc9d7403",
+                    "name": "Boulogne vs Amiens SC"
+                },
+                {
+                    "id": "5659ce6f-c9d3-4ea9-9568-30bd231781a0",
+                    "name": "Amiens SC vs Troyes"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "34784511-1d25-40be-8767-89d918854c4c",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "1430",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "5191cnvhmuct5kn7yvr0nvd9d",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "132",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "1816",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c2c49eb2-0b07-4461-9a62-70884f8360e4",
+            "name": "Angers SCO",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c2c49eb2-0b07-4461-9a62-70884f8360e4.png",
+            "games": [
+                {
+                    "id": "18d3317f-94f1-4424-a2a2-ae4b548b7383",
+                    "name": "Olympique Lyonnais vs Angers SCO"
+                },
+                {
+                    "id": "377a153d-e820-44c9-920e-98bf1f51eb09",
+                    "name": "Angers SCO vs RC Strasbourg Alsace"
+                },
+                {
+                    "id": "8f7a7a8f-c834-465e-ae48-fcf7073c07f0",
+                    "name": "FC Nantes vs Angers SCO"
+                },
+                {
+                    "id": "136a2615-8952-477a-8551-b0c1b5ef0ff7",
+                    "name": "Angers SCO vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "2a2ce9f1-75af-4b94-9cc9-35d6807f5280",
+                    "name": "OGC Nice vs Angers SCO"
+                },
+                {
+                    "id": "c20ae760-c707-4dea-a5cf-2d8b2dfa3770",
+                    "name": "Angers SCO vs Montpellier HSC"
+                },
+                {
+                    "id": "8fe9bc64-01be-40dc-9b93-ac144f1d32aa",
+                    "name": "Paris Saint-Germain FC vs Angers SCO"
+                },
+                {
+                    "id": "eba1df75-6d88-4496-8bcb-c608d4b40525",
+                    "name": "Angers SCO vs Stade Rennais FC"
+                },
+                {
+                    "id": "58418778-55c5-4213-ac98-443790b961ef",
+                    "name": "Angers SCO vs AS Monaco FC"
+                },
+                {
+                    "id": "7f117a53-e984-45fb-8072-0165637332d3",
+                    "name": "Stade Brestois 29 vs Angers SCO"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "145",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "75qj99fhg5c0ztj2tva5u4uii",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "f2fbe301-97f4-4b34-a2b3-be1b787c23e6",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "2128",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "1530",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "eeccd029-cce2-4253-862b-8fb0a8c2def3",
+            "name": "Argentina",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/eeccd029-cce2-4253-862b-8fb0a8c2def3.png",
+            "games": [
+                {
+                    "id": "58be1bd1-0d2b-42bc-925b-43593027aa13",
+                    "name": "England vs Argentina"
+                },
+                {
+                    "id": "6e4048fc-fa64-468a-b210-851205d7a854",
+                    "name": "Argentina vs Switzerland"
+                },
+                {
+                    "id": "67170f12-623b-4266-b915-7e1140a8bfe3",
+                    "name": "Argentina vs Egypt"
+                },
+                {
+                    "id": "51e9bbda-cfc6-46fe-9976-34e0ba643a55",
+                    "name": "Argentina vs Cape Verde Islands"
+                },
+                {
+                    "id": "62025c2b-8810-4bcc-b893-3e301dd54888",
+                    "name": "Jordan vs Argentina"
+                },
+                {
+                    "id": "279f62cd-1c50-4b91-8c8b-cbf996ef71a2",
+                    "name": "Argentina vs Austria"
+                },
+                {
+                    "id": "43fbd43d-b225-49ec-b053-319e39123064",
+                    "name": "Argentina vs Algeria"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "ak48fkypnql8y4n69cvcq5ghc",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "2a957f69-4f62-4c94-a465-a9cf98e69371",
+            "name": "AS Monaco FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/2a957f69-4f62-4c94-a465-a9cf98e69371.png",
+            "games": [
+                {
+                    "id": "21f3798b-a756-496c-8b37-ce6f3b85d672",
+                    "name": "RC Lens vs AS Monaco FC"
+                },
+                {
+                    "id": "bf8ddcee-37ee-45fa-8a93-73dd023c6574",
+                    "name": "AS Monaco FC vs Olympique Lyonnais"
+                },
+                {
+                    "id": "cf597295-92e5-4b67-98b9-29c96c7cde50",
+                    "name": "AS Saint-\u00c9tienne vs AS Monaco FC"
+                },
+                {
+                    "id": "2878a875-41df-4e31-83be-62b6bc949318",
+                    "name": "Le Havre AC vs AS Monaco FC"
+                },
+                {
+                    "id": "c5174a59-fe3d-49ff-8136-f92480526523",
+                    "name": "AS Monaco FC vs RC Strasbourg Alsace"
+                },
+                {
+                    "id": "ec09a189-d3ca-4cdc-85d3-179b5235e8e3",
+                    "name": "AS Monaco FC vs Olympique de Marseille"
+                },
+                {
+                    "id": "cb14beec-66ae-4c7e-a1ba-c19c27496d54",
+                    "name": "Stade Brestois 29 vs AS Monaco FC"
+                },
+                {
+                    "id": "b68d0851-70b9-47a4-9678-ca971090564d",
+                    "name": "AS Monaco FC vs OGC Nice"
+                },
+                {
+                    "id": "58418778-55c5-4213-ac98-443790b961ef",
+                    "name": "Angers SCO vs AS Monaco FC"
+                },
+                {
+                    "id": "7c033a16-8b15-4f48-8ca9-4b3bc2931220",
+                    "name": "Toulouse FC vs AS Monaco FC"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "50023",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "69",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "4t4hod56fsj7utpjdor8so5q6",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "129",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "146",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "938c7a1f-939e-4ec0-89ce-1e22f3d7e49f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "3af8edcc-8d9b-4f05-abe9-a680234b6937",
+            "name": "AS Nancy Lorraine",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3af8edcc-8d9b-4f05-abe9-a680234b6937.png",
+            "games": [
+                {
+                    "id": "66483b03-b6d5-4530-b41a-9367b7c80329",
+                    "name": "Nancy vs Metz"
+                },
+                {
+                    "id": "9981a145-9597-45a5-9e3f-f258466187ff",
+                    "name": "Montpellier vs Nancy"
+                },
+                {
+                    "id": "51c03032-6e92-41b7-9f91-16167f468ce1",
+                    "name": "Nancy vs Rodez"
+                },
+                {
+                    "id": "9d5b27c2-c888-4698-952a-28d9039e2bc4",
+                    "name": "Laval vs Nancy"
+                },
+                {
+                    "id": "a45095ad-dbb5-42d9-9912-33b6ce13dbc4",
+                    "name": "Nancy vs Annecy"
+                },
+                {
+                    "id": "d4f3bdd9-5a02-48ce-b2f3-290a85a8e19d",
+                    "name": "Grenoble Foot 38 vs Nancy"
+                },
+                {
+                    "id": "6d7b413a-9f5c-459f-88d2-87b0148be151",
+                    "name": "Clermont vs Nancy"
+                },
+                {
+                    "id": "1c24cd1b-dc3b-4ba2-9a4b-55171a34c15a",
+                    "name": "Nancy vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "d5f36bc0-2fbf-46d8-8e75-2b3cea255af2",
+                    "name": "Sochaux vs Nancy"
+                },
+                {
+                    "id": "7cfc198a-448e-49bd-8a59-c2879f16cddc",
+                    "name": "Nancy vs Pau"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "148",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "d3a34577-ee22-4607-8a87-7259aab24233",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "69b9aoly33h1gpicvxtfteoug",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "286b1082-46aa-449f-9c6b-cf98f5435417",
+            "name": "AS Saint-\u00c9tienne",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/286b1082-46aa-449f-9c6b-cf98f5435417.png",
+            "games": [
+                {
+                    "id": "1a9a7d47-a56b-4dc6-9003-1c724b3723e5",
+                    "name": "Saint-\u00c9tienne vs Pau"
+                },
+                {
+                    "id": "8205a642-80e4-4a99-9baf-bc305f71fd4d",
+                    "name": "Rodez vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "233bc660-f789-4490-b78f-e8cbf56754bf",
+                    "name": "Saint-\u00c9tienne vs Reims"
+                },
+                {
+                    "id": "18dbfcdb-306f-41c0-85dd-b2043ed8fe56",
+                    "name": "Montpellier vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "e2463830-2ade-4e18-9347-d9dcd2b410bd",
+                    "name": "Saint-\u00c9tienne vs Dijon"
+                },
+                {
+                    "id": "d0c7fe32-d78d-4428-b496-02e89345b662",
+                    "name": "Laval vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "ca80e0c6-5eb5-42a7-b962-12661ca3f264",
+                    "name": "Saint-\u00c9tienne vs Annecy"
+                },
+                {
+                    "id": "1c24cd1b-dc3b-4ba2-9a4b-55171a34c15a",
+                    "name": "Nancy vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "8365718c-0b30-4e57-af97-81f0875d96b0",
+                    "name": "Saint-\u00c9tienne vs Red Star"
+                },
+                {
+                    "id": "04acc8c0-a074-48d9-933f-c3300b4958a4",
+                    "name": "Nantes vs Saint-\u00c9tienne"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "152",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "1819",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "a96678c0-8907-4796-a658-4d223b6c4179",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "135",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "2sc9xfhu6tbru9hhlhr4a89zn",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "4a73f913-dbfd-4e97-a8d8-ff395cde41de",
+            "name": "Australia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4a73f913-dbfd-4e97-a8d8-ff395cde41de.png",
+            "games": [
+                {
+                    "id": "cb1d6081-9d89-4f46-ae8f-3c56c67e20fe",
+                    "name": "Australia vs Egypt"
+                },
+                {
+                    "id": "514c58eb-beea-4603-8a2d-ab4d16d379b5",
+                    "name": "Paraguay vs Australia"
+                },
+                {
+                    "id": "7d441dde-2cc6-4e02-83d5-fb760f4523b6",
+                    "name": "United States vs Australia"
+                },
+                {
+                    "id": "40942435-0751-4586-a0cd-3ded52f033fb",
+                    "name": "Australia vs T\u00fcrkiye"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "bl4fd8cxe6kjvjx8br82gkhnq",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "676da091-3c88-4843-b893-8881e4f8cb82",
+            "name": "Austria",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/676da091-3c88-4843-b893-8881e4f8cb82.png",
+            "games": [
+                {
+                    "id": "03fb3d05-bc2d-4dfb-8ac6-840f3382ab37",
+                    "name": "Spain vs Austria"
+                },
+                {
+                    "id": "d410257e-671f-4e63-bb58-b6af4e731db3",
+                    "name": "Algeria vs Austria"
+                },
+                {
+                    "id": "279f62cd-1c50-4b91-8c8b-cbf996ef71a2",
+                    "name": "Argentina vs Austria"
+                },
+                {
+                    "id": "8238017b-a01e-43da-a161-cc39c657a6ed",
+                    "name": "Austria vs Jordan"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "61g4epojd5f198lv1sje27yh3",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f3c73a13-adac-4608-8431-d262d2cc5b0f",
+            "name": "Belgium",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f3c73a13-adac-4608-8431-d262d2cc5b0f.png",
+            "games": [
+                {
+                    "id": "25e773f4-bc81-4740-8b69-34d3f02fdef1",
+                    "name": "Spain vs Belgium"
+                },
+                {
+                    "id": "2bdea793-99cc-4218-8d8c-8f3b65a587c1",
+                    "name": "United States vs Belgium"
+                },
+                {
+                    "id": "3354eec5-48f9-4822-9a6e-b27ea2cc01b5",
+                    "name": "Belgium vs Senegal"
+                },
+                {
+                    "id": "0dc65652-f6fe-48dd-802f-98873522735a",
+                    "name": "New Zealand vs Belgium"
+                },
+                {
+                    "id": "4177e35c-c395-40c4-b0f7-2a7e3d66e156",
+                    "name": "Belgium vs Iran"
+                },
+                {
+                    "id": "70f7ca7e-895d-4f2f-b86e-b11462ef1a28",
+                    "name": "Belgium vs Egypt"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "360",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "pfvmhackqyhhk02majd2tb8l",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "9896d013-87b0-43a0-babb-7b15eec7d021",
+            "name": "Bosnia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/9896d013-87b0-43a0-babb-7b15eec7d021.png",
+            "games": [
+                {
+                    "id": "8d6ae1d2-5d63-4ddb-9112-1b8fe8c13b68",
+                    "name": "United States vs Bosnia and Herzegovina"
+                },
+                {
+                    "id": "6e8f181e-14e4-4228-b21f-ac07fc7537a4",
+                    "name": "Bosnia and Herzegovina vs Qatar"
+                },
+                {
+                    "id": "c5646429-6193-412a-987c-efbd7d6b03ab",
+                    "name": "Switzerland vs Bosnia and Herzegovina"
+                },
+                {
+                    "id": "dfc6009d-9e38-436c-96c2-fb108052615f",
+                    "name": "Canada vs Bosnia and Herzegovina"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "8c535a88-0182-42af-a879-441f4e546311",
+            "name": "Brazil",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8c535a88-0182-42af-a879-441f4e546311.png",
+            "games": [
+                {
+                    "id": "1edd1a71-2365-4f5b-8b37-1f6b01040826",
+                    "name": "Brazil vs Norway"
+                },
+                {
+                    "id": "184f14bd-707b-4851-94c6-9441cff4d5c9",
+                    "name": "Brazil vs Japan"
+                },
+                {
+                    "id": "15c6a510-46a9-449a-a06b-5309dabae3ca",
+                    "name": "Scotland vs Brazil"
+                },
+                {
+                    "id": "16d83d48-c04e-4165-a413-83310703ff6e",
+                    "name": "Brazil vs Haiti"
+                },
+                {
+                    "id": "0b707e14-2d1f-40d2-90bc-f80f4be25cb3",
+                    "name": "Brazil vs Morocco"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "ajab3nmpoltsoeqcuoyi4pwzx",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "53e212f8-a7e1-4afd-a9db-3b6a647b3a10",
+            "name": "Canada",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/53e212f8-a7e1-4afd-a9db-3b6a647b3a10.png",
+            "games": [
+                {
+                    "id": "4b5e73eb-d5de-45c6-be40-bacee8617375",
+                    "name": "Canada vs Morocco"
+                },
+                {
+                    "id": "bc1297df-1924-4305-b0dc-f2b342fdc7ab",
+                    "name": "South Africa vs Canada"
+                },
+                {
+                    "id": "ddb4d356-13ac-457a-965c-f074b3290f06",
+                    "name": "Switzerland vs Canada"
+                },
+                {
+                    "id": "a1d7e1a4-f907-4e8f-ad4c-8e99ba45e239",
+                    "name": "Canada vs Qatar"
+                },
+                {
+                    "id": "dfc6009d-9e38-436c-96c2-fb108052615f",
+                    "name": "Canada vs Bosnia and Herzegovina"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "eg7vduna0h3vis1wd47s41za7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "93296148-3f08-4bfb-8ba5-047d897f496c",
+            "name": "Cape Verde",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/93296148-3f08-4bfb-8ba5-047d897f496c.png",
+            "games": [
+                {
+                    "id": "51e9bbda-cfc6-46fe-9976-34e0ba643a55",
+                    "name": "Argentina vs Cape Verde Islands"
+                },
+                {
+                    "id": "19179537-0b06-4c8f-8149-39811a6d9d8b",
+                    "name": "Cape Verde Islands vs Saudi Arabia"
+                },
+                {
+                    "id": "58fa68bc-5326-4416-ac00-444a2944c38d",
+                    "name": "Uruguay vs Cape Verde Islands"
+                },
+                {
+                    "id": "b627fd80-ba48-42be-bb58-d5746f66acd4",
+                    "name": "Spain vs Cape Verde Islands"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "e9bec0af-3ef2-442a-b4be-5cb20dd6ccfd",
+            "name": "Clermont Foot 63",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/e9bec0af-3ef2-442a-b4be-5cb20dd6ccfd.png",
+            "games": [
+                {
+                    "id": "50e6f710-f758-4319-9d8d-351b02be8458",
+                    "name": "Red Star vs Clermont"
+                },
+                {
+                    "id": "67c5638d-e475-4a6d-85a5-8fd05932fe14",
+                    "name": "Clermont vs Annecy"
+                },
+                {
+                    "id": "1afd62d0-c602-4ff3-8aef-0bd2cd28fd0d",
+                    "name": "Sochaux vs Clermont"
+                },
+                {
+                    "id": "3a4eaa0c-0cdf-4ac1-a07c-3141d47352be",
+                    "name": "Clermont vs Nantes"
+                },
+                {
+                    "id": "ecfc453c-2164-4228-8ad2-4aef30ba745e",
+                    "name": "Metz vs Clermont"
+                },
+                {
+                    "id": "4067e39b-f516-4cf1-ab74-b9ccf38dbf3a",
+                    "name": "Rodez vs Clermont"
+                },
+                {
+                    "id": "6d7b413a-9f5c-459f-88d2-87b0148be151",
+                    "name": "Clermont vs Nancy"
+                },
+                {
+                    "id": "69b3d6a6-83b5-4d42-9283-078c9878ed18",
+                    "name": "Clermont vs Grenoble Foot 38"
+                },
+                {
+                    "id": "f2cc6b0b-a6ce-49e3-9ea2-ccbe0f15824c",
+                    "name": "Reims vs Clermont"
+                },
+                {
+                    "id": "aa95631b-8c9d-4aa0-b272-0720c17a0fe7",
+                    "name": "Clermont vs Montpellier"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "258c5eb2-798f-4d8c-885f-1a0655bbe882",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "152",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "1983",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "17o35s8assv3kamxowzz77k4r",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "1815",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "30e7bbd7-e482-43d3-b2be-538d6594da7a",
+            "name": "Colombia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/30e7bbd7-e482-43d3-b2be-538d6594da7a.png",
+            "games": [
+                {
+                    "id": "3e42b582-50af-4836-a865-e5889a985bd0",
+                    "name": "Switzerland vs Colombia"
+                },
+                {
+                    "id": "5426dabc-afa1-4ee3-9069-0a26e36ecc97",
+                    "name": "Colombia vs Ghana"
+                },
+                {
+                    "id": "6482c931-26ac-4843-a29f-910340be278f",
+                    "name": "Colombia vs Portugal"
+                },
+                {
+                    "id": "581baafd-e453-485b-8775-85a755b1aff6",
+                    "name": "Colombia vs Congo DR"
+                },
+                {
+                    "id": "6001f78e-151a-460d-bf6c-a9bcf968d22d",
+                    "name": "Uzbekistan vs Colombia"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "22b97fd1-5aae-45bd-b7d2-cfcff3359e05",
+            "name": "Croatia ",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/22b97fd1-5aae-45bd-b7d2-cfcff3359e05.png",
+            "games": [
+                {
+                    "id": "75883bf8-4855-4344-b792-761f52f6e9e5",
+                    "name": "Portugal vs Croatia"
+                },
+                {
+                    "id": "e726d0d3-01ad-4732-8bb3-f99bbca80faf",
+                    "name": "Croatia vs Ghana"
+                },
+                {
+                    "id": "4fef34b1-d3a9-4dea-a438-5ee6d92f0bda",
+                    "name": "Panama vs Croatia"
+                },
+                {
+                    "id": "178add9a-53a4-4901-9e37-57c75c86f000",
+                    "name": "England vs Croatia"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "4njsfszcgd9m765d6suktsz2a",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "8208513d-26fa-4ce0-bf45-0dfbedbfffa8",
+            "name": "Cura\u00e7ao",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8208513d-26fa-4ce0-bf45-0dfbedbfffa8.png",
+            "games": [
+                {
+                    "id": "bfbba7f9-eec4-413b-b2f3-fb48cbafb43b",
+                    "name": "Curacao vs C\u00f4te d'Ivoire"
+                },
+                {
+                    "id": "a69b39b0-c94a-483b-a860-147ac7a6ebfb",
+                    "name": "Ecuador vs Curacao"
+                },
+                {
+                    "id": "f38cd993-46f5-4ae4-8ba9-70369d57fb06",
+                    "name": "Germany vs Curacao"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "7ee97eea-8b68-4d56-9e56-a42660160b58",
+            "name": "Czech Republic",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/7ee97eea-8b68-4d56-9e56-a42660160b58.png",
+            "games": [
+                {
+                    "id": "561e43ce-1094-4712-9468-5e3c9a6bdaca",
+                    "name": "Czech Republic vs Mexico"
+                },
+                {
+                    "id": "aea9e9eb-3977-49ed-8049-4a15ec0dfc0e",
+                    "name": "Czech Republic vs South Africa"
+                },
+                {
+                    "id": "7f3fbf05-1bd3-4dba-ad1e-1a4e409f9aa9",
+                    "name": "Korea Republic vs Czech Republic"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "70tnqyqn871jwlk26gtjw7knm",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "3122ec18-7101-4d23-b0fb-0d92b6322bf9",
+            "name": "Dijon FCO",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3122ec18-7101-4d23-b0fb-0d92b6322bf9.png",
+            "games": [
+                {
+                    "id": "b1fcfb7f-f107-46ca-a7d8-fb896c4950b4",
+                    "name": "Dijon vs Montpellier"
+                },
+                {
+                    "id": "57c78012-a89c-4d0f-87c5-fab4b0f1fa29",
+                    "name": "Pau vs Dijon"
+                },
+                {
+                    "id": "d8c68687-a478-4b1a-a4b0-94cb5c836a92",
+                    "name": "Nantes vs Dijon"
+                },
+                {
+                    "id": "9be41be5-cdd0-4f3a-a1b1-a5b06639c96d",
+                    "name": "Dijon vs Boulogne"
+                },
+                {
+                    "id": "e2463830-2ade-4e18-9347-d9dcd2b410bd",
+                    "name": "Saint-\u00c9tienne vs Dijon"
+                },
+                {
+                    "id": "f5198d4a-9ce5-4e33-8b00-dc310427ee47",
+                    "name": "Dijon vs Guingamp"
+                },
+                {
+                    "id": "882654c9-289c-4b9e-9507-d96043f35c8d",
+                    "name": "Dijon vs Reims"
+                },
+                {
+                    "id": "9236d36f-321e-459a-b568-91f4211d6243",
+                    "name": "Rodez vs Dijon"
+                },
+                {
+                    "id": "4dbd5023-1eb8-417d-af60-0cc999463ec1",
+                    "name": "Dijon vs Annecy"
+                },
+                {
+                    "id": "8ed47ed7-823e-43c6-978a-baf1b270bbff",
+                    "name": "Red Star vs Dijon"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "2130",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "83121",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "148",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "79dc2mv3x269nhix3mkhc5wfu",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "110569",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "dec56cba-d7c9-4b92-b2d0-99b33365897a",
+            "name": "DR Congo",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/dec56cba-d7c9-4b92-b2d0-99b33365897a.png",
+            "games": [
+                {
+                    "id": "6b2efb7d-18f5-4d7c-97bc-4bc5dbde1bdc",
+                    "name": "England vs Congo DR"
+                },
+                {
+                    "id": "7ea4366b-852a-420f-a14f-709b4afb248b",
+                    "name": "Congo DR vs Uzbekistan"
+                },
+                {
+                    "id": "581baafd-e453-485b-8775-85a755b1aff6",
+                    "name": "Colombia vs Congo DR"
+                },
+                {
+                    "id": "0dc0ddab-374a-48b4-921a-9858e75d3354",
+                    "name": "Portugal vs Congo DR"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "95ee4c51-67e0-4948-9c51-98e402d4b048",
+            "name": "EA Guingamp",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/95ee4c51-67e0-4948-9c51-98e402d4b048.png",
+            "games": [
+                {
+                    "id": "c1779786-4077-4c70-a054-29aa23662d23",
+                    "name": "Guingamp vs Sochaux"
+                },
+                {
+                    "id": "3f9c9676-11f7-4e0d-b1be-e922907eee0d",
+                    "name": "Boulogne vs Guingamp"
+                },
+                {
+                    "id": "362d5630-1403-4f3e-aac0-e515ad3c4fec",
+                    "name": "Guingamp vs Metz"
+                },
+                {
+                    "id": "a26b2255-66c2-47db-a874-ea5a77835d3a",
+                    "name": "Pau vs Guingamp"
+                },
+                {
+                    "id": "2e8b6e79-5664-4e28-80a0-15fad31593b2",
+                    "name": "Guingamp vs Reims"
+                },
+                {
+                    "id": "f5198d4a-9ce5-4e33-8b00-dc310427ee47",
+                    "name": "Dijon vs Guingamp"
+                },
+                {
+                    "id": "49bd42f7-ff05-47fa-a8ed-1f5cb2c6de74",
+                    "name": "Guingamp vs Montpellier"
+                },
+                {
+                    "id": "22937865-b191-44bd-a527-7821e3e5b2f6",
+                    "name": "Annecy vs Guingamp"
+                },
+                {
+                    "id": "a21b7fdb-a8b8-4ad1-b96a-e5aa7b304ea9",
+                    "name": "Guingamp vs Laval"
+                },
+                {
+                    "id": "39384758-251b-441b-8296-e7d62a4d72dc",
+                    "name": "Guingamp vs Grenoble Foot 38"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "e9mmk1w7cem6r4wysgassacef",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "142",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "428",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "08b6524b-f099-489f-b795-42e4d318357b",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "62",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "ecb386dd-4e0d-4e08-86b1-26727baad4ec",
+            "name": "Ecuador",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/ecb386dd-4e0d-4e08-86b1-26727baad4ec.png",
+            "games": [
+                {
+                    "id": "e8cc03e9-a1c2-4438-947c-1f5b7ad254a0",
+                    "name": "Mexico vs Ecuador"
+                },
+                {
+                    "id": "b093f3ee-91bf-4729-a37f-8b612833b913",
+                    "name": "Ecuador vs Germany"
+                },
+                {
+                    "id": "a69b39b0-c94a-483b-a860-147ac7a6ebfb",
+                    "name": "Ecuador vs Curacao"
+                },
+                {
+                    "id": "ecd42dfa-47de-434b-92b8-33b9544662c7",
+                    "name": "C\u00f4te d'Ivoire vs Ecuador"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "2j2402oabiovxw24cnjk9m369",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "d8d89bc6-698e-4883-9d05-7d944d349620",
+            "name": "Egypt",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d8d89bc6-698e-4883-9d05-7d944d349620.png",
+            "games": [
+                {
+                    "id": "67170f12-623b-4266-b915-7e1140a8bfe3",
+                    "name": "Argentina vs Egypt"
+                },
+                {
+                    "id": "cb1d6081-9d89-4f46-ae8f-3c56c67e20fe",
+                    "name": "Australia vs Egypt"
+                },
+                {
+                    "id": "433da208-9053-4c4a-9917-b12f68e10740",
+                    "name": "Egypt vs Iran"
+                },
+                {
+                    "id": "6168bf69-9ba9-44b5-86d3-7633103adc5f",
+                    "name": "New Zealand vs Egypt"
+                },
+                {
+                    "id": "70f7ca7e-895d-4f2f-b86e-b11462ef1a28",
+                    "name": "Belgium vs Egypt"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "77d97f2a-2523-47cf-abe1-a612d5adb8a5",
+            "name": "England",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/77d97f2a-2523-47cf-abe1-a612d5adb8a5.png",
+            "games": [
+                {
+                    "id": "676bf964-3c50-4837-84d1-95fa63312f44",
+                    "name": "France vs England"
+                },
+                {
+                    "id": "58be1bd1-0d2b-42bc-925b-43593027aa13",
+                    "name": "England vs Argentina"
+                },
+                {
+                    "id": "acced3c0-fd7e-48ee-9785-59cc0e8573d5",
+                    "name": "Norway vs England"
+                },
+                {
+                    "id": "f3976b75-b769-46c8-9a80-773a0bf018f2",
+                    "name": "Mexico vs England"
+                },
+                {
+                    "id": "6b2efb7d-18f5-4d7c-97bc-4bc5dbde1bdc",
+                    "name": "England vs Congo DR"
+                },
+                {
+                    "id": "21863edb-7379-4e1b-8cd5-0ee90ae3b0c0",
+                    "name": "Panama vs England"
+                },
+                {
+                    "id": "02ebc2d3-0ea3-4cb3-8033-6068db4fbb13",
+                    "name": "England vs Ghana"
+                },
+                {
+                    "id": "178add9a-53a4-4901-9e37-57c75c86f000",
+                    "name": "England vs Croatia"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "24cd2f3e-b545-4717-aa01-c9095e3046d3",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "ck8m1cn23sukwsurgx5qakttk",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "1a478887-1797-4adb-9ded-b4d304bff4eb",
+            "name": "ESTAC Troyes",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/1a478887-1797-4adb-9ded-b4d304bff4eb.png",
+            "games": [
+                {
+                    "id": "ef2a1a00-c0df-4792-838d-901bd8a4adec",
+                    "name": "Grenoble Foot 38 vs Troyes"
+                },
+                {
+                    "id": "16c10604-cbad-4ed3-853c-d1cdb35bcb56",
+                    "name": "Troyes vs Laval"
+                },
+                {
+                    "id": "9764def3-b3ac-4bd6-9427-9d0a742bcaca",
+                    "name": "Saint-\u00c9tienne vs Troyes"
+                },
+                {
+                    "id": "ce3439f4-64ff-4d6b-a0d0-87b2c3454536",
+                    "name": "Troyes vs Boulogne"
+                },
+                {
+                    "id": "1b7e8572-1443-4b8b-b59c-ce4065804f31",
+                    "name": "Rodez vs Troyes"
+                },
+                {
+                    "id": "5e2561c3-2c1f-4550-adb5-62729a4b857f",
+                    "name": "Montpellier vs Troyes"
+                },
+                {
+                    "id": "837d9a46-e782-4d77-b6b9-efa0329ca021",
+                    "name": "Troyes vs Dunkerque"
+                },
+                {
+                    "id": "a85315f0-5a47-4a01-bef3-f0437c1aa1c8",
+                    "name": "Annecy vs Troyes"
+                },
+                {
+                    "id": "8c646bf3-7295-4af1-b03c-6a84dba66c4d",
+                    "name": "Troyes vs Clermont"
+                },
+                {
+                    "id": "5659ce6f-c9d3-4ea9-9568-30bd231781a0",
+                    "name": "Amiens SC vs Troyes"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "154",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "133",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "294",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "3unkqo2g6ag99gd5ynz1j7vse",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "39b48457-feaf-4242-92b6-1ce74487bafb",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "a1f07f49-f46d-48b4-ab65-cdf5937ed28f",
+            "name": "FC Annecy",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a1f07f49-f46d-48b4-ab65-cdf5937ed28f.png",
+            "games": [
+                {
+                    "id": "e8eb5be6-e052-4bcb-8c87-5ef0629a28db",
+                    "name": "Annecy vs Nantes"
+                },
+                {
+                    "id": "67c5638d-e475-4a6d-85a5-8fd05932fe14",
+                    "name": "Clermont vs Annecy"
+                },
+                {
+                    "id": "d4294851-d52e-4071-b395-adf8c6e9d2d6",
+                    "name": "Annecy vs Pau"
+                },
+                {
+                    "id": "7688b925-ff6b-42ef-95bd-c65f4a3736ed",
+                    "name": "Annecy vs Red Star"
+                },
+                {
+                    "id": "a45095ad-dbb5-42d9-9912-33b6ce13dbc4",
+                    "name": "Nancy vs Annecy"
+                },
+                {
+                    "id": "db86ab9d-a76c-45f8-9152-1850dba90730",
+                    "name": "Annecy vs Dunkerque"
+                },
+                {
+                    "id": "ca80e0c6-5eb5-42a7-b962-12661ca3f264",
+                    "name": "Saint-\u00c9tienne vs Annecy"
+                },
+                {
+                    "id": "22937865-b191-44bd-a527-7821e3e5b2f6",
+                    "name": "Annecy vs Guingamp"
+                },
+                {
+                    "id": "4dbd5023-1eb8-417d-af60-0cc999463ec1",
+                    "name": "Dijon vs Annecy"
+                },
+                {
+                    "id": "036a0b33-cd65-46dd-bd00-2f5a80ef1928",
+                    "name": "Annecy vs Boulogne"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "11426",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "6sqrk45zcfgwpq97no19o9sk5",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "3142",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "115494",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "4cafe835-9b9a-498e-b894-e3445905cc2c",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "5764a668-5d69-4ba6-bb8a-bdfa5c64229c",
+            "name": "FC Lorient",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/5764a668-5d69-4ba6-bb8a-bdfa5c64229c.png",
+            "games": [
+                {
+                    "id": "a4812a34-f7de-4ddc-b8dc-a3a9d0ca3689",
+                    "name": "FC Lorient vs Clermont Foot 63"
+                },
+                {
+                    "id": "809a44de-fdcb-4f78-9a33-4cfed310261e",
+                    "name": "Olympique de Marseille vs FC Lorient"
+                },
+                {
+                    "id": "d6235422-0750-42bc-926e-8c3bd132e7a8",
+                    "name": "RC Lens vs FC Lorient"
+                },
+                {
+                    "id": "dce0227a-35ab-4e0a-b581-3f67075831c8",
+                    "name": "FC Lorient vs Toulouse FC"
+                },
+                {
+                    "id": "84197adc-4688-46ef-bd7d-5319602cecc9",
+                    "name": "FC Lorient vs Paris Saint-Germain FC"
+                },
+                {
+                    "id": "ae8c3990-ac11-424f-a476-0fdabedf76b9",
+                    "name": "OGC Nice vs FC Lorient"
+                },
+                {
+                    "id": "d9ede039-b08f-4582-994f-8c1d0a9c4665",
+                    "name": "Montpellier HSC vs FC Lorient"
+                },
+                {
+                    "id": "f305d850-2c72-4981-9adb-cbd5b0412e02",
+                    "name": "FC Lorient vs Stade Brestois 29"
+                },
+                {
+                    "id": "7064b9b7-4fc1-4347-a8cf-d8373a99d823",
+                    "name": "AS Monaco FC vs FC Lorient"
+                },
+                {
+                    "id": "097f2602-6963-428a-bf11-79099aaed0e2",
+                    "name": "FC Lorient vs Olympique Lyonnais"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "694",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "70nn27vgkt6l48lvv5e66q7ww",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "8048833e-96ba-4def-82b4-a376bbdbd82f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "165",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "217",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "cd58c70f-510e-41a7-9551-1e8ec658d8ac",
+            "name": "FC Metz",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/cd58c70f-510e-41a7-9551-1e8ec658d8ac.png",
+            "games": [
+                {
+                    "id": "66483b03-b6d5-4530-b41a-9367b7c80329",
+                    "name": "Nancy vs Metz"
+                },
+                {
+                    "id": "40317be1-7dab-4508-b64e-b25c72d97d80",
+                    "name": "Metz vs Red Star"
+                },
+                {
+                    "id": "362d5630-1403-4f3e-aac0-e515ad3c4fec",
+                    "name": "Guingamp vs Metz"
+                },
+                {
+                    "id": "af4be0bd-1e6e-40b7-a57f-8f33c7043ff3",
+                    "name": "Rodez vs Metz"
+                },
+                {
+                    "id": "ecfc453c-2164-4228-8ad2-4aef30ba745e",
+                    "name": "Metz vs Clermont"
+                },
+                {
+                    "id": "9449b2ee-c591-43ac-bbf9-b961672ac3e4",
+                    "name": "Reims vs Metz"
+                },
+                {
+                    "id": "57135969-7b35-47ad-af26-f6029d58188e",
+                    "name": "Metz vs Nantes"
+                },
+                {
+                    "id": "bca736f7-89b5-4d1a-a636-4412cfe29415",
+                    "name": "Laval vs Metz"
+                },
+                {
+                    "id": "428e6f19-464c-4a21-9671-46c2a813ae8c",
+                    "name": "Boulogne vs Metz"
+                },
+                {
+                    "id": "3f7f1d34-b1b0-45cf-b8e0-6e822f19f248",
+                    "name": "Metz vs Dunkerque"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "141",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "145",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "12bc7d37-cee4-4116-b06d-0dc3a2b7d1f8",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "2khen2a38l2hkx33s73pehl6o",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "68",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f32406d3-a94a-4e50-883f-2eef5e1f2722",
+            "name": "FC Nantes",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f32406d3-a94a-4e50-883f-2eef5e1f2722.png",
+            "games": [
+                {
+                    "id": "e8eb5be6-e052-4bcb-8c87-5ef0629a28db",
+                    "name": "Annecy vs Nantes"
+                },
+                {
+                    "id": "b762cc5b-d3e2-4146-8ee6-08bcbbaecff4",
+                    "name": "Nantes vs Laval"
+                },
+                {
+                    "id": "d8c68687-a478-4b1a-a4b0-94cb5c836a92",
+                    "name": "Nantes vs Dijon"
+                },
+                {
+                    "id": "3a4eaa0c-0cdf-4ac1-a07c-3141d47352be",
+                    "name": "Clermont vs Nantes"
+                },
+                {
+                    "id": "04b5b062-3b22-4cc6-b4ef-fcd18fffdbc1",
+                    "name": "Nantes vs Montpellier"
+                },
+                {
+                    "id": "a846d3da-8f76-47d7-b9b4-1ca241eae2bb",
+                    "name": "Red Star vs Nantes"
+                },
+                {
+                    "id": "57135969-7b35-47ad-af26-f6029d58188e",
+                    "name": "Metz vs Nantes"
+                },
+                {
+                    "id": "a5825f19-e060-4c0b-88ba-dc58d5af6b83",
+                    "name": "Nantes vs Sochaux"
+                },
+                {
+                    "id": "84d09759-a42b-4bb5-ab86-32a909eda3a8",
+                    "name": "Grenoble Foot 38 vs Nantes"
+                },
+                {
+                    "id": "04acc8c0-a074-48d9-933f-c3300b4958a4",
+                    "name": "Nantes vs Saint-\u00c9tienne"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "389a9856-20b6-4809-b0ee-8a1dffd2f61f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "71",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "144",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "750ustvk4jfqmo8q4gnrcxy7z",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "430",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "fe06bb8e-5175-4940-8908-81aa4ab9fd2c",
+            "name": "FC Sochaux Montb\u00e9liard",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/fe06bb8e-5175-4940-8908-81aa4ab9fd2c.png",
+            "games": [
+                {
+                    "id": "c1779786-4077-4c70-a054-29aa23662d23",
+                    "name": "Guingamp vs Sochaux"
+                },
+                {
+                    "id": "29801d32-a423-4a99-a4f3-87ed66e07386",
+                    "name": "Sochaux vs Grenoble Foot 38"
+                },
+                {
+                    "id": "1afd62d0-c602-4ff3-8aef-0bd2cd28fd0d",
+                    "name": "Sochaux vs Clermont"
+                },
+                {
+                    "id": "4cfd109f-db21-4300-a331-bce9c4610b56",
+                    "name": "Dunkerque vs Sochaux"
+                },
+                {
+                    "id": "828ce805-202b-48fb-b677-5e5ab2017de9",
+                    "name": "Sochaux vs Laval"
+                },
+                {
+                    "id": "c9003741-3268-4a06-9537-fbeb2f0bf0e9",
+                    "name": "Montpellier vs Sochaux"
+                },
+                {
+                    "id": "aa8af738-4b21-453a-9fe0-c13c6386d7c0",
+                    "name": "Sochaux vs Red Star"
+                },
+                {
+                    "id": "a5825f19-e060-4c0b-88ba-dc58d5af6b83",
+                    "name": "Nantes vs Sochaux"
+                },
+                {
+                    "id": "d5f36bc0-2fbf-46d8-8e75-2b3cea255af2",
+                    "name": "Sochaux vs Nancy"
+                },
+                {
+                    "id": "075eecc3-72e2-4a38-9574-d9bde2d9004a",
+                    "name": "Rodez vs Sochaux"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "10135",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "693",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "226",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "d9kwaceoj54pfprd6oc2hwae6",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "161",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c6bacd58-11ff-42a1-955c-a2a37aaf12e4",
+            "name": "France",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c6bacd58-11ff-42a1-955c-a2a37aaf12e4.png",
+            "games": [
+                {
+                    "id": "676bf964-3c50-4837-84d1-95fa63312f44",
+                    "name": "France vs England"
+                },
+                {
+                    "id": "edece944-9ee7-4481-861b-76cec9a7d969",
+                    "name": "France vs Spain"
+                },
+                {
+                    "id": "552ff610-7a14-4315-a923-f5de2dbd74f3",
+                    "name": "France vs Morocco"
+                },
+                {
+                    "id": "a72f47f6-6ae6-4f50-9700-a7ff970efe89",
+                    "name": "Paraguay vs France"
+                },
+                {
+                    "id": "c47a0401-b712-4a1c-a7a9-301bc8bb0781",
+                    "name": "France vs Sweden"
+                },
+                {
+                    "id": "ac18b1dd-0156-44d1-b4ab-5ca75f589fae",
+                    "name": "Norway vs France"
+                },
+                {
+                    "id": "ee852570-d1f9-4958-a250-6b510acb4864",
+                    "name": "France vs Iraq"
+                },
+                {
+                    "id": "4abbdd22-47d4-42a1-af8b-02d02712caa0",
+                    "name": "France vs Senegal"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "4pz87gsel7183b7kcadw1dwzv",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "a1b62ed0-1fb8-4bc8-9314-928cf30f3dbe",
+            "name": "Germany",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a1b62ed0-1fb8-4bc8-9314-928cf30f3dbe.png",
+            "games": [
+                {
+                    "id": "ef9328b8-b59c-456a-afe8-754a079caedd",
+                    "name": "Germany vs Paraguay"
+                },
+                {
+                    "id": "b093f3ee-91bf-4729-a37f-8b612833b913",
+                    "name": "Ecuador vs Germany"
+                },
+                {
+                    "id": "3f2027fd-922c-4038-9bf5-fbb63e7afad5",
+                    "name": "Germany vs C\u00f4te d'Ivoire"
+                },
+                {
+                    "id": "f38cd993-46f5-4ae4-8ba9-70369d57fb06",
+                    "name": "Germany vs Curacao"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "3l2t2db0c5ow2f7s7bhr6mij4",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "4c5e7159-9fdb-43c6-ac83-7ecd91ce1fa1",
+            "name": "Ghana",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4c5e7159-9fdb-43c6-ac83-7ecd91ce1fa1.png",
+            "games": [
+                {
+                    "id": "5426dabc-afa1-4ee3-9069-0a26e36ecc97",
+                    "name": "Colombia vs Ghana"
+                },
+                {
+                    "id": "e726d0d3-01ad-4732-8bb3-f99bbca80faf",
+                    "name": "Croatia vs Ghana"
+                },
+                {
+                    "id": "02ebc2d3-0ea3-4cb3-8033-6068db4fbb13",
+                    "name": "England vs Ghana"
+                },
+                {
+                    "id": "496ffdf3-4d9a-4c7c-bd9e-1034676ae64b",
+                    "name": "Ghana vs Panama"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "9bix8nlt6cgbson25qntg2zzh",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "b53059d3-8827-450b-9d8c-48cab41224de",
+            "name": "Grenoble Foot 38",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/b53059d3-8827-450b-9d8c-48cab41224de.png",
+            "games": [
+                {
+                    "id": "2f4f2513-48ad-4cdf-87a7-5517b2ea4464",
+                    "name": "Grenoble Foot 38 vs Dunkerque"
+                },
+                {
+                    "id": "29801d32-a423-4a99-a4f3-87ed66e07386",
+                    "name": "Sochaux vs Grenoble Foot 38"
+                },
+                {
+                    "id": "800e2ebc-6b8a-4295-8232-f12b402cc63b",
+                    "name": "Grenoble Foot 38 vs Laval"
+                },
+                {
+                    "id": "9f751caf-4f76-4bae-943a-1cbdd1f16365",
+                    "name": "Reims vs Grenoble Foot 38"
+                },
+                {
+                    "id": "02aad3d6-88cc-41a8-a147-a77e6d1d9502",
+                    "name": "Grenoble Foot 38 vs Pau"
+                },
+                {
+                    "id": "d4f3bdd9-5a02-48ce-b2f3-290a85a8e19d",
+                    "name": "Grenoble Foot 38 vs Nancy"
+                },
+                {
+                    "id": "1106ac78-3d52-440c-8ed3-5de2a9aa2e7b",
+                    "name": "Boulogne vs Grenoble Foot 38"
+                },
+                {
+                    "id": "69b3d6a6-83b5-4d42-9283-078c9878ed18",
+                    "name": "Clermont vs Grenoble Foot 38"
+                },
+                {
+                    "id": "84d09759-a42b-4bb5-ab86-32a909eda3a8",
+                    "name": "Grenoble Foot 38 vs Nantes"
+                },
+                {
+                    "id": "39384758-251b-441b-8296-e7d62a4d72dc",
+                    "name": "Guingamp vs Grenoble Foot 38"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "1272",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "1805",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "848",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "b1185769-73ca-474d-ac79-6b253590dff2",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "2ku5qqmv6i842rujioksaatx7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "7fdff7b4-8cc3-4c16-8dda-0021f1e69dc7",
+            "name": "Haiti",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/7fdff7b4-8cc3-4c16-8dda-0021f1e69dc7.png",
+            "games": [
+                {
+                    "id": "69937e14-a8c3-435a-aa2c-17f61b8e098d",
+                    "name": "Morocco vs Haiti"
+                },
+                {
+                    "id": "16d83d48-c04e-4165-a413-83310703ff6e",
+                    "name": "Brazil vs Haiti"
+                },
+                {
+                    "id": "7f962f67-fdb1-4619-9d82-cdc35b7ff00a",
+                    "name": "Haiti vs Scotland"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "78080e73-5243-4cd2-ace9-c9b2d400a2f6",
+            "name": "Iran",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/78080e73-5243-4cd2-ace9-c9b2d400a2f6.png",
+            "games": [
+                {
+                    "id": "433da208-9053-4c4a-9917-b12f68e10740",
+                    "name": "Egypt vs Iran"
+                },
+                {
+                    "id": "4177e35c-c395-40c4-b0f7-2a7e3d66e156",
+                    "name": "Belgium vs Iran"
+                },
+                {
+                    "id": "f0dc68b3-781d-4729-ba10-a842bbcb44d0",
+                    "name": "Iran vs New Zealand"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "cubclbw5k5gdqdau95bnav0nn",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "6f2fc520-92ef-4d36-880d-c6ce7e955ebd",
+            "name": "Iraq",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/6f2fc520-92ef-4d36-880d-c6ce7e955ebd.png",
+            "games": [
+                {
+                    "id": "4b32c276-09eb-494b-bb6b-bff8fa251531",
+                    "name": "Senegal vs Iraq"
+                },
+                {
+                    "id": "ee852570-d1f9-4958-a250-6b510acb4864",
+                    "name": "France vs Iraq"
+                },
+                {
+                    "id": "aac12d9d-f705-4131-8bff-2e4407574950",
+                    "name": "Iraq vs Norway"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "3124fb02-9bd6-4834-8d01-d80701aab590",
+            "name": "Ivory Coast",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3124fb02-9bd6-4834-8d01-d80701aab590.png",
+            "games": [
+                {
+                    "id": "e6c9a421-e356-4e3a-b4aa-e9f068aca3cd",
+                    "name": "C\u00f4te d'Ivoire vs Norway"
+                },
+                {
+                    "id": "bfbba7f9-eec4-413b-b2f3-fb48cbafb43b",
+                    "name": "Curacao vs C\u00f4te d'Ivoire"
+                },
+                {
+                    "id": "3f2027fd-922c-4038-9bf5-fbb63e7afad5",
+                    "name": "Germany vs C\u00f4te d'Ivoire"
+                },
+                {
+                    "id": "ecd42dfa-47de-434b-92b8-33b9544662c7",
+                    "name": "C\u00f4te d'Ivoire vs Ecuador"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "0a2283dd-1e74-4b85-99b1-bc8d3294cd11",
+            "name": "Japan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0a2283dd-1e74-4b85-99b1-bc8d3294cd11.png",
+            "games": [
+                {
+                    "id": "184f14bd-707b-4851-94c6-9441cff4d5c9",
+                    "name": "Brazil vs Japan"
+                },
+                {
+                    "id": "2b53b3bc-c163-41b5-a46c-111451f14645",
+                    "name": "Japan vs Sweden"
+                },
+                {
+                    "id": "33acd313-7bc4-4cf4-b536-d0c3cc41c86c",
+                    "name": "Tunisia vs Japan"
+                },
+                {
+                    "id": "e44f4a0f-2e14-4037-8e2b-eec4808e2dec",
+                    "name": "Netherlands vs Japan"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "6duaxcbrofil112qfq4v895go",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "3bc2a18e-a2dd-4b21-ab63-1fb9ef466872",
+            "name": "Jordan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3bc2a18e-a2dd-4b21-ab63-1fb9ef466872.png",
+            "games": [
+                {
+                    "id": "62025c2b-8810-4bcc-b893-3e301dd54888",
+                    "name": "Jordan vs Argentina"
+                },
+                {
+                    "id": "a2205f4a-c8fc-4f0d-b2f7-6985107f94b3",
+                    "name": "Jordan vs Algeria"
+                },
+                {
+                    "id": "8238017b-a01e-43da-a161-cc39c657a6ed",
+                    "name": "Austria vs Jordan"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "22042183-4c3b-42ab-9a4b-aca3e4952f3f",
+            "name": "Le Havre AC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/22042183-4c3b-42ab-9a4b-aca3e4952f3f.png",
+            "games": [
+                {
+                    "id": "6a512c24-a005-484f-9f14-afcdb14af52a",
+                    "name": "RC Strasbourg Alsace vs Le Havre AC"
+                },
+                {
+                    "id": "d393f211-68fc-44cf-acab-fea1d98e6692",
+                    "name": "Le Havre AC vs Olympique de Marseille"
+                },
+                {
+                    "id": "117ccf5a-6547-4da2-8ca8-ac580957b919",
+                    "name": "AJ Auxerre vs Le Havre AC"
+                },
+                {
+                    "id": "2878a875-41df-4e31-83be-62b6bc949318",
+                    "name": "Le Havre AC vs AS Monaco FC"
+                },
+                {
+                    "id": "33107d42-adf8-4be1-95c4-06798704fe65",
+                    "name": "Paris Saint-Germain FC vs Le Havre AC"
+                },
+                {
+                    "id": "bd23491a-b507-4a13-a321-b1fd02a60476",
+                    "name": "Le Havre AC vs Stade Rennais FC"
+                },
+                {
+                    "id": "05b313bf-c2d2-4258-937d-8adac9cb6bae",
+                    "name": "Montpellier HSC vs Le Havre AC"
+                },
+                {
+                    "id": "19756f67-28ff-4345-8bea-d4ed29ad44e3",
+                    "name": "Le Havre AC vs FC Nantes"
+                },
+                {
+                    "id": "62037550-69cf-478e-9f2a-4cca48ceb283",
+                    "name": "Olympique Lyonnais vs Le Havre AC"
+                },
+                {
+                    "id": "ea545eac-5a12-4025-b282-7273d28ec97d",
+                    "name": "Le Havre AC vs AS Saint-\u00c9tienne"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "141",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "23pqcgxu1tip265hbe01kszbt",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "164",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "168fc3b4-f5ec-4917-b7cf-9505e3343804",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "1738",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "29f9732f-257e-4f5f-97ff-afc343160848",
+            "name": "Le Mans FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/29f9732f-257e-4f5f-97ff-afc343160848.png",
+            "games": [
+                {
+                    "id": "a72a8103-eb03-4a39-95df-05b7ace7f840",
+                    "name": "Bastia vs Le Mans"
+                },
+                {
+                    "id": "f0b0d4ee-bc0d-4399-b179-f78579901d9e",
+                    "name": "Le Mans vs Reims"
+                },
+                {
+                    "id": "2e018eed-6a61-4645-a771-6c66f7eba050",
+                    "name": "Grenoble Foot 38 vs Le Mans"
+                },
+                {
+                    "id": "70c3e138-f347-4617-9595-47e38e4c6f16",
+                    "name": "Le Mans vs Clermont"
+                },
+                {
+                    "id": "5936f1f5-a361-49f3-ad0b-071eea6349c4",
+                    "name": "Boulogne vs Le Mans"
+                },
+                {
+                    "id": "6a269274-c098-464d-a66c-c3abcd0ab3e5",
+                    "name": "Le Mans vs Pau"
+                },
+                {
+                    "id": "8c44daf0-8db4-4627-9d3e-151b397c6745",
+                    "name": "Amiens SC vs Le Mans"
+                },
+                {
+                    "id": "d82f23c0-369c-49ec-b273-b765df83cc88",
+                    "name": "Nancy vs Le Mans"
+                },
+                {
+                    "id": "c0e1adaa-7a89-4039-a81b-e730f4e6cb5b",
+                    "name": "Le Mans vs Annecy"
+                },
+                {
+                    "id": "53cb6b8f-20c4-44c5-9a51-f817b5a6df75",
+                    "name": "Red Star vs Le Mans"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "920",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "bbac520e-1a19-4999-a4f5-c1496bd0faec",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "bj8hrmj01r3zit0x8r6qm2eu2",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "ec42bbc5-5016-45a3-83d4-5f9f50596b0e",
+            "name": "Lille OSC M\u00e9tropole",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/ec42bbc5-5016-45a3-83d4-5f9f50596b0e.png",
+            "games": [
+                {
+                    "id": "934871af-7e44-448d-b985-e06533037816",
+                    "name": "Lille OSC M\u00e9tropole vs Stade de Reims"
+                },
+                {
+                    "id": "430f584b-a1fa-4477-b455-247f93fee3a3",
+                    "name": "Stade Brestois 29 vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "32a9c54a-396e-4abb-9b89-6d8dfa0bef98",
+                    "name": "Lille OSC M\u00e9tropole vs Olympique de Marseille"
+                },
+                {
+                    "id": "136a2615-8952-477a-8551-b0c1b5ef0ff7",
+                    "name": "Angers SCO vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "4c608d2f-0602-41e4-9842-e10060711695",
+                    "name": "Lille OSC M\u00e9tropole vs AJ Auxerre"
+                },
+                {
+                    "id": "3498e9f0-3c74-4cb1-961a-0ba87efeec4d",
+                    "name": "Toulouse FC vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "1b6f1daf-512c-4c63-8afb-8124ad66c167",
+                    "name": "Olympique Lyonnais vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "1486b24a-0a60-4f11-93fa-84a6a14eefe2",
+                    "name": "Lille OSC M\u00e9tropole vs RC Lens"
+                },
+                {
+                    "id": "6f4fa1ec-2ab8-4492-8dad-12a67cd12b18",
+                    "name": "FC Nantes vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "d13cc985-bd81-40cf-a760-5433ed50b3ee",
+                    "name": "Lille OSC M\u00e9tropole vs Montpellier HSC"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "75797",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "143",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "429",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "ca1cb2d2-7f8a-4fb3-8708-cc8b0facdfab",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "be2k34rut1lz79jxenabttqlc",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "65",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "d8b15520-b451-4279-9b16-f87f64c6c613",
+            "name": "Mexico",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d8b15520-b451-4279-9b16-f87f64c6c613.png",
+            "games": [
+                {
+                    "id": "f3976b75-b769-46c8-9a80-773a0bf018f2",
+                    "name": "Mexico vs England"
+                },
+                {
+                    "id": "e8cc03e9-a1c2-4438-947c-1f5b7ad254a0",
+                    "name": "Mexico vs Ecuador"
+                },
+                {
+                    "id": "561e43ce-1094-4712-9468-5e3c9a6bdaca",
+                    "name": "Czech Republic vs Mexico"
+                },
+                {
+                    "id": "daa85442-8b4c-48fd-99e1-0f01f2756d74",
+                    "name": "Mexico vs Korea Republic"
+                },
+                {
+                    "id": "df850b13-57e4-446d-af15-9353b67fb69f",
+                    "name": "Mexico vs South Africa"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "4vofb84dzb5fyc81n2ssws6ah",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "4099b67b-7b1d-40f0-a635-2bc56f128071",
+            "name": "Montpellier HSC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4099b67b-7b1d-40f0-a635-2bc56f128071.png",
+            "games": [
+                {
+                    "id": "b1fcfb7f-f107-46ca-a7d8-fb896c4950b4",
+                    "name": "Dijon vs Montpellier"
+                },
+                {
+                    "id": "9981a145-9597-45a5-9e3f-f258466187ff",
+                    "name": "Montpellier vs Nancy"
+                },
+                {
+                    "id": "c549f9a3-27f6-47d1-a45d-30f7568a0a50",
+                    "name": "Boulogne vs Montpellier"
+                },
+                {
+                    "id": "18dbfcdb-306f-41c0-85dd-b2043ed8fe56",
+                    "name": "Montpellier vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "04b5b062-3b22-4cc6-b4ef-fcd18fffdbc1",
+                    "name": "Nantes vs Montpellier"
+                },
+                {
+                    "id": "c9003741-3268-4a06-9537-fbeb2f0bf0e9",
+                    "name": "Montpellier vs Sochaux"
+                },
+                {
+                    "id": "49bd42f7-ff05-47fa-a8ed-1f5cb2c6de74",
+                    "name": "Guingamp vs Montpellier"
+                },
+                {
+                    "id": "3ca0faef-6042-432f-9269-c954afd76c7d",
+                    "name": "Montpellier vs Dunkerque"
+                },
+                {
+                    "id": "77205af2-aba6-4269-958c-02bd49c13602",
+                    "name": "Pau vs Montpellier"
+                },
+                {
+                    "id": "aa95631b-8c9d-4aa0-b272-0720c17a0fe7",
+                    "name": "Clermont vs Montpellier"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "10fb7080-1059-4b6b-bcfa-716672a8f3a3",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "2cjpmotqo8phcqfpgo9xf4gel",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "139",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "70",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "147",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c1b254b0-2235-4601-9dc4-604a400dda58",
+            "name": "Morocco",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c1b254b0-2235-4601-9dc4-604a400dda58.png",
+            "games": [
+                {
+                    "id": "552ff610-7a14-4315-a923-f5de2dbd74f3",
+                    "name": "France vs Morocco"
+                },
+                {
+                    "id": "4b5e73eb-d5de-45c6-be40-bacee8617375",
+                    "name": "Canada vs Morocco"
+                },
+                {
+                    "id": "1f5a785a-20db-4e39-b9a7-9d04f53cca04",
+                    "name": "Netherlands vs Morocco"
+                },
+                {
+                    "id": "69937e14-a8c3-435a-aa2c-17f61b8e098d",
+                    "name": "Morocco vs Haiti"
+                },
+                {
+                    "id": "20c49f59-d0f7-47ce-85d1-63bd4284c745",
+                    "name": "Scotland vs Morocco"
+                },
+                {
+                    "id": "0b707e14-2d1f-40d2-90bc-f80f4be25cb3",
+                    "name": "Brazil vs Morocco"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "avggs3u2b5cu8i1dnzknhth52",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "13f74d59-4abc-445d-9c23-6efbfe2674e8",
+            "name": "Netherlands",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/13f74d59-4abc-445d-9c23-6efbfe2674e8.png",
+            "games": [
+                {
+                    "id": "1f5a785a-20db-4e39-b9a7-9d04f53cca04",
+                    "name": "Netherlands vs Morocco"
+                },
+                {
+                    "id": "8bbf59e0-d264-4632-ae15-0d21b8dcc090",
+                    "name": "Tunisia vs Netherlands"
+                },
+                {
+                    "id": "77f1f22e-74cd-4013-ba91-3ec1d162d420",
+                    "name": "Netherlands vs Sweden"
+                },
+                {
+                    "id": "e44f4a0f-2e14-4037-8e2b-eec4808e2dec",
+                    "name": "Netherlands vs Japan"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "657oha8nkne1ybba2bouzkbo7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f7fe4f3c-9876-41c5-979d-e0bba451258d",
+            "name": "New Zealand",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f7fe4f3c-9876-41c5-979d-e0bba451258d.png",
+            "games": [
+                {
+                    "id": "0dc65652-f6fe-48dd-802f-98873522735a",
+                    "name": "New Zealand vs Belgium"
+                },
+                {
+                    "id": "6168bf69-9ba9-44b5-86d3-7633103adc5f",
+                    "name": "New Zealand vs Egypt"
+                },
+                {
+                    "id": "f0dc68b3-781d-4729-ba10-a842bbcb44d0",
+                    "name": "Iran vs New Zealand"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "27cdedb5-82c7-4ac9-a8bb-48183ded1075",
+            "name": "Norway",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/27cdedb5-82c7-4ac9-a8bb-48183ded1075.png",
+            "games": [
+                {
+                    "id": "acced3c0-fd7e-48ee-9785-59cc0e8573d5",
+                    "name": "Norway vs England"
+                },
+                {
+                    "id": "1edd1a71-2365-4f5b-8b37-1f6b01040826",
+                    "name": "Brazil vs Norway"
+                },
+                {
+                    "id": "e6c9a421-e356-4e3a-b4aa-e9f068aca3cd",
+                    "name": "C\u00f4te d'Ivoire vs Norway"
+                },
+                {
+                    "id": "ac18b1dd-0156-44d1-b4ab-5ca75f589fae",
+                    "name": "Norway vs France"
+                },
+                {
+                    "id": "75421522-5ba1-4844-b686-1ac415734b8a",
+                    "name": "Norway vs Senegal"
+                },
+                {
+                    "id": "aac12d9d-f705-4131-8bff-2e4407574950",
+                    "name": "Iraq vs Norway"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "96da961d-a2c6-4309-bda0-fa6f8ff902fa",
+            "name": "OGC Nice",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/96da961d-a2c6-4309-bda0-fa6f8ff902fa.png",
+            "games": [
+                {
+                    "id": "69a4a952-e843-4bd9-9206-2232835a9180",
+                    "name": "OGC Nice vs Stade Brestois 29"
+                },
+                {
+                    "id": "dbb52adf-3734-43b4-93ef-08613b034a01",
+                    "name": "Stade Rennais FC vs OGC Nice"
+                },
+                {
+                    "id": "8b6e99be-a7d0-4520-8f04-55049448af2c",
+                    "name": "OGC Nice vs Stade de Reims"
+                },
+                {
+                    "id": "68745732-945e-4ad5-b539-5d9fc55140a6",
+                    "name": "Paris Saint-Germain FC vs OGC Nice"
+                },
+                {
+                    "id": "2a2ce9f1-75af-4b94-9cc9-35d6807f5280",
+                    "name": "OGC Nice vs Angers SCO"
+                },
+                {
+                    "id": "a655e750-97a2-400d-bad5-10d777e96761",
+                    "name": "RC Strasbourg Alsace vs OGC Nice"
+                },
+                {
+                    "id": "80d3a0e1-17e9-408d-9424-f4566557d9ed",
+                    "name": "OGC Nice vs FC Nantes"
+                },
+                {
+                    "id": "b68d0851-70b9-47a4-9678-ca971090564d",
+                    "name": "AS Monaco FC vs OGC Nice"
+                },
+                {
+                    "id": "634d78e9-5209-4169-ab30-c59787bda57e",
+                    "name": "OGC Nice vs AJ Auxerre"
+                },
+                {
+                    "id": "68fc4048-b6d8-44ac-8034-7d15cc7c96cd",
+                    "name": "OGC Nice vs Olympique Lyonnais"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "52355",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "bx0cdmzr2gwr70ez72dorx82p",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "72",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "1395",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "136",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "a0aea985-f7de-4247-a253-619d4853ea44",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "9d369296-33b7-4102-bb13-eb299fb5de72",
+            "name": "Olympique de Marseille",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/9d369296-33b7-4102-bb13-eb299fb5de72.png",
+            "games": [
+                {
+                    "id": "425b06ec-0e30-4782-a842-a5507d2544ad",
+                    "name": "Olympique de Marseille vs Stade Rennais FC"
+                },
+                {
+                    "id": "d393f211-68fc-44cf-acab-fea1d98e6692",
+                    "name": "Le Havre AC vs Olympique de Marseille"
+                },
+                {
+                    "id": "32a9c54a-396e-4abb-9b89-6d8dfa0bef98",
+                    "name": "Lille OSC M\u00e9tropole vs Olympique de Marseille"
+                },
+                {
+                    "id": "b841665a-a9c4-43fc-88fb-e09d52337e1b",
+                    "name": "Olympique de Marseille vs Stade Brestois 29"
+                },
+                {
+                    "id": "f726f2b6-a81e-4d42-9299-5057bbef3cdb",
+                    "name": "Olympique de Marseille vs Montpellier HSC"
+                },
+                {
+                    "id": "ec09a189-d3ca-4cdc-85d3-179b5235e8e3",
+                    "name": "AS Monaco FC vs Olympique de Marseille"
+                },
+                {
+                    "id": "32b6d5f6-f3ae-45d6-8fe8-abb71b5cb238",
+                    "name": "Olympique de Marseille vs Toulouse FC"
+                },
+                {
+                    "id": "094546bd-5b9d-45f4-b9a1-30402046555b",
+                    "name": "Stade de Reims vs Olympique de Marseille"
+                },
+                {
+                    "id": "0e90cce4-24ed-442c-9c61-63e8a089753b",
+                    "name": "Paris Saint-Germain FC vs Olympique de Marseille"
+                },
+                {
+                    "id": "5a67328f-6252-40d1-a0a7-a7db3e461aaf",
+                    "name": "Olympique de Marseille vs RC Lens"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "52748",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "219",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "144",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "29174fd9-3234-40f2-a6d2-8af5e096733b",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "147",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "27xvwccz8kpmqsefjv2b2sc0o",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "79ad5c0c-4926-4105-8c0d-2118efd4c601",
+            "name": "Olympique Lyonnais",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/79ad5c0c-4926-4105-8c0d-2118efd4c601.png",
+            "games": [
+                {
+                    "id": "18d3317f-94f1-4424-a2a2-ae4b548b7383",
+                    "name": "Olympique Lyonnais vs Angers SCO"
+                },
+                {
+                    "id": "bf8ddcee-37ee-45fa-8a93-73dd023c6574",
+                    "name": "AS Monaco FC vs Olympique Lyonnais"
+                },
+                {
+                    "id": "dd6f90b6-35f6-4dba-b9e2-31446e3342bf",
+                    "name": "Olympique Lyonnais vs RC Lens"
+                },
+                {
+                    "id": "8730bfac-4619-4538-84d3-bf2135cc78b5",
+                    "name": "Olympique Lyonnais vs Stade Rennais FC"
+                },
+                {
+                    "id": "0c4f45f4-ca27-46e6-9afd-33743f3787b3",
+                    "name": "AS Saint-\u00c9tienne vs Olympique Lyonnais"
+                },
+                {
+                    "id": "b1af19b2-5e39-4d34-a0db-951009b863fc",
+                    "name": "AJ Auxerre vs Olympique Lyonnais"
+                },
+                {
+                    "id": "1b6f1daf-512c-4c63-8afb-8124ad66c167",
+                    "name": "Olympique Lyonnais vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "a251e5bf-21b8-43c3-a187-9fcaa6837437",
+                    "name": "RC Strasbourg Alsace vs Olympique Lyonnais"
+                },
+                {
+                    "id": "62037550-69cf-478e-9f2a-4cca48ceb283",
+                    "name": "Olympique Lyonnais vs Le Havre AC"
+                },
+                {
+                    "id": "68fc4048-b6d8-44ac-8034-7d15cc7c96cd",
+                    "name": "OGC Nice vs Olympique Lyonnais"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "5312",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "137",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "66",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "6d37535a-7054-468b-b712-c84795952a73",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "143",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "121le8unjfzug3iu9pgkqa1c7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "b391d9e1-b527-4512-aee0-31cfab7ef38a",
+            "name": "Panama",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/b391d9e1-b527-4512-aee0-31cfab7ef38a.png",
+            "games": [
+                {
+                    "id": "21863edb-7379-4e1b-8cd5-0ee90ae3b0c0",
+                    "name": "Panama vs England"
+                },
+                {
+                    "id": "4fef34b1-d3a9-4dea-a438-5ee6d92f0bda",
+                    "name": "Panama vs Croatia"
+                },
+                {
+                    "id": "496ffdf3-4d9a-4c7c-bd9e-1034676ae64b",
+                    "name": "Ghana vs Panama"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "190e2129-e69a-4d50-880c-cdc715dc8f40",
+            "name": "Paraguay",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/190e2129-e69a-4d50-880c-cdc715dc8f40.png",
+            "games": [
+                {
+                    "id": "a72f47f6-6ae6-4f50-9700-a7ff970efe89",
+                    "name": "Paraguay vs France"
+                },
+                {
+                    "id": "ef9328b8-b59c-456a-afe8-754a079caedd",
+                    "name": "Germany vs Paraguay"
+                },
+                {
+                    "id": "514c58eb-beea-4603-8a2d-ab4d16d379b5",
+                    "name": "Paraguay vs Australia"
+                },
+                {
+                    "id": "d30da673-4dcb-49e8-ab54-e5926df38370",
+                    "name": "T\u00fcrkiye vs Paraguay"
+                },
+                {
+                    "id": "4b841662-dc68-4d28-90fc-a499df4e17c1",
+                    "name": "United States vs Paraguay"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "3cwjdmekfdouwg990mqdq9fh0",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0c1171fe-7d83-417e-98a2-f765c0ddc662",
+            "name": "Paris Saint-Germain FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0c1171fe-7d83-417e-98a2-f765c0ddc662.png",
+            "games": [
+                {
+                    "id": "3fbfa400-c2c1-4c5b-a213-5d8fbaf836ae",
+                    "name": "Paris Saint-Germain FC vs AJ Auxerre"
+                },
+                {
+                    "id": "9cea85f2-6a44-4167-a48b-c265f8e71ace",
+                    "name": "Montpellier HSC vs Paris Saint-Germain FC"
+                },
+                {
+                    "id": "04f23107-1218-417d-85d2-734d71c66695",
+                    "name": "RC Strasbourg Alsace vs Paris Saint-Germain FC"
+                },
+                {
+                    "id": "68745732-945e-4ad5-b539-5d9fc55140a6",
+                    "name": "Paris Saint-Germain FC vs OGC Nice"
+                },
+                {
+                    "id": "4f5afff8-c3b4-47f1-98a8-79539caca715",
+                    "name": "FC Nantes vs Paris Saint-Germain FC"
+                },
+                {
+                    "id": "33107d42-adf8-4be1-95c4-06798704fe65",
+                    "name": "Paris Saint-Germain FC vs Le Havre AC"
+                },
+                {
+                    "id": "8fe9bc64-01be-40dc-9b93-ac144f1d32aa",
+                    "name": "Paris Saint-Germain FC vs Angers SCO"
+                },
+                {
+                    "id": "0a679011-b4dc-489d-af4d-e0351c2799b8",
+                    "name": "AS Saint-\u00c9tienne vs Paris Saint-Germain FC"
+                },
+                {
+                    "id": "0e90cce4-24ed-442c-9c61-63e8a089753b",
+                    "name": "Paris Saint-Germain FC vs Olympique de Marseille"
+                },
+                {
+                    "id": "09ef1936-1baa-492f-b0dc-afd4196ecf7f",
+                    "name": "Stade Rennais FC vs Paris Saint-Germain FC"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "52747",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "149",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "73",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "2b3mar72yy8d6uvat1ka6tn3r",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "131",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "99366878-8adf-476c-9613-5ce4c254a60f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "217359f0-e6b0-495f-b4e9-e6e6dc906ac0",
+            "name": "Pau FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/217359f0-e6b0-495f-b4e9-e6e6dc906ac0.png",
+            "games": [
+                {
+                    "id": "1a9a7d47-a56b-4dc6-9003-1c724b3723e5",
+                    "name": "Saint-\u00c9tienne vs Pau"
+                },
+                {
+                    "id": "57c78012-a89c-4d0f-87c5-fab4b0f1fa29",
+                    "name": "Pau vs Dijon"
+                },
+                {
+                    "id": "d4294851-d52e-4071-b395-adf8c6e9d2d6",
+                    "name": "Annecy vs Pau"
+                },
+                {
+                    "id": "a26b2255-66c2-47db-a874-ea5a77835d3a",
+                    "name": "Pau vs Guingamp"
+                },
+                {
+                    "id": "02aad3d6-88cc-41a8-a147-a77e6d1d9502",
+                    "name": "Grenoble Foot 38 vs Pau"
+                },
+                {
+                    "id": "385dbb20-3135-4803-8281-25bc728e57d6",
+                    "name": "Pau vs Boulogne"
+                },
+                {
+                    "id": "d68d8de1-5b41-4580-a235-3684cb21af37",
+                    "name": "Pau vs Rodez"
+                },
+                {
+                    "id": "8b83a63e-24e9-4d0b-b76b-e5e5310f9089",
+                    "name": "Reims vs Pau"
+                },
+                {
+                    "id": "77205af2-aba6-4269-958c-02bd49c13602",
+                    "name": "Pau vs Montpellier"
+                },
+                {
+                    "id": "7cfc198a-448e-49bd-8a59-c2879f16cddc",
+                    "name": "Nancy vs Pau"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "25s5qx846iw05y8t9pinrbhh1",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "5420",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "22806792-d6d1-452e-884b-3d305a57d357",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "1714",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "110321",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "a68bb230-80e0-4b5f-82ec-1f4ce77db073",
+            "name": "Portugal",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a68bb230-80e0-4b5f-82ec-1f4ce77db073.png",
+            "games": [
+                {
+                    "id": "19df2116-80ab-419a-af41-3908e06b5ef4",
+                    "name": "Portugal vs Spain"
+                },
+                {
+                    "id": "75883bf8-4855-4344-b792-761f52f6e9e5",
+                    "name": "Portugal vs Croatia"
+                },
+                {
+                    "id": "6482c931-26ac-4843-a29f-910340be278f",
+                    "name": "Colombia vs Portugal"
+                },
+                {
+                    "id": "458b0417-bfe3-4dc8-8e05-559916483a5d",
+                    "name": "Portugal vs Uzbekistan"
+                },
+                {
+                    "id": "0dc0ddab-374a-48b4-921a-9858e75d3354",
+                    "name": "Portugal vs Congo DR"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "8gxg8f7p9299jbrz30u8bsc7g",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "25a647d4-6550-4947-8c7b-b91afb2c995d",
+            "name": "Qatar",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/25a647d4-6550-4947-8c7b-b91afb2c995d.png",
+            "games": [
+                {
+                    "id": "6e8f181e-14e4-4228-b21f-ac07fc7537a4",
+                    "name": "Bosnia and Herzegovina vs Qatar"
+                },
+                {
+                    "id": "a1d7e1a4-f907-4e8f-ad4c-8e99ba45e239",
+                    "name": "Canada vs Qatar"
+                },
+                {
+                    "id": "95e15bcb-98d0-43a0-aae3-c027a93a64ec",
+                    "name": "Qatar vs Switzerland"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "ea68amhsn28ijs7bzjuzeqrz6",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "adbc7d41-e993-4d57-818d-71870b87f289",
+            "name": "RC Lens",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/adbc7d41-e993-4d57-818d-71870b87f289.png",
+            "games": [
+                {
+                    "id": "21f3798b-a756-496c-8b37-ce6f3b85d672",
+                    "name": "RC Lens vs AS Monaco FC"
+                },
+                {
+                    "id": "8d06db3d-2413-4ef5-bb60-e37d06a0c6d4",
+                    "name": "Toulouse FC vs RC Lens"
+                },
+                {
+                    "id": "dd6f90b6-35f6-4dba-b9e2-31446e3342bf",
+                    "name": "Olympique Lyonnais vs RC Lens"
+                },
+                {
+                    "id": "44d15d8d-3b82-4d0a-8b92-45c8655e4091",
+                    "name": "RC Lens vs AJ Auxerre"
+                },
+                {
+                    "id": "2a292b88-b866-4b80-a0cd-665a35dbb6ee",
+                    "name": "Stade Brestois 29 vs RC Lens"
+                },
+                {
+                    "id": "43ac1a7c-0633-4b89-8333-222de1a6a85b",
+                    "name": "RC Lens vs Stade de Reims"
+                },
+                {
+                    "id": "48a85dd6-1935-48b2-96db-696530183e63",
+                    "name": "RC Lens vs AS Saint-\u00c9tienne"
+                },
+                {
+                    "id": "1486b24a-0a60-4f11-93fa-84a6a14eefe2",
+                    "name": "Lille OSC M\u00e9tropole vs RC Lens"
+                },
+                {
+                    "id": "60a39212-4580-48c7-a866-6a80a346980c",
+                    "name": "RC Lens vs Stade Rennais FC"
+                },
+                {
+                    "id": "5a67328f-6252-40d1-a0a7-a7db3e461aaf",
+                    "name": "Olympique de Marseille vs RC Lens"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "3xedluek08t2ka7oypwuullcn",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "ef28b27a-2f8b-4d41-8625-694a39cf61d6",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "64",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "142",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "168",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "11ffc319-4384-4426-b8e5-e08c074406ad",
+            "name": "RC Strasbourg Alsace",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/11ffc319-4384-4426-b8e5-e08c074406ad.png",
+            "games": [
+                {
+                    "id": "6a512c24-a005-484f-9f14-afcdb14af52a",
+                    "name": "RC Strasbourg Alsace vs Le Havre AC"
+                },
+                {
+                    "id": "377a153d-e820-44c9-920e-98bf1f51eb09",
+                    "name": "Angers SCO vs RC Strasbourg Alsace"
+                },
+                {
+                    "id": "04f23107-1218-417d-85d2-734d71c66695",
+                    "name": "RC Strasbourg Alsace vs Paris Saint-Germain FC"
+                },
+                {
+                    "id": "4f45f0bd-438f-48d9-9225-e615abb59be5",
+                    "name": "RC Strasbourg Alsace vs AS Saint-\u00c9tienne"
+                },
+                {
+                    "id": "c5174a59-fe3d-49ff-8136-f92480526523",
+                    "name": "AS Monaco FC vs RC Strasbourg Alsace"
+                },
+                {
+                    "id": "a655e750-97a2-400d-bad5-10d777e96761",
+                    "name": "RC Strasbourg Alsace vs OGC Nice"
+                },
+                {
+                    "id": "a9801f52-b21f-4299-b703-806376aa4b50",
+                    "name": "Stade de Reims vs RC Strasbourg Alsace"
+                },
+                {
+                    "id": "a251e5bf-21b8-43c3-a187-9fcaa6837437",
+                    "name": "RC Strasbourg Alsace vs Olympique Lyonnais"
+                },
+                {
+                    "id": "a5aeff2e-1ef3-48b5-993f-6b824a4c40db",
+                    "name": "RC Strasbourg Alsace vs Toulouse FC"
+                },
+                {
+                    "id": "bdf61067-adab-454f-8258-ad3a0d8d7d90",
+                    "name": "FC Nantes vs RC Strasbourg Alsace"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "59857",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "76",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "153",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "af245083-98d0-4a20-bfe5-8742be50009a",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "71ajatxnuhc5cnm3xvgdky49w",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "138",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "6c3c1394-19c5-4315-aea3-6ec57d722a0c",
+            "name": "Red Star FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/6c3c1394-19c5-4315-aea3-6ec57d722a0c.png",
+            "games": [
+                {
+                    "id": "50e6f710-f758-4319-9d8d-351b02be8458",
+                    "name": "Red Star vs Clermont"
+                },
+                {
+                    "id": "40317be1-7dab-4508-b64e-b25c72d97d80",
+                    "name": "Metz vs Red Star"
+                },
+                {
+                    "id": "0a49bb4d-c7d6-4670-9227-2121dc254ea1",
+                    "name": "Red Star vs Dunkerque"
+                },
+                {
+                    "id": "7688b925-ff6b-42ef-95bd-c65f4a3736ed",
+                    "name": "Annecy vs Red Star"
+                },
+                {
+                    "id": "420e2cea-6dc2-4c21-999b-8a3acffabaf5",
+                    "name": "Red Star vs Rodez"
+                },
+                {
+                    "id": "a846d3da-8f76-47d7-b9b4-1ca241eae2bb",
+                    "name": "Red Star vs Nantes"
+                },
+                {
+                    "id": "aa8af738-4b21-453a-9fe0-c13c6386d7c0",
+                    "name": "Sochaux vs Red Star"
+                },
+                {
+                    "id": "019739d3-f996-476a-be24-ef131140eaff",
+                    "name": "Red Star vs Boulogne"
+                },
+                {
+                    "id": "8365718c-0b30-4e57-af97-81f0875d96b0",
+                    "name": "Saint-\u00c9tienne vs Red Star"
+                },
+                {
+                    "id": "8ed47ed7-823e-43c6-978a-baf1b270bbff",
+                    "name": "Red Star vs Dijon"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "915",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "7qdfg7vuzf70wurnpx0bawlqk",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "19934a11-d554-4894-a18b-6f86cd5b1547",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "27ca5f2a-135b-46f5-acd9-17fe4de5e490",
+            "name": "Rodez AF",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/27ca5f2a-135b-46f5-acd9-17fe4de5e490.png",
+            "games": [
+                {
+                    "id": "44763c27-913f-4eac-962d-183abf6aa539",
+                    "name": "Laval vs Rodez"
+                },
+                {
+                    "id": "8205a642-80e4-4a99-9baf-bc305f71fd4d",
+                    "name": "Rodez vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "51c03032-6e92-41b7-9f91-16167f468ce1",
+                    "name": "Nancy vs Rodez"
+                },
+                {
+                    "id": "af4be0bd-1e6e-40b7-a57f-8f33c7043ff3",
+                    "name": "Rodez vs Metz"
+                },
+                {
+                    "id": "420e2cea-6dc2-4c21-999b-8a3acffabaf5",
+                    "name": "Red Star vs Rodez"
+                },
+                {
+                    "id": "4067e39b-f516-4cf1-ab74-b9ccf38dbf3a",
+                    "name": "Rodez vs Clermont"
+                },
+                {
+                    "id": "d68d8de1-5b41-4580-a235-3684cb21af37",
+                    "name": "Pau vs Rodez"
+                },
+                {
+                    "id": "9236d36f-321e-459a-b568-91f4211d6243",
+                    "name": "Rodez vs Dijon"
+                },
+                {
+                    "id": "00b88b55-b9c8-4df9-bc1a-054b2f54b31b",
+                    "name": "Dunkerque vs Rodez"
+                },
+                {
+                    "id": "075eecc3-72e2-4a38-9574-d9bde2d9004a",
+                    "name": "Rodez vs Sochaux"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "2u30h0xpbfzv0byj4j7d8c4ug",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "3308",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "111659",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "1370",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "b19d3d83-4fc0-4b46-ad18-8d053d62a57a",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f5419a4c-71c2-4b6c-87ba-71262c379f07",
+            "name": "Saudi Arabia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f5419a4c-71c2-4b6c-87ba-71262c379f07.png",
+            "games": [
+                {
+                    "id": "19179537-0b06-4c8f-8149-39811a6d9d8b",
+                    "name": "Cape Verde Islands vs Saudi Arabia"
+                },
+                {
+                    "id": "a6e8be57-51e2-47a6-9a6c-0a4ad489034f",
+                    "name": "Spain vs Saudi Arabia"
+                },
+                {
+                    "id": "672bb8e3-dd53-4be3-af65-72a6d4ac2dfd",
+                    "name": "Saudi Arabia vs Uruguay"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "9l4imoomrnyceg5u3kdxf5l5r",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c953107d-0323-4f14-b563-7731f9bddec3",
+            "name": "SC Bastia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c953107d-0323-4f14-b563-7731f9bddec3.png",
+            "games": [
+                {
+                    "id": "a72a8103-eb03-4a39-95df-05b7ace7f840",
+                    "name": "Bastia vs Le Mans"
+                },
+                {
+                    "id": "53427ce0-35f0-4413-a064-7d041e1cd659",
+                    "name": "Guingamp vs Bastia"
+                },
+                {
+                    "id": "01c5ba72-4b6c-455b-8bc1-9f73103171bb",
+                    "name": "Clermont vs Bastia"
+                },
+                {
+                    "id": "f67a51ff-e5e4-4827-be4b-d9bca9b6b1f7",
+                    "name": "Bastia vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "41dbeca8-fbfe-4749-9840-aa81f0f00556",
+                    "name": "Red Star vs Bastia"
+                },
+                {
+                    "id": "2bd36e62-9287-4c88-992d-1813c883ca41",
+                    "name": "Bastia vs Amiens SC"
+                },
+                {
+                    "id": "5f8fd98b-1abe-4167-962a-2fd74b1044a9",
+                    "name": "Rodez vs Bastia"
+                },
+                {
+                    "id": "50b276a5-d04d-443c-aaac-c90e109af6c7",
+                    "name": "Bastia vs Boulogne"
+                },
+                {
+                    "id": "3e5d35a0-c679-4cc8-8485-8182951d84f0",
+                    "name": "Pau vs Bastia"
+                },
+                {
+                    "id": "f76ccace-0749-45ed-8cc5-a4a4d29b8d36",
+                    "name": "Bastia vs Annecy"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "139",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "6l07ga27xfsr7485fuc1ilkkc",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "58",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "2736",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "3705eccd-4714-47e6-9820-df8cc0ac3783",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "1941577c-47f0-41ca-a197-1b28ae008115",
+            "name": "Scotland",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/1941577c-47f0-41ca-a197-1b28ae008115.png",
+            "games": [
+                {
+                    "id": "15c6a510-46a9-449a-a06b-5309dabae3ca",
+                    "name": "Scotland vs Brazil"
+                },
+                {
+                    "id": "20c49f59-d0f7-47ce-85d1-63bd4284c745",
+                    "name": "Scotland vs Morocco"
+                },
+                {
+                    "id": "7f962f67-fdb1-4619-9d82-cdc35b7ff00a",
+                    "name": "Haiti vs Scotland"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "bcllqlzvj9j7opjene2zvran7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "20872ed6-393a-42ae-963c-1c82045c671b",
+            "name": "Senegal",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/20872ed6-393a-42ae-963c-1c82045c671b.png",
+            "games": [
+                {
+                    "id": "3354eec5-48f9-4822-9a6e-b27ea2cc01b5",
+                    "name": "Belgium vs Senegal"
+                },
+                {
+                    "id": "4b32c276-09eb-494b-bb6b-bff8fa251531",
+                    "name": "Senegal vs Iraq"
+                },
+                {
+                    "id": "75421522-5ba1-4844-b686-1ac415734b8a",
+                    "name": "Norway vs Senegal"
+                },
+                {
+                    "id": "4abbdd22-47d4-42a1-af8b-02d02712caa0",
+                    "name": "France vs Senegal"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "2wk1549tkz80oet8226euj7jp",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "70396bae-be79-4ea1-87d5-04596b505592",
+            "name": "South Africa",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/70396bae-be79-4ea1-87d5-04596b505592.png",
+            "games": [
+                {
+                    "id": "bc1297df-1924-4305-b0dc-f2b342fdc7ab",
+                    "name": "South Africa vs Canada"
+                },
+                {
+                    "id": "110e5041-cee4-4ccc-a228-279623862f3f",
+                    "name": "South Africa vs Korea Republic"
+                },
+                {
+                    "id": "aea9e9eb-3977-49ed-8049-4a15ec0dfc0e",
+                    "name": "Czech Republic vs South Africa"
+                },
+                {
+                    "id": "df850b13-57e4-446d-af15-9353b67fb69f",
+                    "name": "Mexico vs South Africa"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "e428374e-34c1-44c9-ae6e-4376f7047748",
+            "name": "South Korea",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/e428374e-34c1-44c9-ae6e-4376f7047748.png",
+            "games": [
+                {
+                    "id": "110e5041-cee4-4ccc-a228-279623862f3f",
+                    "name": "South Africa vs Korea Republic"
+                },
+                {
+                    "id": "daa85442-8b4c-48fd-99e1-0f01f2756d74",
+                    "name": "Mexico vs Korea Republic"
+                },
+                {
+                    "id": "7f3fbf05-1bd3-4dba-ad1e-1a4e409f9aa9",
+                    "name": "Korea Republic vs Czech Republic"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "1yghbv1c71b37eenutbwnvvq",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f7838878-5336-49fc-b2a5-aecfbbb6f5c6",
+            "name": "Spain",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f7838878-5336-49fc-b2a5-aecfbbb6f5c6.png",
+            "games": [
+                {
+                    "id": "edece944-9ee7-4481-861b-76cec9a7d969",
+                    "name": "France vs Spain"
+                },
+                {
+                    "id": "25e773f4-bc81-4740-8b69-34d3f02fdef1",
+                    "name": "Spain vs Belgium"
+                },
+                {
+                    "id": "19df2116-80ab-419a-af41-3908e06b5ef4",
+                    "name": "Portugal vs Spain"
+                },
+                {
+                    "id": "03fb3d05-bc2d-4dfb-8ac6-840f3382ab37",
+                    "name": "Spain vs Austria"
+                },
+                {
+                    "id": "5b5b77be-7ac4-4023-936b-85d9f86dc6f5",
+                    "name": "Uruguay vs Spain"
+                },
+                {
+                    "id": "a6e8be57-51e2-47a6-9a6c-0a4ad489034f",
+                    "name": "Spain vs Saudi Arabia"
+                },
+                {
+                    "id": "b627fd80-ba48-42be-bb58-d5746f66acd4",
+                    "name": "Spain vs Cape Verde Islands"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "eh7yt2x2wck51oixw8012ux5j",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "401f8d4a-ae3d-4852-825f-68127f7f8377",
+            "name": "Stade Brestois 29",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/401f8d4a-ae3d-4852-825f-68127f7f8377.png",
+            "games": [
+                {
+                    "id": "69a4a952-e843-4bd9-9206-2232835a9180",
+                    "name": "OGC Nice vs Stade Brestois 29"
+                },
+                {
+                    "id": "430f584b-a1fa-4477-b455-247f93fee3a3",
+                    "name": "Stade Brestois 29 vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "b32b6ac7-e188-4bcd-b3c0-86a3c3db874f",
+                    "name": "Stade Brestois 29 vs Montpellier HSC"
+                },
+                {
+                    "id": "b841665a-a9c4-43fc-88fb-e09d52337e1b",
+                    "name": "Olympique de Marseille vs Stade Brestois 29"
+                },
+                {
+                    "id": "2a292b88-b866-4b80-a0cd-665a35dbb6ee",
+                    "name": "Stade Brestois 29 vs RC Lens"
+                },
+                {
+                    "id": "ab1fd45a-8d96-45e6-b169-174d75b1baf1",
+                    "name": "AS Saint-\u00c9tienne vs Stade Brestois 29"
+                },
+                {
+                    "id": "cb14beec-66ae-4c7e-a1ba-c19c27496d54",
+                    "name": "Stade Brestois 29 vs AS Monaco FC"
+                },
+                {
+                    "id": "0429bb72-b38f-4979-b629-5ce7f343ccc1",
+                    "name": "Toulouse FC vs Stade Brestois 29"
+                },
+                {
+                    "id": "625e730d-ac26-4e88-8843-4507e77d3d58",
+                    "name": "Stade Brestois 29 vs Stade de Reims"
+                },
+                {
+                    "id": "7f117a53-e984-45fb-8072-0165637332d3",
+                    "name": "Stade Brestois 29 vs Angers SCO"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "862",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "153",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "3adj8hkws0z1al232bg2h6tk0",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "378",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "a6096382-416c-434e-bee1-e8600f7823fe",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "a4c0e559-5504-4561-9916-ab873feb3d6c",
+            "name": "Stade de Reims",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a4c0e559-5504-4561-9916-ab873feb3d6c.png",
+            "games": [
+                {
+                    "id": "b4deb13a-f63b-44cd-9108-31843a25b9a0",
+                    "name": "Reims vs Boulogne"
+                },
+                {
+                    "id": "707e4583-6a4e-4e66-946c-a4fb063ddf81",
+                    "name": "Dunkerque vs Reims"
+                },
+                {
+                    "id": "233bc660-f789-4490-b78f-e8cbf56754bf",
+                    "name": "Saint-\u00c9tienne vs Reims"
+                },
+                {
+                    "id": "9f751caf-4f76-4bae-943a-1cbdd1f16365",
+                    "name": "Reims vs Grenoble Foot 38"
+                },
+                {
+                    "id": "2e8b6e79-5664-4e28-80a0-15fad31593b2",
+                    "name": "Guingamp vs Reims"
+                },
+                {
+                    "id": "9449b2ee-c591-43ac-bbf9-b961672ac3e4",
+                    "name": "Reims vs Metz"
+                },
+                {
+                    "id": "882654c9-289c-4b9e-9507-d96043f35c8d",
+                    "name": "Dijon vs Reims"
+                },
+                {
+                    "id": "8b83a63e-24e9-4d0b-b76b-e5e5310f9089",
+                    "name": "Reims vs Pau"
+                },
+                {
+                    "id": "f2cc6b0b-a6ce-49e3-9ea2-ccbe0f15824c",
+                    "name": "Reims vs Clermont"
+                },
+                {
+                    "id": "cebdf387-5e90-47a8-b754-5975dc3c93a1",
+                    "name": "Laval vs Reims"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "1423",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "a6230596-d7e4-4a20-891a-0ed441fc2252",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "3c3jcs7vc1t6vz5lev162jyv7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "379",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "156",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "49b1aa9d-48eb-4fb2-95f0-ab29ba80caa4",
+            "name": "Stade Lavallois MFC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/49b1aa9d-48eb-4fb2-95f0-ab29ba80caa4.png",
+            "games": [
+                {
+                    "id": "44763c27-913f-4eac-962d-183abf6aa539",
+                    "name": "Laval vs Rodez"
+                },
+                {
+                    "id": "b762cc5b-d3e2-4146-8ee6-08bcbbaecff4",
+                    "name": "Nantes vs Laval"
+                },
+                {
+                    "id": "800e2ebc-6b8a-4295-8232-f12b402cc63b",
+                    "name": "Grenoble Foot 38 vs Laval"
+                },
+                {
+                    "id": "9d5b27c2-c888-4698-952a-28d9039e2bc4",
+                    "name": "Laval vs Nancy"
+                },
+                {
+                    "id": "828ce805-202b-48fb-b677-5e5ab2017de9",
+                    "name": "Sochaux vs Laval"
+                },
+                {
+                    "id": "d0c7fe32-d78d-4428-b496-02e89345b662",
+                    "name": "Laval vs Saint-\u00c9tienne"
+                },
+                {
+                    "id": "019dede4-ea49-483e-84d5-69892ce392f0",
+                    "name": "Dunkerque vs Laval"
+                },
+                {
+                    "id": "bca736f7-89b5-4d1a-a636-4412cfe29415",
+                    "name": "Laval vs Metz"
+                },
+                {
+                    "id": "a21b7fdb-a8b8-4ad1-b96a-e5aa7b304ea9",
+                    "name": "Guingamp vs Laval"
+                },
+                {
+                    "id": "cebdf387-5e90-47a8-b754-5975dc3c93a1",
+                    "name": "Laval vs Reims"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "75gwk94q9jkoh78jk8nlay4xj",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "2129",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "2298",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "1814",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "3fde5c62-5b32-427b-8cb2-3f621ef88b8f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "8a483a9c-cbcd-486d-a5a6-2a8e10293207",
+            "name": "Stade Rennais FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8a483a9c-cbcd-486d-a5a6-2a8e10293207.png",
+            "games": [
+                {
+                    "id": "425b06ec-0e30-4782-a842-a5507d2544ad",
+                    "name": "Olympique de Marseille vs Stade Rennais FC"
+                },
+                {
+                    "id": "dbb52adf-3734-43b4-93ef-08613b034a01",
+                    "name": "Stade Rennais FC vs OGC Nice"
+                },
+                {
+                    "id": "251d7cb5-77da-438d-9288-b135068e6dcf",
+                    "name": "Toulouse FC vs Stade Rennais FC"
+                },
+                {
+                    "id": "8730bfac-4619-4538-84d3-bf2135cc78b5",
+                    "name": "Olympique Lyonnais vs Stade Rennais FC"
+                },
+                {
+                    "id": "c7a7e3e2-1f50-4a84-a47f-f3e80794f531",
+                    "name": "Stade Rennais FC vs FC Nantes"
+                },
+                {
+                    "id": "bd23491a-b507-4a13-a321-b1fd02a60476",
+                    "name": "Le Havre AC vs Stade Rennais FC"
+                },
+                {
+                    "id": "aa62f1c6-e3e8-4e7a-981c-1ef74aa49271",
+                    "name": "Stade Rennais FC vs AJ Auxerre"
+                },
+                {
+                    "id": "eba1df75-6d88-4496-8bcb-c608d4b40525",
+                    "name": "Angers SCO vs Stade Rennais FC"
+                },
+                {
+                    "id": "60a39212-4580-48c7-a866-6a80a346980c",
+                    "name": "RC Lens vs Stade Rennais FC"
+                },
+                {
+                    "id": "09ef1936-1baa-492f-b0dc-afd4196ecf7f",
+                    "name": "Stade Rennais FC vs Paris Saint-Germain FC"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "134",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "z1wbqtd0fz5t5eezjvrbld3h",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "74",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "4f895e1a-8cb0-4333-82a4-e0595b6ee3d6",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "150",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "d84d393c-8033-468d-93b0-42e22f332320",
+            "name": "Sweden",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d84d393c-8033-468d-93b0-42e22f332320.png",
+            "games": [
+                {
+                    "id": "c47a0401-b712-4a1c-a7a9-301bc8bb0781",
+                    "name": "France vs Sweden"
+                },
+                {
+                    "id": "2b53b3bc-c163-41b5-a46c-111451f14645",
+                    "name": "Japan vs Sweden"
+                },
+                {
+                    "id": "77f1f22e-74cd-4013-ba91-3ec1d162d420",
+                    "name": "Netherlands vs Sweden"
+                },
+                {
+                    "id": "16a2d205-0713-47fe-972c-db5421ba386d",
+                    "name": "Sweden vs Tunisia"
+                }
+            ],
+            "providers": []
+        },
+        {
+            "id": "cb3c38f9-fe9b-487e-b2c4-222941a64285",
+            "name": "Switzerland",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/cb3c38f9-fe9b-487e-b2c4-222941a64285.png",
+            "games": [
+                {
+                    "id": "6e4048fc-fa64-468a-b210-851205d7a854",
+                    "name": "Argentina vs Switzerland"
+                },
+                {
+                    "id": "3e42b582-50af-4836-a865-e5889a985bd0",
+                    "name": "Switzerland vs Colombia"
+                },
+                {
+                    "id": "4d4e3487-682d-46d3-87fc-3e6d5f4aeaad",
+                    "name": "Switzerland vs Algeria"
+                },
+                {
+                    "id": "ddb4d356-13ac-457a-965c-f074b3290f06",
+                    "name": "Switzerland vs Canada"
+                },
+                {
+                    "id": "c5646429-6193-412a-987c-efbd7d6b03ab",
+                    "name": "Switzerland vs Bosnia and Herzegovina"
+                },
+                {
+                    "id": "95e15bcb-98d0-43a0-aae3-c027a93a64ec",
+                    "name": "Qatar vs Switzerland"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "339wxbt07ltnva7hop6m5o477",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "38631c88-6388-48ee-a052-0b22c6279b0e",
+            "name": "Toulouse FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/38631c88-6388-48ee-a052-0b22c6279b0e.png",
+            "games": [
+                {
+                    "id": "6e1a402d-f4c8-42e6-b474-385743b2eaaf",
+                    "name": "AS Saint-\u00c9tienne vs Toulouse FC"
+                },
+                {
+                    "id": "8d06db3d-2413-4ef5-bb60-e37d06a0c6d4",
+                    "name": "Toulouse FC vs RC Lens"
+                },
+                {
+                    "id": "251d7cb5-77da-438d-9288-b135068e6dcf",
+                    "name": "Toulouse FC vs Stade Rennais FC"
+                },
+                {
+                    "id": "dc2f0e88-67c1-4fba-b6be-d98a345ec073",
+                    "name": "FC Nantes vs Toulouse FC"
+                },
+                {
+                    "id": "77fa9f08-ada2-4101-831b-7cf8d218ebca",
+                    "name": "Stade de Reims vs Toulouse FC"
+                },
+                {
+                    "id": "3498e9f0-3c74-4cb1-961a-0ba87efeec4d",
+                    "name": "Toulouse FC vs Lille OSC M\u00e9tropole"
+                },
+                {
+                    "id": "32b6d5f6-f3ae-45d6-8fe8-abb71b5cb238",
+                    "name": "Olympique de Marseille vs Toulouse FC"
+                },
+                {
+                    "id": "0429bb72-b38f-4979-b629-5ce7f343ccc1",
+                    "name": "Toulouse FC vs Stade Brestois 29"
+                },
+                {
+                    "id": "a5aeff2e-1ef3-48b5-993f-6b824a4c40db",
+                    "name": "RC Strasbourg Alsace vs Toulouse FC"
+                },
+                {
+                    "id": "7c033a16-8b15-4f48-8ca9-4b3bc2931220",
+                    "name": "Toulouse FC vs AS Monaco FC"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "1809",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "130",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "427",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "4aghw9tyi8ba3ju1ne83gmf9w",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "bcc74f07-63f8-4aeb-84d2-321bdfd75fe6",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "4f0744d2-408a-4419-bb54-7c1c9705366f",
+            "name": "Tunisia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4f0744d2-408a-4419-bb54-7c1c9705366f.png",
+            "games": [
+                {
+                    "id": "8bbf59e0-d264-4632-ae15-0d21b8dcc090",
+                    "name": "Tunisia vs Netherlands"
+                },
+                {
+                    "id": "33acd313-7bc4-4cf4-b536-d0c3cc41c86c",
+                    "name": "Tunisia vs Japan"
+                },
+                {
+                    "id": "16a2d205-0713-47fe-972c-db5421ba386d",
+                    "name": "Sweden vs Tunisia"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "ctp7ovvf34m7fzshua9ogbr6i",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "7e1eade4-f60b-4648-850a-966815bab925",
+            "name": "T\u00fcrkiye",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/8d1259d8-9024-425e-b002-8a0081259324/klkslu41mgcanng36kdsv2dy/Turkiye.webp",
+            "games": [
+                {
+                    "id": "38712b3f-02f3-4dff-8fd9-4eb4a4f8d536",
+                    "name": "T\u00fcrkiye vs United States"
+                },
+                {
+                    "id": "d30da673-4dcb-49e8-ab54-e5926df38370",
+                    "name": "T\u00fcrkiye vs Paraguay"
+                },
+                {
+                    "id": "40942435-0751-4586-a0cd-3ded52f033fb",
+                    "name": "Australia vs T\u00fcrkiye"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "9s2kpeunkes0g17l95r3t91j6",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c72124aa-e7fa-4fe9-8152-60d56c84be4e",
+            "name": "United States",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c72124aa-e7fa-4fe9-8152-60d56c84be4e.png",
+            "games": [
+                {
+                    "id": "2bdea793-99cc-4218-8d8c-8f3b65a587c1",
+                    "name": "United States vs Belgium"
+                },
+                {
+                    "id": "8d6ae1d2-5d63-4ddb-9112-1b8fe8c13b68",
+                    "name": "United States vs Bosnia and Herzegovina"
+                },
+                {
+                    "id": "38712b3f-02f3-4dff-8fd9-4eb4a4f8d536",
+                    "name": "T\u00fcrkiye vs United States"
+                },
+                {
+                    "id": "7d441dde-2cc6-4e02-83d5-fb760f4523b6",
+                    "name": "United States vs Australia"
+                },
+                {
+                    "id": "4b841662-dc68-4d28-90fc-a499df4e17c1",
+                    "name": "United States vs Paraguay"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "9vh2u1p4ppm597tjfahst2m3n",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "5ffaa708-159a-42d7-abc6-63ffd3c4667e",
+            "name": "Uruguay",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/5ffaa708-159a-42d7-abc6-63ffd3c4667e.png",
+            "games": [
+                {
+                    "id": "5b5b77be-7ac4-4023-936b-85d9f86dc6f5",
+                    "name": "Uruguay vs Spain"
+                },
+                {
+                    "id": "58fa68bc-5326-4416-ac00-444a2944c38d",
+                    "name": "Uruguay vs Cape Verde Islands"
+                },
+                {
+                    "id": "672bb8e3-dd53-4be3-af65-72a6d4ac2dfd",
+                    "name": "Saudi Arabia vs Uruguay"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "9l06impjllgop0gte8fldb4zo",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0c3085a0-8236-42af-bedb-b8bacc184590",
+            "name": "US Boulogne",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0c3085a0-8236-42af-bedb-b8bacc184590.png",
+            "games": [
+                {
+                    "id": "b4deb13a-f63b-44cd-9108-31843a25b9a0",
+                    "name": "Reims vs Boulogne"
+                },
+                {
+                    "id": "3f9c9676-11f7-4e0d-b1be-e922907eee0d",
+                    "name": "Boulogne vs Guingamp"
+                },
+                {
+                    "id": "c549f9a3-27f6-47d1-a45d-30f7568a0a50",
+                    "name": "Boulogne vs Montpellier"
+                },
+                {
+                    "id": "9be41be5-cdd0-4f3a-a1b1-a5b06639c96d",
+                    "name": "Dijon vs Boulogne"
+                },
+                {
+                    "id": "4344f66a-6db0-4389-b8f3-0d5de587a227",
+                    "name": "Boulogne vs Dunkerque"
+                },
+                {
+                    "id": "385dbb20-3135-4803-8281-25bc728e57d6",
+                    "name": "Pau vs Boulogne"
+                },
+                {
+                    "id": "1106ac78-3d52-440c-8ed3-5de2a9aa2e7b",
+                    "name": "Boulogne vs Grenoble Foot 38"
+                },
+                {
+                    "id": "019739d3-f996-476a-be24-ef131140eaff",
+                    "name": "Red Star vs Boulogne"
+                },
+                {
+                    "id": "428e6f19-464c-4a21-9671-46c2a813ae8c",
+                    "name": "Boulogne vs Metz"
+                },
+                {
+                    "id": "036a0b33-cd65-46dd-bd00-2f5a80ef1928",
+                    "name": "Annecy vs Boulogne"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "9az8hqkkijc34ol021425ixg5",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "2129",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "5c8212de-6752-48fb-a929-491a21fadcdb",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "44ce451d-92de-45b8-8a3a-0a59d20ceb85",
+            "name": "USL Dunkerque",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/44ce451d-92de-45b8-8a3a-0a59d20ceb85.png",
+            "games": [
+                {
+                    "id": "2f4f2513-48ad-4cdf-87a7-5517b2ea4464",
+                    "name": "Grenoble Foot 38 vs Dunkerque"
+                },
+                {
+                    "id": "707e4583-6a4e-4e66-946c-a4fb063ddf81",
+                    "name": "Dunkerque vs Reims"
+                },
+                {
+                    "id": "0a49bb4d-c7d6-4670-9227-2121dc254ea1",
+                    "name": "Red Star vs Dunkerque"
+                },
+                {
+                    "id": "4cfd109f-db21-4300-a331-bce9c4610b56",
+                    "name": "Dunkerque vs Sochaux"
+                },
+                {
+                    "id": "4344f66a-6db0-4389-b8f3-0d5de587a227",
+                    "name": "Boulogne vs Dunkerque"
+                },
+                {
+                    "id": "db86ab9d-a76c-45f8-9152-1850dba90730",
+                    "name": "Annecy vs Dunkerque"
+                },
+                {
+                    "id": "019dede4-ea49-483e-84d5-69892ce392f0",
+                    "name": "Dunkerque vs Laval"
+                },
+                {
+                    "id": "3ca0faef-6042-432f-9269-c954afd76c7d",
+                    "name": "Montpellier vs Dunkerque"
+                },
+                {
+                    "id": "00b88b55-b9c8-4df9-bc1a-054b2f54b31b",
+                    "name": "Dunkerque vs Rodez"
+                },
+                {
+                    "id": "3f7f1d34-b1b0-45cf-b8e0-6e822f19f248",
+                    "name": "Metz vs Dunkerque"
+                }
+            ],
+            "providers": [
+                {
+                    "externalId": "3288",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "15ip1h6m0b4e8xfi597y5uo5u",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "e2ed3a07-4582-4737-bdcd-68d6d1733f70",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "bd419b2d-b31f-43d4-ab43-a9f3cfa7b696",
+            "name": "Uzbekistan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/bd419b2d-b31f-43d4-ab43-a9f3cfa7b696.png",
+            "games": [
+                {
+                    "id": "7ea4366b-852a-420f-a14f-709b4afb248b",
+                    "name": "Congo DR vs Uzbekistan"
+                },
+                {
+                    "id": "458b0417-bfe3-4dc8-8e05-559916483a5d",
+                    "name": "Portugal vs Uzbekistan"
+                },
+                {
+                    "id": "6001f78e-151a-460d-bf6c-a9bcf968d22d",
+                    "name": "Uzbekistan vs Colombia"
+                }
+            ],
+            "providers": []
+        }
+    ],
+    "message": "Successfully scraped 85 clubs and updated 85 teams"
+}

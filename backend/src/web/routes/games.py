@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from ...config.database import get_db
 from ...config.settings import settings
-from ...models import Game
+from ...models import Game, Team
 from ...orchestration.scraper_coordinator import ScraperCoordinator
 from ...config.filter_config import QueryFilterConfig
 
@@ -149,6 +149,15 @@ class GamesScrapeResponse(BaseModel):
     message: Optional[str] = None
 
 
+class ClubsScrapeResponse(BaseModel):
+    """Response for clubs scrape endpoint"""
+    status: str
+    count: int
+    updated: int
+    clubs: List[dict]
+    message: Optional[str] = None
+
+
 # ============================================================================
 # Endpoints
 # ============================================================================
@@ -204,6 +213,7 @@ async def scrape_games(request: GamesScrapeRequest):
         
         if season_id:
             filters["season_id"] = season_id
+            filters["season_name"] = ids_mapping['season_name']
         
         # Handle round filter
         if request.round:
@@ -324,6 +334,10 @@ def list_games(
             'away_score': game.away_score,
             'round_name': game.round_name,
             'starts_at': game.starts_at.isoformat() if game.starts_at else None,
+            'competition_id': game.competition_id,
+            'season_id': game.season_id,
+            'competition_name': game.competition.name if game.competition else None,
+            'season_name': game.season.name if game.season else None,
             'output_files': [
                 {
                     'id': f.id,
@@ -399,3 +413,86 @@ def get_game(game_id: str, db: Session = Depends(get_db)):
     }
     
     return game_dict
+
+
+@router.post("/clubs/scrape", response_model=ClubsScrapeResponse)
+async def scrape_clubs(db: Session = Depends(get_db)):
+    """
+    Scrape clubs from SportsDynamics API and update team names in database
+    
+    **Purpose:**
+    - Fetches all clubs from SportsDynamics
+    - Updates team names in the database with real club information
+    - Returns updated club information
+    
+    **Example:**
+    ```bash
+    curl -X POST http://localhost:8001/games/clubs/scrape
+    ```
+    """
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    try:
+        logger.info("📡 Starting clubs scrape...")
+        
+        # Fetch clubs from API
+        provider = ScraperCoordinator().provider
+        clubs = provider.fetch_clubs()
+        logger.info(f"✅ Fetched {len(clubs)} clubs from SportsDynamics")
+        
+        # Update teams in database
+        updated_count = 0
+        clubs_response = []
+        
+        for club in clubs:
+            club_id = club.get("id")
+            club_brand = club.get("brand")
+            club_logo = club.get("logoUrl")
+            club_providers = club.get("providers", {}).get("items", [])
+            
+            # Find existing team
+            existing_team = db.query(Team).filter(Team.id == club_id).first()
+            
+            if existing_team:
+                # Update with real name
+                existing_team.name = club_brand or f"Team {club_id}"
+                existing_team.brand = club_logo
+                existing_team.providers = club_providers
+                logger.info(f"  ✏️ Updated: {club_brand}")
+                updated_count += 1
+            else:
+                # Create new team
+                new_team = Team(
+                    id=club_id,
+                    name=club_brand or f"Team {club_id}",
+                    brand=club_logo,
+                    providers=club_providers
+                )
+                db.add(new_team)
+                logger.info(f"  ➕ Created: {club_brand}")
+                updated_count += 1
+            
+            clubs_response.append({
+                "id": club_id,
+                "name": club_brand,
+                "logo_url": club_logo,
+                "providers": club_providers
+            })
+        
+        # Commit changes
+        db.commit()
+        logger.info(f"✅ Successfully updated {updated_count} teams")
+        
+        return ClubsScrapeResponse(
+            status="success",
+            count=len(clubs),
+            updated=updated_count,
+            clubs=clubs_response,
+            message=f"Successfully scraped {len(clubs)} clubs and updated {updated_count} teams"
+        )
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"❌ Error scraping clubs: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error scraping clubs: {str(e)}")

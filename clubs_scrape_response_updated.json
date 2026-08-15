@@ -1,0 +1,1876 @@
+{
+    "status": "success",
+    "count": 85,
+    "updated": 85,
+    "clubs": [
+        {
+            "id": "3c74d00b-e974-4e42-bbdd-cb14060c83de",
+            "name": "AJ Auxerre",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3c74d00b-e974-4e42-bbdd-cb14060c83de.png",
+            "providers": [
+                {
+                    "externalId": "67e3e79e-a6c9-4f58-a9d0-cfb71b19d85b",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "9bxav814mkuhueiyivyive82d",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "138",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "57",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "167",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "60f34826-b01d-4a12-9e27-dc8ef6f8d8e0",
+            "name": "Algeria",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/60f34826-b01d-4a12-9e27-dc8ef6f8d8e0.png",
+            "providers": []
+        },
+        {
+            "id": "29a5cba1-8a71-4678-aeb4-eaa1cecb739e",
+            "name": "Amiens SC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/29a5cba1-8a71-4678-aeb4-eaa1cecb739e.png",
+            "providers": [
+                {
+                    "externalId": "34784511-1d25-40be-8767-89d918854c4c",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "1430",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "5191cnvhmuct5kn7yvr0nvd9d",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "132",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "1816",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c2c49eb2-0b07-4461-9a62-70884f8360e4",
+            "name": "Angers SCO",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c2c49eb2-0b07-4461-9a62-70884f8360e4.png",
+            "providers": [
+                {
+                    "externalId": "145",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "75qj99fhg5c0ztj2tva5u4uii",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "f2fbe301-97f4-4b34-a2b3-be1b787c23e6",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "2128",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "1530",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "eeccd029-cce2-4253-862b-8fb0a8c2def3",
+            "name": "Argentina",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/eeccd029-cce2-4253-862b-8fb0a8c2def3.png",
+            "providers": [
+                {
+                    "externalId": "ak48fkypnql8y4n69cvcq5ghc",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "2a957f69-4f62-4c94-a465-a9cf98e69371",
+            "name": "AS Monaco FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/2a957f69-4f62-4c94-a465-a9cf98e69371.png",
+            "providers": [
+                {
+                    "externalId": "50023",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "69",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "4t4hod56fsj7utpjdor8so5q6",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "129",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "146",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "938c7a1f-939e-4ec0-89ce-1e22f3d7e49f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "3af8edcc-8d9b-4f05-abe9-a680234b6937",
+            "name": "AS Nancy Lorraine",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3af8edcc-8d9b-4f05-abe9-a680234b6937.png",
+            "providers": [
+                {
+                    "externalId": "148",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "d3a34577-ee22-4607-8a87-7259aab24233",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "69b9aoly33h1gpicvxtfteoug",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "286b1082-46aa-449f-9c6b-cf98f5435417",
+            "name": "AS Saint-\u00c9tienne",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/286b1082-46aa-449f-9c6b-cf98f5435417.png",
+            "providers": [
+                {
+                    "externalId": "152",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "1819",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "a96678c0-8907-4796-a658-4d223b6c4179",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "135",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "2sc9xfhu6tbru9hhlhr4a89zn",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "4a73f913-dbfd-4e97-a8d8-ff395cde41de",
+            "name": "Australia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4a73f913-dbfd-4e97-a8d8-ff395cde41de.png",
+            "providers": [
+                {
+                    "externalId": "bl4fd8cxe6kjvjx8br82gkhnq",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "676da091-3c88-4843-b893-8881e4f8cb82",
+            "name": "Austria",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/676da091-3c88-4843-b893-8881e4f8cb82.png",
+            "providers": [
+                {
+                    "externalId": "61g4epojd5f198lv1sje27yh3",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f3c73a13-adac-4608-8431-d262d2cc5b0f",
+            "name": "Belgium",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f3c73a13-adac-4608-8431-d262d2cc5b0f.png",
+            "providers": [
+                {
+                    "externalId": "360",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "pfvmhackqyhhk02majd2tb8l",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "9896d013-87b0-43a0-babb-7b15eec7d021",
+            "name": "Bosnia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/9896d013-87b0-43a0-babb-7b15eec7d021.png",
+            "providers": []
+        },
+        {
+            "id": "8c535a88-0182-42af-a879-441f4e546311",
+            "name": "Brazil",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8c535a88-0182-42af-a879-441f4e546311.png",
+            "providers": [
+                {
+                    "externalId": "ajab3nmpoltsoeqcuoyi4pwzx",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "53e212f8-a7e1-4afd-a9db-3b6a647b3a10",
+            "name": "Canada",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/53e212f8-a7e1-4afd-a9db-3b6a647b3a10.png",
+            "providers": [
+                {
+                    "externalId": "eg7vduna0h3vis1wd47s41za7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "93296148-3f08-4bfb-8ba5-047d897f496c",
+            "name": "Cape Verde",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/93296148-3f08-4bfb-8ba5-047d897f496c.png",
+            "providers": []
+        },
+        {
+            "id": "e9bec0af-3ef2-442a-b4be-5cb20dd6ccfd",
+            "name": "Clermont Foot 63",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/e9bec0af-3ef2-442a-b4be-5cb20dd6ccfd.png",
+            "providers": [
+                {
+                    "externalId": "258c5eb2-798f-4d8c-885f-1a0655bbe882",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "152",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "1983",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "17o35s8assv3kamxowzz77k4r",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "1815",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "30e7bbd7-e482-43d3-b2be-538d6594da7a",
+            "name": "Colombia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/30e7bbd7-e482-43d3-b2be-538d6594da7a.png",
+            "providers": []
+        },
+        {
+            "id": "22b97fd1-5aae-45bd-b7d2-cfcff3359e05",
+            "name": "Croatia ",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/22b97fd1-5aae-45bd-b7d2-cfcff3359e05.png",
+            "providers": [
+                {
+                    "externalId": "4njsfszcgd9m765d6suktsz2a",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "8208513d-26fa-4ce0-bf45-0dfbedbfffa8",
+            "name": "Cura\u00e7ao",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8208513d-26fa-4ce0-bf45-0dfbedbfffa8.png",
+            "providers": []
+        },
+        {
+            "id": "7ee97eea-8b68-4d56-9e56-a42660160b58",
+            "name": "Czech Republic",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/7ee97eea-8b68-4d56-9e56-a42660160b58.png",
+            "providers": [
+                {
+                    "externalId": "70tnqyqn871jwlk26gtjw7knm",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "3122ec18-7101-4d23-b0fb-0d92b6322bf9",
+            "name": "Dijon FCO",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3122ec18-7101-4d23-b0fb-0d92b6322bf9.png",
+            "providers": [
+                {
+                    "externalId": "2130",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "83121",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "148",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "79dc2mv3x269nhix3mkhc5wfu",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "110569",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "dec56cba-d7c9-4b92-b2d0-99b33365897a",
+            "name": "DR Congo",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/dec56cba-d7c9-4b92-b2d0-99b33365897a.png",
+            "providers": []
+        },
+        {
+            "id": "95ee4c51-67e0-4948-9c51-98e402d4b048",
+            "name": "EA Guingamp",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/95ee4c51-67e0-4948-9c51-98e402d4b048.png",
+            "providers": [
+                {
+                    "externalId": "e9mmk1w7cem6r4wysgassacef",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "142",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "428",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "08b6524b-f099-489f-b795-42e4d318357b",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "62",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "ecb386dd-4e0d-4e08-86b1-26727baad4ec",
+            "name": "Ecuador",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/ecb386dd-4e0d-4e08-86b1-26727baad4ec.png",
+            "providers": [
+                {
+                    "externalId": "2j2402oabiovxw24cnjk9m369",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "d8d89bc6-698e-4883-9d05-7d944d349620",
+            "name": "Egypt",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d8d89bc6-698e-4883-9d05-7d944d349620.png",
+            "providers": []
+        },
+        {
+            "id": "77d97f2a-2523-47cf-abe1-a612d5adb8a5",
+            "name": "England",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/77d97f2a-2523-47cf-abe1-a612d5adb8a5.png",
+            "providers": [
+                {
+                    "externalId": "24cd2f3e-b545-4717-aa01-c9095e3046d3",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "ck8m1cn23sukwsurgx5qakttk",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "1a478887-1797-4adb-9ded-b4d304bff4eb",
+            "name": "ESTAC Troyes",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/1a478887-1797-4adb-9ded-b4d304bff4eb.png",
+            "providers": [
+                {
+                    "externalId": "154",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "133",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "294",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "3unkqo2g6ag99gd5ynz1j7vse",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "39b48457-feaf-4242-92b6-1ce74487bafb",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "a1f07f49-f46d-48b4-ab65-cdf5937ed28f",
+            "name": "FC Annecy",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a1f07f49-f46d-48b4-ab65-cdf5937ed28f.png",
+            "providers": [
+                {
+                    "externalId": "11426",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "6sqrk45zcfgwpq97no19o9sk5",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "3142",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "115494",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "4cafe835-9b9a-498e-b894-e3445905cc2c",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "5764a668-5d69-4ba6-bb8a-bdfa5c64229c",
+            "name": "FC Lorient",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/5764a668-5d69-4ba6-bb8a-bdfa5c64229c.png",
+            "providers": [
+                {
+                    "externalId": "694",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "70nn27vgkt6l48lvv5e66q7ww",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "8048833e-96ba-4def-82b4-a376bbdbd82f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "165",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "217",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "cd58c70f-510e-41a7-9551-1e8ec658d8ac",
+            "name": "FC Metz",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/cd58c70f-510e-41a7-9551-1e8ec658d8ac.png",
+            "providers": [
+                {
+                    "externalId": "141",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "145",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "12bc7d37-cee4-4116-b06d-0dc3a2b7d1f8",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "2khen2a38l2hkx33s73pehl6o",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "68",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f32406d3-a94a-4e50-883f-2eef5e1f2722",
+            "name": "FC Nantes",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f32406d3-a94a-4e50-883f-2eef5e1f2722.png",
+            "providers": [
+                {
+                    "externalId": "389a9856-20b6-4809-b0ee-8a1dffd2f61f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "71",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "144",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "750ustvk4jfqmo8q4gnrcxy7z",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "430",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "fe06bb8e-5175-4940-8908-81aa4ab9fd2c",
+            "name": "FC Sochaux Montb\u00e9liard",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/fe06bb8e-5175-4940-8908-81aa4ab9fd2c.png",
+            "providers": [
+                {
+                    "externalId": "10135",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "693",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "226",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "d9kwaceoj54pfprd6oc2hwae6",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "161",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c6bacd58-11ff-42a1-955c-a2a37aaf12e4",
+            "name": "France",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c6bacd58-11ff-42a1-955c-a2a37aaf12e4.png",
+            "providers": [
+                {
+                    "externalId": "4pz87gsel7183b7kcadw1dwzv",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "a1b62ed0-1fb8-4bc8-9314-928cf30f3dbe",
+            "name": "Germany",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a1b62ed0-1fb8-4bc8-9314-928cf30f3dbe.png",
+            "providers": [
+                {
+                    "externalId": "3l2t2db0c5ow2f7s7bhr6mij4",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "4c5e7159-9fdb-43c6-ac83-7ecd91ce1fa1",
+            "name": "Ghana",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4c5e7159-9fdb-43c6-ac83-7ecd91ce1fa1.png",
+            "providers": [
+                {
+                    "externalId": "9bix8nlt6cgbson25qntg2zzh",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "b53059d3-8827-450b-9d8c-48cab41224de",
+            "name": "Grenoble Foot 38",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/b53059d3-8827-450b-9d8c-48cab41224de.png",
+            "providers": [
+                {
+                    "externalId": "1272",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "1805",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "848",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "b1185769-73ca-474d-ac79-6b253590dff2",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "2ku5qqmv6i842rujioksaatx7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "7fdff7b4-8cc3-4c16-8dda-0021f1e69dc7",
+            "name": "Haiti",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/7fdff7b4-8cc3-4c16-8dda-0021f1e69dc7.png",
+            "providers": []
+        },
+        {
+            "id": "78080e73-5243-4cd2-ace9-c9b2d400a2f6",
+            "name": "Iran",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/78080e73-5243-4cd2-ace9-c9b2d400a2f6.png",
+            "providers": [
+                {
+                    "externalId": "cubclbw5k5gdqdau95bnav0nn",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "6f2fc520-92ef-4d36-880d-c6ce7e955ebd",
+            "name": "Iraq",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/6f2fc520-92ef-4d36-880d-c6ce7e955ebd.png",
+            "providers": []
+        },
+        {
+            "id": "3124fb02-9bd6-4834-8d01-d80701aab590",
+            "name": "Ivory Coast",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3124fb02-9bd6-4834-8d01-d80701aab590.png",
+            "providers": []
+        },
+        {
+            "id": "0a2283dd-1e74-4b85-99b1-bc8d3294cd11",
+            "name": "Japan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0a2283dd-1e74-4b85-99b1-bc8d3294cd11.png",
+            "providers": [
+                {
+                    "externalId": "6duaxcbrofil112qfq4v895go",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "3bc2a18e-a2dd-4b21-ab63-1fb9ef466872",
+            "name": "Jordan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3bc2a18e-a2dd-4b21-ab63-1fb9ef466872.png",
+            "providers": []
+        },
+        {
+            "id": "22042183-4c3b-42ab-9a4b-aca3e4952f3f",
+            "name": "Le Havre AC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/22042183-4c3b-42ab-9a4b-aca3e4952f3f.png",
+            "providers": [
+                {
+                    "externalId": "141",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "23pqcgxu1tip265hbe01kszbt",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "164",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "168fc3b4-f5ec-4917-b7cf-9505e3343804",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "1738",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "29f9732f-257e-4f5f-97ff-afc343160848",
+            "name": "Le Mans FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/29f9732f-257e-4f5f-97ff-afc343160848.png",
+            "providers": [
+                {
+                    "externalId": "920",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "bbac520e-1a19-4999-a4f5-c1496bd0faec",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "bj8hrmj01r3zit0x8r6qm2eu2",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "ec42bbc5-5016-45a3-83d4-5f9f50596b0e",
+            "name": "Lille OSC M\u00e9tropole",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/ec42bbc5-5016-45a3-83d4-5f9f50596b0e.png",
+            "providers": [
+                {
+                    "externalId": "75797",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "143",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "429",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "ca1cb2d2-7f8a-4fb3-8708-cc8b0facdfab",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "be2k34rut1lz79jxenabttqlc",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "65",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "d8b15520-b451-4279-9b16-f87f64c6c613",
+            "name": "Mexico",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d8b15520-b451-4279-9b16-f87f64c6c613.png",
+            "providers": [
+                {
+                    "externalId": "4vofb84dzb5fyc81n2ssws6ah",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "4099b67b-7b1d-40f0-a635-2bc56f128071",
+            "name": "Montpellier HSC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4099b67b-7b1d-40f0-a635-2bc56f128071.png",
+            "providers": [
+                {
+                    "externalId": "10fb7080-1059-4b6b-bcfa-716672a8f3a3",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "2cjpmotqo8phcqfpgo9xf4gel",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "139",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "70",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "147",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c1b254b0-2235-4601-9dc4-604a400dda58",
+            "name": "Morocco",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c1b254b0-2235-4601-9dc4-604a400dda58.png",
+            "providers": [
+                {
+                    "externalId": "avggs3u2b5cu8i1dnzknhth52",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "13f74d59-4abc-445d-9c23-6efbfe2674e8",
+            "name": "Netherlands",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/13f74d59-4abc-445d-9c23-6efbfe2674e8.png",
+            "providers": [
+                {
+                    "externalId": "657oha8nkne1ybba2bouzkbo7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f7fe4f3c-9876-41c5-979d-e0bba451258d",
+            "name": "New Zealand",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f7fe4f3c-9876-41c5-979d-e0bba451258d.png",
+            "providers": []
+        },
+        {
+            "id": "27cdedb5-82c7-4ac9-a8bb-48183ded1075",
+            "name": "Norway",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/27cdedb5-82c7-4ac9-a8bb-48183ded1075.png",
+            "providers": []
+        },
+        {
+            "id": "96da961d-a2c6-4309-bda0-fa6f8ff902fa",
+            "name": "OGC Nice",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/96da961d-a2c6-4309-bda0-fa6f8ff902fa.png",
+            "providers": [
+                {
+                    "externalId": "52355",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "bx0cdmzr2gwr70ez72dorx82p",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "72",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "1395",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "136",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "a0aea985-f7de-4247-a253-619d4853ea44",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "9d369296-33b7-4102-bb13-eb299fb5de72",
+            "name": "Olympique de Marseille",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/9d369296-33b7-4102-bb13-eb299fb5de72.png",
+            "providers": [
+                {
+                    "externalId": "52748",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "219",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "144",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "29174fd9-3234-40f2-a6d2-8af5e096733b",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "147",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "27xvwccz8kpmqsefjv2b2sc0o",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "79ad5c0c-4926-4105-8c0d-2118efd4c601",
+            "name": "Olympique Lyonnais",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/79ad5c0c-4926-4105-8c0d-2118efd4c601.png",
+            "providers": [
+                {
+                    "externalId": "5312",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "137",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "66",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "6d37535a-7054-468b-b712-c84795952a73",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "143",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "121le8unjfzug3iu9pgkqa1c7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "b391d9e1-b527-4512-aee0-31cfab7ef38a",
+            "name": "Panama",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/b391d9e1-b527-4512-aee0-31cfab7ef38a.png",
+            "providers": []
+        },
+        {
+            "id": "190e2129-e69a-4d50-880c-cdc715dc8f40",
+            "name": "Paraguay",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/190e2129-e69a-4d50-880c-cdc715dc8f40.png",
+            "providers": [
+                {
+                    "externalId": "3cwjdmekfdouwg990mqdq9fh0",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0c1171fe-7d83-417e-98a2-f765c0ddc662",
+            "name": "Paris Saint-Germain FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0c1171fe-7d83-417e-98a2-f765c0ddc662.png",
+            "providers": [
+                {
+                    "externalId": "52747",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "149",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "73",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "2b3mar72yy8d6uvat1ka6tn3r",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "131",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "99366878-8adf-476c-9613-5ce4c254a60f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "217359f0-e6b0-495f-b4e9-e6e6dc906ac0",
+            "name": "Pau FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/217359f0-e6b0-495f-b4e9-e6e6dc906ac0.png",
+            "providers": [
+                {
+                    "externalId": "25s5qx846iw05y8t9pinrbhh1",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "5420",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "22806792-d6d1-452e-884b-3d305a57d357",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "1714",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "110321",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "a68bb230-80e0-4b5f-82ec-1f4ce77db073",
+            "name": "Portugal",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a68bb230-80e0-4b5f-82ec-1f4ce77db073.png",
+            "providers": [
+                {
+                    "externalId": "8gxg8f7p9299jbrz30u8bsc7g",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "25a647d4-6550-4947-8c7b-b91afb2c995d",
+            "name": "Qatar",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/25a647d4-6550-4947-8c7b-b91afb2c995d.png",
+            "providers": [
+                {
+                    "externalId": "ea68amhsn28ijs7bzjuzeqrz6",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "adbc7d41-e993-4d57-818d-71870b87f289",
+            "name": "RC Lens",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/adbc7d41-e993-4d57-818d-71870b87f289.png",
+            "providers": [
+                {
+                    "externalId": "3xedluek08t2ka7oypwuullcn",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "ef28b27a-2f8b-4d41-8625-694a39cf61d6",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "64",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "142",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "168",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "11ffc319-4384-4426-b8e5-e08c074406ad",
+            "name": "RC Strasbourg Alsace",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/11ffc319-4384-4426-b8e5-e08c074406ad.png",
+            "providers": [
+                {
+                    "externalId": "59857",
+                    "provider": {
+                        "name": "UEFA"
+                    }
+                },
+                {
+                    "externalId": "76",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "153",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "af245083-98d0-4a20-bfe5-8742be50009a",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "71ajatxnuhc5cnm3xvgdky49w",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "138",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "6c3c1394-19c5-4315-aea3-6ec57d722a0c",
+            "name": "Red Star FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/6c3c1394-19c5-4315-aea3-6ec57d722a0c.png",
+            "providers": [
+                {
+                    "externalId": "915",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "7qdfg7vuzf70wurnpx0bawlqk",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "19934a11-d554-4894-a18b-6f86cd5b1547",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "27ca5f2a-135b-46f5-acd9-17fe4de5e490",
+            "name": "Rodez AF",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/27ca5f2a-135b-46f5-acd9-17fe4de5e490.png",
+            "providers": [
+                {
+                    "externalId": "2u30h0xpbfzv0byj4j7d8c4ug",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "3308",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "111659",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "1370",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "b19d3d83-4fc0-4b46-ad18-8d053d62a57a",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f5419a4c-71c2-4b6c-87ba-71262c379f07",
+            "name": "Saudi Arabia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f5419a4c-71c2-4b6c-87ba-71262c379f07.png",
+            "providers": [
+                {
+                    "externalId": "9l4imoomrnyceg5u3kdxf5l5r",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c953107d-0323-4f14-b563-7731f9bddec3",
+            "name": "SC Bastia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c953107d-0323-4f14-b563-7731f9bddec3.png",
+            "providers": [
+                {
+                    "externalId": "139",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "6l07ga27xfsr7485fuc1ilkkc",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "58",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "2736",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "3705eccd-4714-47e6-9820-df8cc0ac3783",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "1941577c-47f0-41ca-a197-1b28ae008115",
+            "name": "Scotland",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/1941577c-47f0-41ca-a197-1b28ae008115.png",
+            "providers": [
+                {
+                    "externalId": "bcllqlzvj9j7opjene2zvran7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "20872ed6-393a-42ae-963c-1c82045c671b",
+            "name": "Senegal",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/20872ed6-393a-42ae-963c-1c82045c671b.png",
+            "providers": [
+                {
+                    "externalId": "2wk1549tkz80oet8226euj7jp",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "70396bae-be79-4ea1-87d5-04596b505592",
+            "name": "South Africa",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/70396bae-be79-4ea1-87d5-04596b505592.png",
+            "providers": []
+        },
+        {
+            "id": "e428374e-34c1-44c9-ae6e-4376f7047748",
+            "name": "South Korea",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/e428374e-34c1-44c9-ae6e-4376f7047748.png",
+            "providers": [
+                {
+                    "externalId": "1yghbv1c71b37eenutbwnvvq",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "f7838878-5336-49fc-b2a5-aecfbbb6f5c6",
+            "name": "Spain",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f7838878-5336-49fc-b2a5-aecfbbb6f5c6.png",
+            "providers": [
+                {
+                    "externalId": "eh7yt2x2wck51oixw8012ux5j",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "401f8d4a-ae3d-4852-825f-68127f7f8377",
+            "name": "Stade Brestois 29",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/401f8d4a-ae3d-4852-825f-68127f7f8377.png",
+            "providers": [
+                {
+                    "externalId": "862",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "153",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "3adj8hkws0z1al232bg2h6tk0",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "378",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "a6096382-416c-434e-bee1-e8600f7823fe",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "a4c0e559-5504-4561-9916-ab873feb3d6c",
+            "name": "Stade de Reims",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a4c0e559-5504-4561-9916-ab873feb3d6c.png",
+            "providers": [
+                {
+                    "externalId": "1423",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "a6230596-d7e4-4a20-891a-0ed441fc2252",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "3c3jcs7vc1t6vz5lev162jyv7",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "379",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "156",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "49b1aa9d-48eb-4fb2-95f0-ab29ba80caa4",
+            "name": "Stade Lavallois MFC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/49b1aa9d-48eb-4fb2-95f0-ab29ba80caa4.png",
+            "providers": [
+                {
+                    "externalId": "75gwk94q9jkoh78jk8nlay4xj",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "2129",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "2298",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "1814",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "3fde5c62-5b32-427b-8cb2-3f621ef88b8f",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "8a483a9c-cbcd-486d-a5a6-2a8e10293207",
+            "name": "Stade Rennais FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8a483a9c-cbcd-486d-a5a6-2a8e10293207.png",
+            "providers": [
+                {
+                    "externalId": "134",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "z1wbqtd0fz5t5eezjvrbld3h",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "74",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "4f895e1a-8cb0-4333-82a4-e0595b6ee3d6",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                },
+                {
+                    "externalId": "150",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "d84d393c-8033-468d-93b0-42e22f332320",
+            "name": "Sweden",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d84d393c-8033-468d-93b0-42e22f332320.png",
+            "providers": []
+        },
+        {
+            "id": "cb3c38f9-fe9b-487e-b2c4-222941a64285",
+            "name": "Switzerland",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/cb3c38f9-fe9b-487e-b2c4-222941a64285.png",
+            "providers": [
+                {
+                    "externalId": "339wxbt07ltnva7hop6m5o477",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "38631c88-6388-48ee-a052-0b22c6279b0e",
+            "name": "Toulouse FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/38631c88-6388-48ee-a052-0b22c6279b0e.png",
+            "providers": [
+                {
+                    "externalId": "1809",
+                    "provider": {
+                        "name": "Sofifa"
+                    }
+                },
+                {
+                    "externalId": "130",
+                    "provider": {
+                        "name": "StatsBomb"
+                    }
+                },
+                {
+                    "externalId": "427",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "4aghw9tyi8ba3ju1ne83gmf9w",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "bcc74f07-63f8-4aeb-84d2-321bdfd75fe6",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "4f0744d2-408a-4419-bb54-7c1c9705366f",
+            "name": "Tunisia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4f0744d2-408a-4419-bb54-7c1c9705366f.png",
+            "providers": [
+                {
+                    "externalId": "ctp7ovvf34m7fzshua9ogbr6i",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "7e1eade4-f60b-4648-850a-966815bab925",
+            "name": "T\u00fcrkiye",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/8d1259d8-9024-425e-b002-8a0081259324/klkslu41mgcanng36kdsv2dy/Turkiye.webp",
+            "providers": [
+                {
+                    "externalId": "9s2kpeunkes0g17l95r3t91j6",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "c72124aa-e7fa-4fe9-8152-60d56c84be4e",
+            "name": "United States",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c72124aa-e7fa-4fe9-8152-60d56c84be4e.png",
+            "providers": [
+                {
+                    "externalId": "9vh2u1p4ppm597tjfahst2m3n",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "5ffaa708-159a-42d7-abc6-63ffd3c4667e",
+            "name": "Uruguay",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/5ffaa708-159a-42d7-abc6-63ffd3c4667e.png",
+            "providers": [
+                {
+                    "externalId": "9l06impjllgop0gte8fldb4zo",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "0c3085a0-8236-42af-bedb-b8bacc184590",
+            "name": "US Boulogne",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0c3085a0-8236-42af-bedb-b8bacc184590.png",
+            "providers": [
+                {
+                    "externalId": "9az8hqkkijc34ol021425ixg5",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "2129",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "5c8212de-6752-48fb-a929-491a21fadcdb",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "44ce451d-92de-45b8-8a3a-0a59d20ceb85",
+            "name": "USL Dunkerque",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/44ce451d-92de-45b8-8a3a-0a59d20ceb85.png",
+            "providers": [
+                {
+                    "externalId": "3288",
+                    "provider": {
+                        "name": "Opta"
+                    }
+                },
+                {
+                    "externalId": "15ip1h6m0b4e8xfi597y5uo5u",
+                    "provider": {
+                        "name": "Stats"
+                    }
+                },
+                {
+                    "externalId": "e2ed3a07-4582-4737-bdcd-68d6d1733f70",
+                    "provider": {
+                        "name": "Second Spectrum"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "bd419b2d-b31f-43d4-ab43-a9f3cfa7b696",
+            "name": "Uzbekistan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/bd419b2d-b31f-43d4-ab43-a9f3cfa7b696.png",
+            "providers": []
+        }
+    ],
+    "message": "Successfully scraped 85 clubs and updated 85 teams"
+}

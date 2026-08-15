@@ -1,0 +1,433 @@
+{
+    "status": "success",
+    "count": 85,
+    "updated": 85,
+    "clubs": [
+        {
+            "id": "3c74d00b-e974-4e42-bbdd-cb14060c83de",
+            "name": "AJ Auxerre",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3c74d00b-e974-4e42-bbdd-cb14060c83de.png"
+        },
+        {
+            "id": "60f34826-b01d-4a12-9e27-dc8ef6f8d8e0",
+            "name": "Algeria",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/60f34826-b01d-4a12-9e27-dc8ef6f8d8e0.png"
+        },
+        {
+            "id": "29a5cba1-8a71-4678-aeb4-eaa1cecb739e",
+            "name": "Amiens SC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/29a5cba1-8a71-4678-aeb4-eaa1cecb739e.png"
+        },
+        {
+            "id": "c2c49eb2-0b07-4461-9a62-70884f8360e4",
+            "name": "Angers SCO",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c2c49eb2-0b07-4461-9a62-70884f8360e4.png"
+        },
+        {
+            "id": "eeccd029-cce2-4253-862b-8fb0a8c2def3",
+            "name": "Argentina",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/eeccd029-cce2-4253-862b-8fb0a8c2def3.png"
+        },
+        {
+            "id": "2a957f69-4f62-4c94-a465-a9cf98e69371",
+            "name": "AS Monaco FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/2a957f69-4f62-4c94-a465-a9cf98e69371.png"
+        },
+        {
+            "id": "3af8edcc-8d9b-4f05-abe9-a680234b6937",
+            "name": "AS Nancy Lorraine",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3af8edcc-8d9b-4f05-abe9-a680234b6937.png"
+        },
+        {
+            "id": "286b1082-46aa-449f-9c6b-cf98f5435417",
+            "name": "AS Saint-\u00c9tienne",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/286b1082-46aa-449f-9c6b-cf98f5435417.png"
+        },
+        {
+            "id": "4a73f913-dbfd-4e97-a8d8-ff395cde41de",
+            "name": "Australia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4a73f913-dbfd-4e97-a8d8-ff395cde41de.png"
+        },
+        {
+            "id": "676da091-3c88-4843-b893-8881e4f8cb82",
+            "name": "Austria",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/676da091-3c88-4843-b893-8881e4f8cb82.png"
+        },
+        {
+            "id": "f3c73a13-adac-4608-8431-d262d2cc5b0f",
+            "name": "Belgium",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f3c73a13-adac-4608-8431-d262d2cc5b0f.png"
+        },
+        {
+            "id": "9896d013-87b0-43a0-babb-7b15eec7d021",
+            "name": "Bosnia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/9896d013-87b0-43a0-babb-7b15eec7d021.png"
+        },
+        {
+            "id": "8c535a88-0182-42af-a879-441f4e546311",
+            "name": "Brazil",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8c535a88-0182-42af-a879-441f4e546311.png"
+        },
+        {
+            "id": "53e212f8-a7e1-4afd-a9db-3b6a647b3a10",
+            "name": "Canada",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/53e212f8-a7e1-4afd-a9db-3b6a647b3a10.png"
+        },
+        {
+            "id": "93296148-3f08-4bfb-8ba5-047d897f496c",
+            "name": "Cape Verde",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/93296148-3f08-4bfb-8ba5-047d897f496c.png"
+        },
+        {
+            "id": "e9bec0af-3ef2-442a-b4be-5cb20dd6ccfd",
+            "name": "Clermont Foot 63",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/e9bec0af-3ef2-442a-b4be-5cb20dd6ccfd.png"
+        },
+        {
+            "id": "30e7bbd7-e482-43d3-b2be-538d6594da7a",
+            "name": "Colombia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/30e7bbd7-e482-43d3-b2be-538d6594da7a.png"
+        },
+        {
+            "id": "22b97fd1-5aae-45bd-b7d2-cfcff3359e05",
+            "name": "Croatia ",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/22b97fd1-5aae-45bd-b7d2-cfcff3359e05.png"
+        },
+        {
+            "id": "8208513d-26fa-4ce0-bf45-0dfbedbfffa8",
+            "name": "Cura\u00e7ao",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8208513d-26fa-4ce0-bf45-0dfbedbfffa8.png"
+        },
+        {
+            "id": "7ee97eea-8b68-4d56-9e56-a42660160b58",
+            "name": "Czech Republic",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/7ee97eea-8b68-4d56-9e56-a42660160b58.png"
+        },
+        {
+            "id": "3122ec18-7101-4d23-b0fb-0d92b6322bf9",
+            "name": "Dijon FCO",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3122ec18-7101-4d23-b0fb-0d92b6322bf9.png"
+        },
+        {
+            "id": "dec56cba-d7c9-4b92-b2d0-99b33365897a",
+            "name": "DR Congo",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/dec56cba-d7c9-4b92-b2d0-99b33365897a.png"
+        },
+        {
+            "id": "95ee4c51-67e0-4948-9c51-98e402d4b048",
+            "name": "EA Guingamp",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/95ee4c51-67e0-4948-9c51-98e402d4b048.png"
+        },
+        {
+            "id": "ecb386dd-4e0d-4e08-86b1-26727baad4ec",
+            "name": "Ecuador",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/ecb386dd-4e0d-4e08-86b1-26727baad4ec.png"
+        },
+        {
+            "id": "d8d89bc6-698e-4883-9d05-7d944d349620",
+            "name": "Egypt",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d8d89bc6-698e-4883-9d05-7d944d349620.png"
+        },
+        {
+            "id": "77d97f2a-2523-47cf-abe1-a612d5adb8a5",
+            "name": "England",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/77d97f2a-2523-47cf-abe1-a612d5adb8a5.png"
+        },
+        {
+            "id": "1a478887-1797-4adb-9ded-b4d304bff4eb",
+            "name": "ESTAC Troyes",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/1a478887-1797-4adb-9ded-b4d304bff4eb.png"
+        },
+        {
+            "id": "a1f07f49-f46d-48b4-ab65-cdf5937ed28f",
+            "name": "FC Annecy",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a1f07f49-f46d-48b4-ab65-cdf5937ed28f.png"
+        },
+        {
+            "id": "5764a668-5d69-4ba6-bb8a-bdfa5c64229c",
+            "name": "FC Lorient",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/5764a668-5d69-4ba6-bb8a-bdfa5c64229c.png"
+        },
+        {
+            "id": "cd58c70f-510e-41a7-9551-1e8ec658d8ac",
+            "name": "FC Metz",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/cd58c70f-510e-41a7-9551-1e8ec658d8ac.png"
+        },
+        {
+            "id": "f32406d3-a94a-4e50-883f-2eef5e1f2722",
+            "name": "FC Nantes",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f32406d3-a94a-4e50-883f-2eef5e1f2722.png"
+        },
+        {
+            "id": "fe06bb8e-5175-4940-8908-81aa4ab9fd2c",
+            "name": "FC Sochaux Montb\u00e9liard",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/fe06bb8e-5175-4940-8908-81aa4ab9fd2c.png"
+        },
+        {
+            "id": "c6bacd58-11ff-42a1-955c-a2a37aaf12e4",
+            "name": "France",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c6bacd58-11ff-42a1-955c-a2a37aaf12e4.png"
+        },
+        {
+            "id": "a1b62ed0-1fb8-4bc8-9314-928cf30f3dbe",
+            "name": "Germany",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a1b62ed0-1fb8-4bc8-9314-928cf30f3dbe.png"
+        },
+        {
+            "id": "4c5e7159-9fdb-43c6-ac83-7ecd91ce1fa1",
+            "name": "Ghana",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4c5e7159-9fdb-43c6-ac83-7ecd91ce1fa1.png"
+        },
+        {
+            "id": "b53059d3-8827-450b-9d8c-48cab41224de",
+            "name": "Grenoble Foot 38",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/b53059d3-8827-450b-9d8c-48cab41224de.png"
+        },
+        {
+            "id": "7fdff7b4-8cc3-4c16-8dda-0021f1e69dc7",
+            "name": "Haiti",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/7fdff7b4-8cc3-4c16-8dda-0021f1e69dc7.png"
+        },
+        {
+            "id": "78080e73-5243-4cd2-ace9-c9b2d400a2f6",
+            "name": "Iran",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/78080e73-5243-4cd2-ace9-c9b2d400a2f6.png"
+        },
+        {
+            "id": "6f2fc520-92ef-4d36-880d-c6ce7e955ebd",
+            "name": "Iraq",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/6f2fc520-92ef-4d36-880d-c6ce7e955ebd.png"
+        },
+        {
+            "id": "3124fb02-9bd6-4834-8d01-d80701aab590",
+            "name": "Ivory Coast",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3124fb02-9bd6-4834-8d01-d80701aab590.png"
+        },
+        {
+            "id": "0a2283dd-1e74-4b85-99b1-bc8d3294cd11",
+            "name": "Japan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0a2283dd-1e74-4b85-99b1-bc8d3294cd11.png"
+        },
+        {
+            "id": "3bc2a18e-a2dd-4b21-ab63-1fb9ef466872",
+            "name": "Jordan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/3bc2a18e-a2dd-4b21-ab63-1fb9ef466872.png"
+        },
+        {
+            "id": "22042183-4c3b-42ab-9a4b-aca3e4952f3f",
+            "name": "Le Havre AC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/22042183-4c3b-42ab-9a4b-aca3e4952f3f.png"
+        },
+        {
+            "id": "29f9732f-257e-4f5f-97ff-afc343160848",
+            "name": "Le Mans FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/29f9732f-257e-4f5f-97ff-afc343160848.png"
+        },
+        {
+            "id": "ec42bbc5-5016-45a3-83d4-5f9f50596b0e",
+            "name": "Lille OSC M\u00e9tropole",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/ec42bbc5-5016-45a3-83d4-5f9f50596b0e.png"
+        },
+        {
+            "id": "d8b15520-b451-4279-9b16-f87f64c6c613",
+            "name": "Mexico",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d8b15520-b451-4279-9b16-f87f64c6c613.png"
+        },
+        {
+            "id": "4099b67b-7b1d-40f0-a635-2bc56f128071",
+            "name": "Montpellier HSC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4099b67b-7b1d-40f0-a635-2bc56f128071.png"
+        },
+        {
+            "id": "c1b254b0-2235-4601-9dc4-604a400dda58",
+            "name": "Morocco",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c1b254b0-2235-4601-9dc4-604a400dda58.png"
+        },
+        {
+            "id": "13f74d59-4abc-445d-9c23-6efbfe2674e8",
+            "name": "Netherlands",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/13f74d59-4abc-445d-9c23-6efbfe2674e8.png"
+        },
+        {
+            "id": "f7fe4f3c-9876-41c5-979d-e0bba451258d",
+            "name": "New Zealand",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f7fe4f3c-9876-41c5-979d-e0bba451258d.png"
+        },
+        {
+            "id": "27cdedb5-82c7-4ac9-a8bb-48183ded1075",
+            "name": "Norway",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/27cdedb5-82c7-4ac9-a8bb-48183ded1075.png"
+        },
+        {
+            "id": "96da961d-a2c6-4309-bda0-fa6f8ff902fa",
+            "name": "OGC Nice",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/96da961d-a2c6-4309-bda0-fa6f8ff902fa.png"
+        },
+        {
+            "id": "9d369296-33b7-4102-bb13-eb299fb5de72",
+            "name": "Olympique de Marseille",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/9d369296-33b7-4102-bb13-eb299fb5de72.png"
+        },
+        {
+            "id": "79ad5c0c-4926-4105-8c0d-2118efd4c601",
+            "name": "Olympique Lyonnais",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/79ad5c0c-4926-4105-8c0d-2118efd4c601.png"
+        },
+        {
+            "id": "b391d9e1-b527-4512-aee0-31cfab7ef38a",
+            "name": "Panama",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/b391d9e1-b527-4512-aee0-31cfab7ef38a.png"
+        },
+        {
+            "id": "190e2129-e69a-4d50-880c-cdc715dc8f40",
+            "name": "Paraguay",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/190e2129-e69a-4d50-880c-cdc715dc8f40.png"
+        },
+        {
+            "id": "0c1171fe-7d83-417e-98a2-f765c0ddc662",
+            "name": "Paris Saint-Germain FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0c1171fe-7d83-417e-98a2-f765c0ddc662.png"
+        },
+        {
+            "id": "217359f0-e6b0-495f-b4e9-e6e6dc906ac0",
+            "name": "Pau FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/217359f0-e6b0-495f-b4e9-e6e6dc906ac0.png"
+        },
+        {
+            "id": "a68bb230-80e0-4b5f-82ec-1f4ce77db073",
+            "name": "Portugal",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a68bb230-80e0-4b5f-82ec-1f4ce77db073.png"
+        },
+        {
+            "id": "25a647d4-6550-4947-8c7b-b91afb2c995d",
+            "name": "Qatar",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/25a647d4-6550-4947-8c7b-b91afb2c995d.png"
+        },
+        {
+            "id": "adbc7d41-e993-4d57-818d-71870b87f289",
+            "name": "RC Lens",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/adbc7d41-e993-4d57-818d-71870b87f289.png"
+        },
+        {
+            "id": "11ffc319-4384-4426-b8e5-e08c074406ad",
+            "name": "RC Strasbourg Alsace",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/11ffc319-4384-4426-b8e5-e08c074406ad.png"
+        },
+        {
+            "id": "6c3c1394-19c5-4315-aea3-6ec57d722a0c",
+            "name": "Red Star FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/6c3c1394-19c5-4315-aea3-6ec57d722a0c.png"
+        },
+        {
+            "id": "27ca5f2a-135b-46f5-acd9-17fe4de5e490",
+            "name": "Rodez AF",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/27ca5f2a-135b-46f5-acd9-17fe4de5e490.png"
+        },
+        {
+            "id": "f5419a4c-71c2-4b6c-87ba-71262c379f07",
+            "name": "Saudi Arabia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f5419a4c-71c2-4b6c-87ba-71262c379f07.png"
+        },
+        {
+            "id": "c953107d-0323-4f14-b563-7731f9bddec3",
+            "name": "SC Bastia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c953107d-0323-4f14-b563-7731f9bddec3.png"
+        },
+        {
+            "id": "1941577c-47f0-41ca-a197-1b28ae008115",
+            "name": "Scotland",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/1941577c-47f0-41ca-a197-1b28ae008115.png"
+        },
+        {
+            "id": "20872ed6-393a-42ae-963c-1c82045c671b",
+            "name": "Senegal",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/20872ed6-393a-42ae-963c-1c82045c671b.png"
+        },
+        {
+            "id": "70396bae-be79-4ea1-87d5-04596b505592",
+            "name": "South Africa",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/70396bae-be79-4ea1-87d5-04596b505592.png"
+        },
+        {
+            "id": "e428374e-34c1-44c9-ae6e-4376f7047748",
+            "name": "South Korea",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/e428374e-34c1-44c9-ae6e-4376f7047748.png"
+        },
+        {
+            "id": "f7838878-5336-49fc-b2a5-aecfbbb6f5c6",
+            "name": "Spain",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/f7838878-5336-49fc-b2a5-aecfbbb6f5c6.png"
+        },
+        {
+            "id": "401f8d4a-ae3d-4852-825f-68127f7f8377",
+            "name": "Stade Brestois 29",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/401f8d4a-ae3d-4852-825f-68127f7f8377.png"
+        },
+        {
+            "id": "a4c0e559-5504-4561-9916-ab873feb3d6c",
+            "name": "Stade de Reims",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/a4c0e559-5504-4561-9916-ab873feb3d6c.png"
+        },
+        {
+            "id": "49b1aa9d-48eb-4fb2-95f0-ab29ba80caa4",
+            "name": "Stade Lavallois MFC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/49b1aa9d-48eb-4fb2-95f0-ab29ba80caa4.png"
+        },
+        {
+            "id": "8a483a9c-cbcd-486d-a5a6-2a8e10293207",
+            "name": "Stade Rennais FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/8a483a9c-cbcd-486d-a5a6-2a8e10293207.png"
+        },
+        {
+            "id": "d84d393c-8033-468d-93b0-42e22f332320",
+            "name": "Sweden",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/d84d393c-8033-468d-93b0-42e22f332320.png"
+        },
+        {
+            "id": "cb3c38f9-fe9b-487e-b2c4-222941a64285",
+            "name": "Switzerland",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/cb3c38f9-fe9b-487e-b2c4-222941a64285.png"
+        },
+        {
+            "id": "38631c88-6388-48ee-a052-0b22c6279b0e",
+            "name": "Toulouse FC",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/38631c88-6388-48ee-a052-0b22c6279b0e.png"
+        },
+        {
+            "id": "4f0744d2-408a-4419-bb54-7c1c9705366f",
+            "name": "Tunisia",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/4f0744d2-408a-4419-bb54-7c1c9705366f.png"
+        },
+        {
+            "id": "7e1eade4-f60b-4648-850a-966815bab925",
+            "name": "T\u00fcrkiye",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/8d1259d8-9024-425e-b002-8a0081259324/klkslu41mgcanng36kdsv2dy/Turkiye.webp"
+        },
+        {
+            "id": "c72124aa-e7fa-4fe9-8152-60d56c84be4e",
+            "name": "United States",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/c72124aa-e7fa-4fe9-8152-60d56c84be4e.png"
+        },
+        {
+            "id": "5ffaa708-159a-42d7-abc6-63ffd3c4667e",
+            "name": "Uruguay",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/5ffaa708-159a-42d7-abc6-63ffd3c4667e.png"
+        },
+        {
+            "id": "0c3085a0-8236-42af-bedb-b8bacc184590",
+            "name": "US Boulogne",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/0c3085a0-8236-42af-bedb-b8bacc184590.png"
+        },
+        {
+            "id": "44ce451d-92de-45b8-8a3a-0a59d20ceb85",
+            "name": "USL Dunkerque",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/44ce451d-92de-45b8-8a3a-0a59d20ceb85.png"
+        },
+        {
+            "id": "bd419b2d-b31f-43d4-ab43-a9f3cfa7b696",
+            "name": "Uzbekistan",
+            "logo_url": "https://s3.eu-west-1.amazonaws.com/assets-public-20210118080817693400000001/images/teams/bd419b2d-b31f-43d4-ab43-a9f3cfa7b696.png"
+        }
+    ],
+    "message": "Successfully scraped 85 clubs and updated 85 teams"
+}

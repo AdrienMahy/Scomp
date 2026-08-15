@@ -1,4 +1,4 @@
-.PHONY: help install dev stop logs test migrate migration clean docker-build docker-up docker-down backend-shell frontend-shell db-shell
+.PHONY: help install dev stop logs test migrate migration clean docker-build docker-up docker-down backend-shell frontend-shell db-shell frontend install-backend install-frontend docker-down status restart version scrape-ligue2 api-status db-reset lint test-scrape logs-api logs-db
 
 # ============================================================================
 # VARIABLES

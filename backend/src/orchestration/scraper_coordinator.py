@@ -57,10 +57,11 @@ class ScraperCoordinator:
             # Extract competition and season IDs from filters
             competition_id = filters.get("competition_id")
             season_id = filters.get("season_id")
+            season_name = filters.get("season_name")
             
             # 0️⃣ Ensure Competition and Season exist
             self._ensure_competition_exists(competition_id)
-            self._ensure_season_exists(season_id, competition_id)
+            self._ensure_season_exists(season_id, competition_id, season_name)
             
             # 1️⃣ Fetch from API
             raw_games = self.provider.fetch_games(filters, limit, page)
@@ -110,13 +111,14 @@ class ScraperCoordinator:
             self.db_session.add(comp)
             self.db_session.commit()
     
-    def _ensure_season_exists(self, season_id: str, competition_id: str) -> None:
+    def _ensure_season_exists(self, season_id: str, competition_id: str, season_name: Optional[str] = None) -> None:
         """
         Ensure Season record exists, create if not
         
         Args:
             season_id: SportsDynamics season ID (typically a year like "2026")
             competition_id: Competition ID this season belongs to
+            season_name: Full season name (e.g. "2026 - 2027")
         """
         from ..models import Season
         
@@ -133,9 +135,12 @@ class ScraperCoordinator:
             except (ValueError, AttributeError):
                 season_year = None
             
+            # Use provided season_name or fall back to ID-based name
+            season_display_name = season_name if season_name else f"Season {season_id_str}"
+            
             season = Season(
                 id=season_id_str,
-                name=f"Season {season_id_str}",
+                name=season_display_name,
                 season_year=season_year,
                 competition_id=competition_id
             )

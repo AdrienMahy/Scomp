@@ -34,7 +34,7 @@
         "file": {
           "name": "h2h_set_piece_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml",
           "size": "145.77 KB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/0e2ccd99-f3ac-4652-ab0f-b80fc13df9b0/h2h_set_piece_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150645Z&X-Amz-Expires=3600&X-Amz-Signature=b6c533f0aac82d3ca09e167f461b95fdfd781eee3b5a004e53cdafefc2ac4cdb&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22h2h_set_piece_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/0e2ccd99-f3ac-4652-ab0f-b80fc13df9b0/h2h_set_piece_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=30aeed4032fb4a3cb0b65ed897e1059e28f336d387b0e32d128c8e05112e8f7e&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22h2h_set_piece_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -46,7 +46,7 @@
         "file": {
           "name": "fitness_entities_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json",
           "size": "7.16 MB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/fa18c5cc-24d1-47c2-acc5-a22cb7de517f/fitness_entities_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=954fa03dd30fae8ce7b2b39e5a28e725527bc0845b25b3c25e9ee97f05d4b0ea&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22fitness_entities_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/fa18c5cc-24d1-47c2-acc5-a22cb7de517f/fitness_entities_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=3e4af40ce0599e0a1fa5f3689cb98a62575da95af29815ff53d26d0445760e36&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22fitness_entities_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -58,7 +58,7 @@
         "file": {
           "name": "player_player_overview_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml",
           "size": "6.17 MB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/2000541b-cb30-476d-af31-4eec685fea25/player_player_overview_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=8d222f42d71e622fa0564b7ff5b80097d00982735b18db1cc87f0b0bfaa483d0&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_player_overview_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/2000541b-cb30-476d-af31-4eec685fea25/player_player_overview_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=39a8293e815f898ead771c56d5f576999cc935a7ea99feb977247b061bd42874&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_player_overview_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -70,7 +70,7 @@
         "file": {
           "name": "distance_covered_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json",
           "size": "98.72 KB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/374b614e-2551-4f77-9a24-f98ee605733c/distance_covered_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=17f316d921af911926cb9f6980d5004ed8de783336eef2362a3e289f68e36366&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22distance_covered_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/374b614e-2551-4f77-9a24-f98ee605733c/distance_covered_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=797a6001d37c369903601c36b1fa374be9b89d0db66d93394941e97431ca4d39&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22distance_covered_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -82,7 +82,7 @@
         "file": {
           "name": "player_goalkeeper_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml",
           "size": "39.83 KB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/e0fdcecd-b2e7-4137-84aa-1d3f17fcd742/player_goalkeeper_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=d0e952568a86d75b8abcbfd3668595e79cf8180f946384120609d64e04d72e6d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_goalkeeper_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/e0fdcecd-b2e7-4137-84aa-1d3f17fcd742/player_goalkeeper_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=c50164241f269b2403e169bcfa0c5ac40d000780b2449011496271feeb4ef36a&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_goalkeeper_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -94,7 +94,7 @@
         "file": {
           "name": "player_player_overview_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml",
           "size": "6.49 MB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/2000541b-cb30-476d-af31-4eec685fea25/player_player_overview_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=f8d4201f5870bd009a61af9f0c52340b075b3eec219081203af43daed41a7807&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_player_overview_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/2000541b-cb30-476d-af31-4eec685fea25/player_player_overview_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=425cf07ac243fbaf9b154fe553a4d451f358a1c71e30cc2ea20e9e91cfb9d243&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_player_overview_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -106,7 +106,7 @@
         "file": {
           "name": "metadata_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json",
           "size": "16.58 KB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/47798f73-2551-4931-99c3-6f5e8fc79cab/metadata_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=42e76b5c3b45c89508c3c1e28f77ec05dd39385e793edca961484171563f7908&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22metadata_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/47798f73-2551-4931-99c3-6f5e8fc79cab/metadata_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=d1957382efa04fb8aa60f175d91ee441f375ea3940458b0c96f8aa23bdc82c87&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22metadata_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -118,7 +118,7 @@
         "file": {
           "name": "phase_of_play_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml",
           "size": "290.5 KB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/f43d1352-8f71-46b8-9b91-e435ac96d73b/phase_of_play_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=a32477390b937284a16da36e75ef01f9c58bfa53a8da7120d50cf5ad2699140d&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22phase_of_play_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/f43d1352-8f71-46b8-9b91-e435ac96d73b/phase_of_play_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=de46c84cda2fee0ea3506a6897c21d058ba24323fc283cb0d8de4c0725e51cf3&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22phase_of_play_CLE_SDR_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -130,7 +130,7 @@
         "file": {
           "name": "rgd_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json",
           "size": "11.12 MB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/df6ff1bf-9548-4202-93b3-e25cd865830c/rgd_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=70f15fe478f3adc01ff83b427114a4dc1525f691f13afa2d694bb3941eeb8dc6&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22rgd_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/df6ff1bf-9548-4202-93b3-e25cd865830c/rgd_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=8dd54b631a257eab93fc51a77672edc43e90ef444b8ddad97c08d61b20c92159&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22rgd_cde442e8-9237-4c1a-972d-c19cbc7cc69d.json%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       },
       {
@@ -142,7 +142,7 @@
         "file": {
           "name": "player_goalkeeper_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml",
           "size": "58.18 KB",
-          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/e0fdcecd-b2e7-4137-84aa-1d3f17fcd742/player_goalkeeper_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260814%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260814T150644Z&X-Amz-Expires=3600&X-Amz-Signature=383aac217eaed7422d4fef5844afd87f916f2747500a4865e193dadc4c810731&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_goalkeeper_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+          "url": "https://sportsdynamics-game-assets-bucket.s3.eu-west-1.amazonaws.com/cde442e8-9237-4c1a-972d-c19cbc7cc69d/51b05c7c-e114-4f67-9e9e-b5c6fc5be79a/output/e0fdcecd-b2e7-4137-84aa-1d3f17fcd742/player_goalkeeper_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA2NDHZ26FCUWLGPJQ%2F20260815%2Feu-west-1%2Fs3%2Faws4_request&X-Amz-Date=20260815T075702Z&X-Amz-Expires=3600&X-Amz-Signature=a183fdffde7d90a884edc1858c462239e4cc37e4fcd42537bf837af7103d5b97&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%3D%22player_goalkeeper_CLE_cde442e8-9237-4c1a-972d-c19cbc7cc69d.xml%22&x-amz-checksum-mode=ENABLED&x-id=GetObject"
         }
       }
     ]

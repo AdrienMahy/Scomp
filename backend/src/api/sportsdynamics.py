@@ -199,7 +199,6 @@ class SportsDynamicsClient:
                     id
                     brand
                     logoUrl
-                    games { items { id name } }
                     providers { items { externalId provider { name } } }
                 }
             }

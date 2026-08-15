@@ -11,6 +11,7 @@ class Team(Base, TimestampMixin):
     id = Column(String(50), primary_key=True)
     name = Column(String(255), nullable=False)
     brand = Column(String(255))  # Brand/official name
+    providers = Column(JSON)  # List of provider mappings with externalId and provider name
     
     # Relationships
     home_games = relationship("Game", foreign_keys="Game.home_team_id", back_populates="home_team")
