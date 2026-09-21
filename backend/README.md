@@ -63,8 +63,7 @@ backend/
 │   ├── tasks/           # Celery tasks
 │   ├── database/        # DB utilities
 │   └── main.py          # FastAPI app
-├── requirements.txt
-└── Dockerfile
+└── requirements.txt
 ```
 
 ## API Endpoints

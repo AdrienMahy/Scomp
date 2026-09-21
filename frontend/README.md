@@ -130,20 +130,15 @@ All pages connect to FastAPI backend on port 8001:
 
 ## 🐳 Docker Deployment
 
-### Build
-
-```bash
-docker-compose build frontend
-```
-
-Dockerfile uses **multi-stage build**:
+The production Docker image uses a multi-stage build defined in the local
+ignored `config/frontend.Dockerfile`:
 1. **Stage 1 (builder):** Node 20-alpine → compiles React with Vite
 2. **Stage 2 (runtime):** Nginx Alpine → serves dist/ folder
 
 ### Run
 
 ```bash
-docker-compose up -d frontend
+docker compose -f config/docker-compose.yml up -d --build frontend
 
 # Check logs
 docker logs scomp_frontend
@@ -204,7 +199,7 @@ npm list tailwindcss
 | `postcss.config.js` | Tailwind + Autoprefixer config |
 | `vite.config.js` | Vite build config + React plugin |
 | `nginx.conf` | Nginx server configuration |
-| `Dockerfile` | Multi-stage Docker build |
+| `config/frontend.Dockerfile` | Multi-stage Docker build |
 | `.env` | Environment variables (API URL) |
 
 ---

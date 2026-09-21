@@ -3,7 +3,7 @@
 # ============================================================================
 # VARIABLES
 # ============================================================================
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = docker compose -f config/docker-compose.yml
 BACKEND_PORT = 8001
 FRONTEND_PORT = 3002
 POSTGRES_PORT = 5432

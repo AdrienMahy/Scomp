@@ -148,9 +148,11 @@ docs/
 ## 🔗 Related Files
 
 **In root directory:**
-- `docker-compose.yml` - Infrastructure setup
 - `.instructions.md` - Project customization
 - `Makefile` - Common development commands
+
+Docker deployment files are kept in the local ignored `config/` directory and
+are copied separately for each environment.
 
 **In backend:**
 - `backend/README.md` - Backend specific setup
