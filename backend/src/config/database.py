@@ -1,7 +1,7 @@
 """Database connection and session management"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from src.models.base import Base
+from ..models.base import Base
 from .settings import settings
 
 # Create database engine
@@ -26,6 +26,12 @@ def get_db():
 
 
 def init_db():
-    """Initialize database - create all tables"""
-    Base.metadata.create_all(bind=engine)
-    print("✅ Database tables created successfully")
+    """Initialize database - verify connection (migrations handle table creation)"""
+    try:
+        # Just verify connection is working
+        with engine.connect() as conn:
+            conn.exec_driver_sql("SELECT 1")
+        print("✅ Database connection verified")
+    except Exception as e:
+        print(f"❌ Database connection failed: {e}")
+        raise

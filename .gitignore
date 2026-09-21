@@ -6,6 +6,14 @@ __pycache__/
 *$py.class
 *.so
 .Python
+tests/
+
+# ==========================================================================
+# AGENT INSTRUCTIONS & LOCAL PROJECT MATERIAL
+# ==========================================================================
+.github/
+.instructions.md
+start/
 build/
 develop-eggs/
 dist/
@@ -79,6 +87,7 @@ credentials/
 # ============================================================================
 .dockerignore
 docker-compose.override.yml
+/config/
 
 # ============================================================================
 # DATABASE
@@ -115,6 +124,15 @@ Thumbs.db
 htmlcov/
 .tox/
 .hypothesis/
+
+# ============================================================================
+# EXPORTS & TEST DATA
+# ============================================================================
+backend/exports/api_response_*.json
+API_RESPONSE_RAW.json
+clubs_scrape_response*.json
+players_response.json
+response.json
 
 # ============================================================================
 # MISC

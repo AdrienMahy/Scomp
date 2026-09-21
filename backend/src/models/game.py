@@ -28,10 +28,12 @@ class Game(Base, TimestampMixin):
     starts_at = Column(DateTime)
     played_at = Column(DateTime)
     
+    round = Column(String(50))  # "1", "2", etc. (filled by scraper)
     round_name = Column(String(100))  # "Round 1", "Matchday 5", etc.
     
     # Metadata
     raw_data = Column(JSON)  # Store full API response
+    data_processed = Column(Boolean, default=False, nullable=False)  # True when JSON files downloaded & injected
     
     # Relationships
     competition = relationship("Competition", back_populates="games")
@@ -39,9 +41,18 @@ class Game(Base, TimestampMixin):
     home_team = relationship("Team", foreign_keys=[home_team_id], back_populates="home_games")
     away_team = relationship("Team", foreign_keys=[away_team_id], back_populates="away_games")
     periods = relationship("Period", back_populates="game", cascade="all, delete-orphan")
-    squads = relationship("Squad", back_populates="game", cascade="all, delete-orphan")
     output_files = relationship("OutputFile", back_populates="game", cascade="all, delete-orphan")
     lineups = relationship("LineupTeam", back_populates="game", cascade="all, delete-orphan")
+    # Goals and Cards now stored in events table (query with entity type filtering)
+    substitutions = relationship("GameSubstitution", back_populates="game", cascade="all, delete-orphan")
+    team_distances = relationship("TeamDistanceCovered", back_populates="game", cascade="all, delete-orphan")
+    player_distances = relationship("PlayerDistanceCovered", back_populates="game", cascade="all, delete-orphan")
+    
+    # RGD (Detailed Game Recording) Relationships
+    ball_in_plays = relationship("BallInPlay", back_populates="game", cascade="all, delete-orphan")
+    possessions_collective = relationship("PossessionCollective", back_populates="game", cascade="all, delete-orphan")
+    types_of_play = relationship("TypeOfPlay", back_populates="game", cascade="all, delete-orphan")
+    phases_of_play = relationship("PhaseOfPlay", back_populates="game", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<Game(id={self.id}, {self.home_score}-{self.away_score})>"
@@ -54,30 +65,23 @@ class Period(Base, TimestampMixin):
     id = Column(String(50), primary_key=True)
     game_id = Column(String(50), ForeignKey("games.id"), nullable=False, index=True)
     
+    # Period number
     period_id = Column(Integer)  # 1, 2, 3 (OT)
-    start_time = Column(Float)  # Relative to match start
-    end_time = Column(Float)
+    
+    # Time information (JSONB)
+    # Structure: {"start_frame": int, "end_frame": int, "duration": float}
+    time = Column(JSON, nullable=True)
+    
+    # Team directions (JSONB array)
+    # Structure: [
+    #   {"team_id": "...", "value": "LTR"/"RTL", "coef": 1/-1},  # home team
+    #   {"team_id": "...", "value": "LTR"/"RTL", "coef": 1/-1}   # away team
+    # ]
+    direction = Column(JSON, nullable=True)
     
     # Relationships
     game = relationship("Game", back_populates="periods")
+    score_evolution = relationship("GameScoreEvolution", back_populates="period", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<Period(id={self.id}, period={self.period_id})>"
-
-
-class Squad(Base, TimestampMixin):
-    """Squad for a team in a game"""
-    __tablename__ = "squads"
-    
-    id = Column(String(50), primary_key=True)
-    game_id = Column(String(50), ForeignKey("games.id"), nullable=False, index=True)
-    team_id = Column(String(50), ForeignKey("teams.id"), nullable=False, index=True)
-    
-    raw_data = Column(JSON)  # Players list, positions, etc.
-    
-    # Relationships
-    game = relationship("Game", back_populates="squads")
-    team = relationship("Team", back_populates="squads")
-    
-    def __repr__(self):
-        return f"<Squad(id={self.id}, team_id={self.team_id})>"

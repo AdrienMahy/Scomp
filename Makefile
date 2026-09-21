@@ -1,4 +1,4 @@
-.PHONY: help install dev stop logs test migrate migration clean docker-build docker-up docker-down backend-shell frontend-shell db-shell frontend install-backend install-frontend docker-down status restart version scrape-ligue2 api-status db-reset lint test-scrape logs-api logs-db
+.PHONY: help install dev stop logs test migrate migration clean docker-build docker-up docker-down backend-shell frontend-shell db-shell frontend install-backend install-frontend docker-down status restart version scrape-ligue2 api-status db-reset lint test-scrape logs-api logs-db automation automation-help automation-test automation-run automation-monitor automation-config automation-setup automation-logs automation-stats
 
 # ============================================================================
 # VARIABLES
@@ -61,6 +61,12 @@ help:
 	@echo "$(GREEN)📝 API COMMANDS$(NC)"
 	@echo "  make scrape-ligue2       Scrape Ligue 2 2026-2027 season"
 	@echo "  make api-status          Check API health"
+	@echo ""
+	@echo "$(GREEN)🤖 AUTOMATION & SCRAPING$(NC)"
+	@echo "  make automation          Show automation help & commands"
+	@echo "  make automation-test     Test smart scraper (interactive)"
+	@echo "  make automation-monitor  View monitoring dashboard"
+	@echo "  make automation-logs     Show Celery Beat logs"
 	@echo ""
 
 # ============================================================================
@@ -244,3 +250,55 @@ version:
 	@echo "  Node: $$(node --version)"
 	@echo "  Docker: $$(docker --version)"
 	@echo "  Docker Compose: $$(docker-compose --version)"
+
+# ============================================================================
+# 🤖 AUTOMATION & SCRAPING
+# ============================================================================
+
+automation-help:
+	@echo "$(BLUE)╔════════════════════════════════════════════════════════════════╗$(NC)"
+	@echo "$(BLUE)║            SCOMP Scraping Automation Commands                  ║$(NC)"
+	@echo "$(BLUE)╚════════════════════════════════════════════════════════════════╝$(NC)"
+	@echo ""
+	@echo "$(GREEN)🤖 SMART SCRAPING$(NC)"
+	@echo "  make automation-test     Test smart scraper (interactive menu)"
+	@echo "  make automation-run      Run ONE scraping cycle immediately"
+	@echo "  make automation-monitor  View monitoring dashboard"
+	@echo ""
+	@echo "$(GREEN)⚙️  CONFIGURATION$(NC)"
+	@echo "  make automation-config   Show current automation config"
+	@echo "  make automation-setup    View setup guide"
+	@echo ""
+	@echo "$(GREEN)📊 MONITORING$(NC)"
+	@echo "  make automation-logs     Show last Celery Beat logs (1 hour)"
+	@echo "  make automation-stats    Show scraping statistics (24 hours)"
+	@echo ""
+
+automation-test:
+	@echo "$(BLUE)🧪 Opening Smart Scraper Test Suite...$(NC)"
+	cd backend && python -m src.automation.test_automation
+
+automation-run:
+	@echo "$(BLUE)🚀 Running ONE scraping cycle immediately...$(NC)"
+	cd backend && python -c \
+		"from src.automation import SmartScraper; import logging; logging.basicConfig(level=logging.INFO); SmartScraper().run()"
+
+automation-monitor:
+	@echo "$(BLUE)📊 Opening Monitoring Dashboard...$(NC)"
+	cd backend && python -m src.automation.monitor
+
+automation-config:
+	@cd backend && python -c 'from src.automation.scheduler_config import AutomationConfig; print("Scrape Interval: " + str(AutomationConfig.SCRAPE_INTERVAL) + " min"); active = AutomationConfig.get_active_competitions(); print("Active Competitions: " + str(len(active))); [print("  - " + c.get("name", "") + " (" + c.get("id", "") + ")") for c in active]'
+
+automation-setup:
+	@cat AUTOMATION_SETUP_GUIDE.md
+
+automation-logs:
+	@echo "$(BLUE)📋 Celery Beat Logs (Last 1 Hour)$(NC)"
+	@$(DOCKER_COMPOSE) logs --since=1h scomp_celery_beat | grep -E "(Smart Scraping|smart_scrape|ERROR)" || echo "No logs found"
+
+automation-stats:
+	@cd backend && python -c 'from src.automation.monitor import ScrapingMonitor; m = ScrapingMonitor(); s = m.get_statistics(24); print("Total Scrapes: " + str(s.get("total_scrapes", 0))); print("Successful: " + str(s.get("successful", 0))); print("Failed: " + str(s.get("failed", 0))); print("Success Rate: " + str(s.get("success_rate", "N/A"))); print("Games Processed: " + str(s.get("total_games_processed", 0)))'
+
+# Quick alias
+automation: automation-help

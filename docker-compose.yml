@@ -1,68 +1,93 @@
-version: "3.9"
-
 services:
-  # PostgreSQL Database Service
-  postgres:
-    image: postgres:16-alpine
-    container_name: scomp_postgres
-    environment:
-      POSTGRES_USER: scrapper
-      POSTGRES_PASSWORD: scomp_dev_password
-      POSTGRES_DB: scomp_dev
-      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - scomp_network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U scrapper"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-
   # FastAPI Backend Service
   api:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: scomp_api
+    env_file: ./config/.env
     environment:
-      # Database Configuration
-      DB_TYPE: postgresql
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: scomp_dev
-      POSTGRES_USERNAME: scrapper
-      POSTGRES_PASSWORD: scomp_dev_password
-      DATABASE_URL: postgresql://scrapper:scomp_dev_password@postgres:5432/scomp_dev
-      
-      # Migrations
+      # Database Configuration (Remote TacticalData)
       RUN_MIGRATIONS: "true"
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
       
       # SportsDynamics API
-      SPORTSDYNAMICS_API_KEY: ${SPORTSDYNAMICS_API_KEY}
       SPORTSDYNAMICS_API_URL: https://api-v2.sportsdynamics.eu/graphql
     ports:
       - "8001:8001"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - redis
     networks:
       - scomp_network
     volumes:
       - ./backend:/app/backend
-      - ./backend/exports:/app/backend/exports
       - ./start:/app/start
     restart: unless-stopped
 
-# Volumes (persistent data)
-volumes:
-  postgres_data:
-    driver: local
+  redis:
+    image: redis:7-alpine
+    container_name: scomp_redis
+    networks:
+      - scomp_network
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: scomp_worker
+    env_file: ./config/.env
+    environment:
+      SPORTSDYNAMICS_API_URL: https://api-v2.sportsdynamics.eu/graphql
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    command: ["celery -A src.tasks.scrape_tasks:app worker --loglevel=INFO --concurrency=1"]
+    depends_on:
+      - redis
+    networks:
+      - scomp_network
+    volumes:
+      - ./backend:/app/backend
+    restart: unless-stopped
+
+  beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: scomp_beat
+    env_file: ./config/.env
+    environment:
+      SPORTSDYNAMICS_API_URL: https://api-v2.sportsdynamics.eu/graphql
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    command: ["celery -A src.tasks.beat:app beat --loglevel=INFO"]
+    depends_on:
+      - redis
+    networks:
+      - scomp_network
+    volumes:
+      - ./backend:/app/backend
+    restart: unless-stopped
+
+  # React Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: scomp_frontend
+    ports:
+      - "3002:3002"
+    depends_on:
+      - api
+    networks:
+      - scomp_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3002/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 # Networks (service communication)
 networks:

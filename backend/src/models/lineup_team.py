@@ -1,5 +1,5 @@
 """Lineup_Team model for storing team lineups for a specific game"""
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 from .base import Base, TimestampMixin
@@ -23,6 +23,9 @@ class LineupTeam(Base, TimestampMixin):
     
     # Position in match
     position = Column(String(10), nullable=False)  # 'HOME' or 'AWAY'
+    
+    # Team statistics
+    possession = Column(Float(), nullable=True)  # Ball possession percentage (0-100)
     
     # Timestamps (from mixin)
     # created_at: TIMESTAMP

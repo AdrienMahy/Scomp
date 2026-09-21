@@ -12,6 +12,9 @@ class DatabaseSettings(BaseSettings):
     """Database configuration - supports SQLite (dev) and PostgreSQL (prod)"""
     model_config = ConfigDict(case_sensitive=False, extra="allow", env_file=".env")
     
+    # Direct DATABASE_URL (takes precedence if set)
+    database_url: Optional[str] = Field(default=None, validation_alias="DATABASE_URL")
+    
     # Database type: "sqlite" or "postgresql"
     db_type: str = Field(default="sqlite", validation_alias="DB_TYPE")
     
@@ -28,6 +31,11 @@ class DatabaseSettings(BaseSettings):
     @property
     def url(self) -> str:
         """Database connection URL based on type"""
+        # If DATABASE_URL is set directly, use it (takes precedence)
+        if self.database_url:
+            return self.database_url
+        
+        # Otherwise construct from component parts
         if self.db_type == "sqlite":
             return f"sqlite:///{self.sqlite_path}"
         else:
@@ -60,12 +68,16 @@ class Settings(BaseSettings):
     # Paths
     project_root: Path = Path(__file__).parent.parent.parent.parent
     start_dir: Path = project_root / "start"
+    ids_config_path_override: Optional[Path] = Field(
+        default=None,
+        validation_alias="SCOMP_IDS_CONFIG_PATH",
+    )
     
     # IDs Configuration
     @property
     def ids_config_path(self) -> Path:
         """Path to ID.json"""
-        return self.start_dir / "ID.json"
+        return self.ids_config_path_override or self.start_dir / "ID.json"
     
     def load_ids_config(self) -> dict:
         """Load ID.json configuration"""

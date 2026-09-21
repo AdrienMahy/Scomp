@@ -72,8 +72,10 @@ class ScrapingTaskRead(BaseModel):
     """Scraping task response schema"""
     id: str
     provider: str
+    workflow: str
     competition_id: str
     season_id: str
+    round_name: Optional[str]
     status: str
     progress_percent: float
     total_items: int
@@ -82,6 +84,8 @@ class ScrapingTaskRead(BaseModel):
     started_at: Optional[datetime]
     completed_at: Optional[datetime]
     error_message: Optional[str]
+    current_phase: Optional[str]
+    current_item_id: Optional[str]
     created_at: datetime
     
     class Config:
@@ -91,6 +95,36 @@ class ScrapingTaskRead(BaseModel):
 class ScrapingTaskCreate(BaseModel):
     """Create scraping task schema"""
     provider: str
+    workflow: Optional[str] = "unknown"
     competition_id: str
     season_id: str
+    round_name: Optional[str] = None
     extra_metadata: Optional[Dict[str, Any]] = None
+
+
+class ScrapingLogRead(BaseModel):
+    """Scraping log response schema"""
+    id: str
+    task_id: str
+    timestamp: datetime
+    level: str
+    message: str
+    context: Optional[str]
+    item_id: Optional[str]
+    item_name: Optional[str]
+    round: Optional[str]
+    stats: Optional[Dict[str, Any]]
+    
+    class Config:
+        from_attributes = True
+
+
+class ScrapingLogCreate(BaseModel):
+    """Create scraping log schema"""
+    message: str
+    level: Optional[str] = "INFO"
+    context: Optional[str] = None
+    item_id: Optional[str] = None
+    item_name: Optional[str] = None
+    round: Optional[str] = None
+    stats: Optional[Dict[str, Any]] = None

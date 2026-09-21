@@ -1,0 +1,42 @@
+"""GameCard model for storing player cards (yellow/red)"""
+from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy.orm import relationship
+
+from .base import Base, TimestampMixin
+
+
+class GameCard(Base, TimestampMixin):
+    """
+    Stores card events (yellow/red) for a match.
+    
+    One card per row with player, card type, and timing information.
+    """
+    __tablename__ = 'game_cards'
+    
+    # Primary key
+    id = Column(String(50), primary_key=True, nullable=False)
+    
+    # Foreign keys
+    game_id = Column(String(50), ForeignKey('games.id'), nullable=False, index=True)
+    player_id = Column(String(50), ForeignKey('players.id'), nullable=False, index=True)
+    team_id = Column(String(50), ForeignKey('teams.id'), nullable=False, index=True)
+    
+    # Match context
+    period = Column(Integer, nullable=False)  # 1, 2, etc.
+    frame = Column(Integer, nullable=False)   # Frame number in video
+    timestamp = Column(Float, nullable=True)  # Timestamp in seconds (from metadata)
+    
+    # Card information
+    card_type = Column(String(50), nullable=False)  # "FIRST_YELLOW", "SECOND_YELLOW", "RED", etc.
+    
+    # Timestamps (from mixin)
+    # created_at: TIMESTAMP
+    # updated_at: TIMESTAMP
+    
+    # Relationships
+    game = relationship("Game", back_populates="cards")
+    player = relationship("Player", back_populates="cards")
+    team = relationship("Team", back_populates="cards")
+    
+    def __repr__(self):
+        return f"<GameCard(game={self.game_id}, player={self.player_id}, {self.card_type}, period={self.period})>"

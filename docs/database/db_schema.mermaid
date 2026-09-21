@@ -1,0 +1,250 @@
+```mermaid
+erDiagram
+    COMPETITIONS ||--o{ SEASONS : contains
+    SEASONS ||--o{ GAMES : schedule
+    COMPETITIONS ||--o{ GAMES : competition
+    
+    TEAMS ||--o{ GAMES : home_team
+    TEAMS ||--o{ GAMES : away_team
+    TEAMS ||--o{ LINEUP_TEAMS : team
+    TEAMS ||--o{ PLAYERS : current_team
+    TEAMS ||--o{ TEAM_DISTANCE_COVERED : distance
+    
+    GAMES ||--o{ GAME_STATUS : status
+    GAMES ||--o{ GAME_SUMMARY : summary
+    GAMES ||--o{ PERIODS : periods
+    GAMES ||--o{ OUTPUT_FILES : files
+    GAMES ||--o{ LINEUP_TEAMS : lineups
+    GAMES ||--o{ GAME_GOALS : goals
+    GAMES ||--o{ GAME_CARDS : cards
+    GAMES ||--o{ GAME_SUBSTITUTIONS : substitutions
+    GAMES ||--o{ GAME_SCORE_EVOLUTION : score_evolution
+    GAMES ||--o{ TEAM_DISTANCE_COVERED : team_distances
+    GAMES ||--o{ PLAYER_DISTANCE_COVERED : player_distances
+    
+    PLAYERS ||--o{ LINEUP_PLAYERS : player
+    PLAYERS ||--o{ GAME_GOALS : goals_scorer
+    PLAYERS ||--o{ GAME_CARDS : cards
+    PLAYERS ||--o{ GAME_SUBSTITUTIONS : in_or_out
+    PLAYERS ||--o{ PLAYER_DISTANCE_COVERED : distances
+    
+    LINEUP_TEAMS ||--o{ LINEUP_PLAYERS : team_lineup
+    TEAM_DISTANCE_COVERED ||--o{ TEAM_DISTANCE_BREAKDOWNS : breakdowns
+    PLAYER_DISTANCE_COVERED ||--o{ PLAYER_DISTANCE_BREAKDOWNS : breakdowns
+    
+    COMPETITIONS {
+        string id PK
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    SEASONS {
+        string id PK
+        string competition_id FK "ix_seasons_competition_id"
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    TEAMS {
+        string id PK
+        string name
+        string brand
+        json providers
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PLAYERS {
+        string id PK
+        string name
+        string first_name
+        string last_name
+        string usage_name
+        string photo
+        int age
+        date birthdate
+        string current_team_id FK "fk_players_current_team_id, ix_players_current_team_id"
+        string current_team_brand
+        string current_national_team_id
+        string current_national_team_brand
+        json nationalities
+        json positions
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    GAMES {
+        string id PK
+        string competition_id FK "ix_games_competition_id"
+        string season_id FK "ix_games_season_id"
+        string home_team_id FK "ix_games_home_team_id"
+        string away_team_id FK "ix_games_away_team_id"
+        string name
+        string result
+        int home_score
+        int away_score
+        string home_team_formation
+        string away_team_formation
+        timestamp starts_at
+        timestamp played_at
+        string round_name
+        json raw_data
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    LINEUP_TEAMS {
+        string id PK
+        string game_id FK
+        string team_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    LINEUP_PLAYERS {
+        string id PK
+        string lineup_team_id FK
+        string player_id FK
+        int shirt_number
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    GAME_STATUS {
+        string id PK
+        string game_id FK
+        string status
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    GAME_SUMMARY {
+        string id PK
+        string game_id FK
+        json summary_data
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PERIODS {
+        string id PK
+        string game_id FK
+        int period_number
+        int start_frame
+        int end_frame
+        int duration
+        string home_team_direction
+        string away_team_direction
+        int current_score_home
+        int current_score_away
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    GAME_GOALS {
+        string id PK
+        string game_id FK
+        string player_id FK
+        string team_id FK
+        int period
+        int frame
+        boolean own_goal
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    GAME_CARDS {
+        string id PK
+        string game_id FK
+        string player_id FK
+        string team_id FK
+        int period
+        int frame
+        string card_type
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    GAME_SUBSTITUTIONS {
+        string id PK
+        string game_id FK
+        string player_in_id FK
+        string player_out_id FK
+        string team_id FK
+        int period
+        int frame
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    GAME_SCORE_EVOLUTION {
+        string id PK
+        string game_id FK
+        int frame
+        int score_home
+        int score_away
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    OUTPUT_FILES {
+        string id PK
+        string game_id FK
+        string file_path
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    TEAM_DISTANCE_COVERED {
+        string id PK
+        string game_id FK
+        string team_id FK
+        decimal total_distance_m
+        decimal walking_m
+        decimal jogging_m
+        decimal moderated_intensity_m
+        decimal high_intensity_m
+        decimal sprint_m
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    TEAM_DISTANCE_BREAKDOWNS {
+        string id PK
+        string team_distance_id FK
+        string category_type "time_interval"
+        string category_name "0_5, 5_10, etc."
+        decimal distance_m
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PLAYER_DISTANCE_COVERED {
+        string id PK
+        string game_id FK
+        string player_id FK
+        string team_id FK
+        decimal total_distance_m
+        decimal walking_m
+        decimal jogging_m
+        decimal moderated_intensity_m
+        decimal high_intensity_m
+        decimal sprint_m
+        int minutes_played
+        decimal distance_per_min_played_m
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    PLAYER_DISTANCE_BREAKDOWNS {
+        string id PK
+        string player_distance_id FK
+        string category_type "time_interval"
+        string category_name "0_5, 5_10, etc."
+        decimal distance_m
+        timestamp created_at
+        timestamp updated_at
+    }
+```

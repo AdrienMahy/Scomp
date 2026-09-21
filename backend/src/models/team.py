@@ -11,13 +11,16 @@ class Team(Base, TimestampMixin):
     id = Column(String(50), primary_key=True)
     name = Column(String(255), nullable=False)
     brand = Column(String(255))  # Brand/official name
+    logo_url = Column(String(500))  # Team logo/crest image URL
     providers = Column(JSON)  # List of provider mappings with externalId and provider name
     
     # Relationships
     home_games = relationship("Game", foreign_keys="Game.home_team_id", back_populates="home_team")
     away_games = relationship("Game", foreign_keys="Game.away_team_id", back_populates="away_team")
-    squads = relationship("Squad", back_populates="team")
     lineups = relationship("LineupTeam", back_populates="team")
+    # Goals and Cards now stored in events table
+    substitutions = relationship("GameSubstitution", back_populates="team")
+    distances_covered = relationship("TeamDistanceCovered", back_populates="team")
     
     def __repr__(self):
         return f"<Team(id={self.id}, name={self.name})>"

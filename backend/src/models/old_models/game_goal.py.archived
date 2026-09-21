@@ -1,0 +1,43 @@
+"""GameGoal model for storing match goals"""
+from sqlalchemy import Column, String, Integer, Boolean, Float, ForeignKey
+from sqlalchemy.orm import relationship
+
+from .base import Base, TimestampMixin
+
+
+class GameGoal(Base, TimestampMixin):
+    """
+    Stores goal events for a match.
+    
+    One goal per row with player, team, and timing information.
+    """
+    __tablename__ = 'game_goals'
+    
+    # Primary key
+    id = Column(String(50), primary_key=True, nullable=False)
+    
+    # Foreign keys
+    game_id = Column(String(50), ForeignKey('games.id'), nullable=False, index=True)
+    player_id = Column(String(50), ForeignKey('players.id'), nullable=False, index=True)
+    team_id = Column(String(50), ForeignKey('teams.id'), nullable=False, index=True)
+    
+    # Match context
+    period = Column(Integer, nullable=False)  # 1, 2, etc.
+    frame = Column(Integer, nullable=False)   # Frame number in video
+    timestamp = Column(Float, nullable=True)  # Timestamp in seconds (from metadata)
+    
+    # Goal type
+    own_goal = Column(Boolean, default=False)
+    
+    # Timestamps (from mixin)
+    # created_at: TIMESTAMP
+    # updated_at: TIMESTAMP
+    
+    # Relationships
+    game = relationship("Game", back_populates="goals")
+    player = relationship("Player", back_populates="goals")
+    team = relationship("Team", back_populates="goals")
+    
+    def __repr__(self):
+        goal_type = "OG" if self.own_goal else "Goal"
+        return f"<GameGoal(game={self.game_id}, player={self.player_id}, period={self.period}, {goal_type})>"

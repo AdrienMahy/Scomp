@@ -26,5 +26,5 @@ WORKDIR /app/backend
 
 # Use entrypoint to run migrations and start API
 ENTRYPOINT ["/bin/bash", "-c"]
-CMD ["python3 -m alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload"]
+CMD ["python3 -m alembic upgrade heads && uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload"]
 

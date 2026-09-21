@@ -51,6 +51,14 @@ class SportsDynamicsProvider:
             requests.RequestException: If API call fails
         """
         logger.info(f"Fetching games with filters: {filters}")
+
+        try:
+            limit = int(limit)
+            page = int(page)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"Pagination values must be integers: limit={limit!r}, page={page!r}") from exc
+        if limit < 1 or page < 1:
+            raise ValueError(f"Pagination values must be positive: limit={limit}, page={page}")
         
         # 1️⃣ Validate filters
         try:
@@ -68,11 +76,13 @@ class SportsDynamicsProvider:
         
         season_id = filters.get("season_id")
         round_names = filters.get("round")
+        available = filters.get("available")  # Extract available filter
         
         logger.info(f"🎯 Extracted parameters:")
         logger.info(f"  - competition_id: {competition_id}")
         logger.info(f"  - season_id: {season_id}")
         logger.info(f"  - round_names: {round_names}")
+        logger.info(f"  - available: {available}")
         
         # 3️⃣ Call API client
         try:
@@ -81,6 +91,7 @@ class SportsDynamicsProvider:
                 competition_id=competition_id,
                 season_id=season_id,
                 game_days=round_names,
+                available=available,  # Pass available filter to client
                 limit=limit,
                 page=page
             )
@@ -98,6 +109,28 @@ class SportsDynamicsProvider:
             logger.error(f"API call failed: {e}")
             raise
     
+    def get_game_output_files(self, game_id: str, limit: int = 30) -> Dict[str, Any]:
+        """
+        Get outputFiles for a specific game via separate API call
+        This is needed because the main API doesn't return outputFiles for games with status=unchanged
+        
+        Args:
+            game_id: Game ID
+            limit: Max number of output files to return
+            
+        Returns:
+            Dict with 'items' array of output files
+        """
+        logger.info(f"🔍 Getting output files for game {game_id}")
+        try:
+            output_files = self.client.get_game_output_files(game_id, limit)
+            items_count = len(output_files.get("items", []))
+            logger.info(f"✅ Got {items_count} output files for game {game_id}")
+            return output_files
+        except Exception as e:
+            logger.error(f"❌ Failed to get output files for game {game_id}: {e}")
+            raise
+    
     def fetch_competitions(self) -> List[Dict[str, Any]]:
         """Fetch all competitions"""
         logger.info("Fetching competitions")
@@ -112,3 +145,8 @@ class SportsDynamicsProvider:
         """Fetch all clubs"""
         logger.info("Fetching clubs")
         return self.client.get_clubs()
+    
+    def fetch_players(self, limit: int = 500, page: int = 1) -> List[Dict[str, Any]]:
+        """Fetch all players with their profiles"""
+        logger.info(f"Fetching players (limit={limit}, page={page})")
+        return self.client.get_players(limit=limit, page=page)
