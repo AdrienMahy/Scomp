@@ -1,16 +1,19 @@
 """Celery Beat scheduling configuration"""
 from celery.schedules import schedule
 from .celery_config import app
-from ..automation.scheduler_config import AutomationConfig
-import os
+from ..SportsDynamics.automation.scheduler_config import AutomationConfig
 
 # Get scrape interval from config or environment
 SCRAPE_INTERVAL = AutomationConfig.SCRAPE_INTERVAL
+AUTOMATION_ENABLED = AutomationConfig.AUTOMATION_ENABLED
 
-print(f"🔔 Celery Beat configured - Scrape interval: {SCRAPE_INTERVAL} minutes")
+print(
+    f"🔔 Celery Beat automation {'enabled' if AUTOMATION_ENABLED else 'disabled'}"
+    f" - scrape interval: {SCRAPE_INTERVAL} minutes"
+)
 
-# Schedule the autonomous workflow. It remains inert until a competition is
-# explicitly enabled in AutomationConfig.
+# Register the autonomous workflow only when explicitly enabled. Manual scrape
+# tasks remain available regardless of this setting.
 app.conf.beat_schedule = {
     'smart-scrape-cycle': {
         'task': 'src.tasks.scrape_tasks.smart_scrape_cycle',
@@ -20,6 +23,13 @@ app.conf.beat_schedule = {
         },
         'kwargs': {},
     },
+} if AUTOMATION_ENABLED else {}
+
+app.conf.beat_schedule["physical-statsport-automation"] = {
+    "task": "scomp.physical_statsport_automation",
+    "schedule": schedule(run_every=300),
+    "options": {"expires": 295},
+    "kwargs": {},
 }
 
 # Enable UTC timezone

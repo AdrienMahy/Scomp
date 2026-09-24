@@ -1,15 +1,19 @@
 """Celery scraping tasks"""
-from datetime import datetime
+from datetime import datetime, timezone
+import asyncio
 import logging
 import os
 
 import redis
+from sqlalchemy import text
 
 from .celery_config import app
 from ..config.database import SessionLocal
-from ..models import ScrapingTask, TaskStatus
-from ..automation import SmartScraper
-from ..orchestration.scrape_workflows import (
+from ..SportsDynamics.models import ScrapingTask, TaskStatus
+from ..SportsDynamics.automation import SmartScraper
+from ..STATSport.models.database import get_physical_engine
+from ..STATSport.orchestration.orchestration import scrape_by_share_date
+from ..SportsDynamics.orchestration.scrape_workflows import (
     initialize_season,
     scrape_round,
     scrape_game,
@@ -108,3 +112,56 @@ def smart_scrape_cycle(self):
     except Exception as e:
         logger.error(f"❌ Smart scrape cycle failed: {e}", exc_info=True)
         raise
+
+
+def _physical_due_configurations() -> list[dict]:
+    """Return enabled PhysicalData rules whose weekday, window, and interval are due."""
+    now = datetime.now(timezone.utc)
+    with get_physical_engine().connect() as connection:
+        configurations = connection.execute(text(
+            """
+            SELECT name, enabled, interval_minutes, window_start_utc, window_end_utc, weekdays
+            FROM automation_configurations
+            """ )).mappings().all()
+        due = []
+        for configuration in configurations:
+            if not configuration["enabled"] or now.weekday() not in configuration["weekdays"]:
+                continue
+            current_time = now.time()
+            if not configuration["window_start_utc"] <= current_time <= configuration["window_end_utc"]:
+                continue
+            last_run = connection.execute(text("""
+                SELECT started_at FROM scrape_runs
+                WHERE scrape_type = 'statsport_automation' AND display_name = :display_name
+                ORDER BY started_at DESC LIMIT 1
+            """), {"display_name": configuration["name"]}).scalar_one_or_none()
+            if not last_run or (now - last_run).total_seconds() >= configuration["interval_minutes"] * 60:
+                due.append(dict(configuration))
+    return due
+
+
+def _physical_automation_is_due() -> bool:
+    return bool(_physical_due_configurations())
+
+
+@app.task(bind=True, name="scomp.physical_statsport_automation")
+def physical_statsport_automation_task(self):
+    """Scrape today's STATSports activities when PhysicalData automation is due."""
+    redis_client = redis.Redis.from_url(
+        os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/0"),
+        decode_responses=True,
+    )
+    lock = redis_client.lock("scomp:physical:statsport-automation", timeout=30 * 60)
+    if not lock.acquire(blocking=False):
+        return {"status": "already_running"}
+    try:
+        if not _physical_automation_is_due():
+            return {"status": "not_due"}
+        results = []
+        now = datetime.now(timezone.utc)
+        for configuration in _physical_due_configurations():
+            results.append(asyncio.run(scrape_by_share_date(
+                now.date(), scrape_type="statsport_automation", display_name=configuration["name"])))
+        return {"status": "completed", "rules": results}
+    finally:
+        lock.release()

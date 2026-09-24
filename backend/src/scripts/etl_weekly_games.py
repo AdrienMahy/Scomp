@@ -25,9 +25,9 @@ from pathlib import Path
 
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
-from ..models.game import Game
-from ..models.game_status import GameStatus
-from ..orchestration.scraper_coordinator import ScraperCoordinator
+from ..SportsDynamics.models.game import Game
+from ..SportsDynamics.models.game_status import GameStatus
+from ..SportsDynamics.orchestration.scraper_coordinator import ScraperCoordinator
 from ..config.settings import settings
 
 # Configure logging

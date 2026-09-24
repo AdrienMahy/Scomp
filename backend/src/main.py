@@ -5,8 +5,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config.database import init_db
 from .config.database import SessionLocal
-from .orchestration.task_retention import purge_task_history
-from .web.routes import competitions, games, teams, players, automation
+from .SportsDynamics.orchestration.task_retention import purge_task_history
+from .SportsDynamics.api.routes import competitions, games, teams, players, automation
+from .STATSport.api.routes import physical
 
 # Logging
 logging.basicConfig(level=logging.INFO)
@@ -34,6 +35,7 @@ app.include_router(games.router)
 app.include_router(teams.router)
 app.include_router(players.router)
 app.include_router(automation.router)
+app.include_router(physical.router)
 
 
 @app.on_event("startup")

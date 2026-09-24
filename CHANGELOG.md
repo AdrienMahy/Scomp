@@ -2,6 +2,27 @@
 
 All notable changes to Scomp are documented in this file.
 
+## [1.1.0] - 2026-09-24
+
+STATSports physical data provider and frontend architecture update.
+
+### Added
+
+- STATSports physical data pipeline with sessions, activities, players, squads, seasons, scraping logs, and automation rules.
+- STATSports API routes for physical data, scraping, automation, logs, and catalog management.
+- Independent STATSports frontend pages for overview, activity, scraping, players, automation, logs, and settings.
+- STATSports activity calendar with squad colors and configurable season boundaries.
+- Custom Scomp logo support through `frontend/public/image/logo.png`.
+
+### Changed
+
+- Organized backend and frontend code by provider while preserving existing SportsDynamics routes and behavior.
+- Rebuilt the production frontend Docker image to serve the new logo asset.
+
+### Database
+
+- Added Alembic migrations for STATSports physical data, change tracking, scraping logs, seasons, and automation rules.
+
 ## [1.0.0] - 2026-09-21
 
 First production release prepared for deployment.
@@ -43,4 +64,5 @@ First production release prepared for deployment.
 - Added cooperative task cancellation support.
 - Merged the five existing Alembic heads into a single head: `20260921_003000`.
 
+[1.1.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.1.0
 [1.0.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.0.0

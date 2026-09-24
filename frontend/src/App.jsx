@@ -1,17 +1,27 @@
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
-import ScrapingPage from './pages/ScrapingPage'
-import GameListPage from './pages/GameListPage'
-import AnalyticsPage from './pages/AnalyticsPage'
-import EnrichmentPage from './pages/EnrichmentPage'
-import AutomationPage from './pages/AutomationPage'
-import OverviewPage from './pages/OverviewPage'
-import TaskCenterPage from './pages/TaskCenterPage'
-import SettingsPage from './pages/SettingsPage'
+import {
+  ActivityPage,
+  AutomationPage as StatsportAutomationPage,
+  LogsPage,
+  OverviewPage as StatsportOverviewPage,
+  PlayersPage,
+  ScrapingPage as StatsportScrapingPage,
+  SettingsPage as StatsportSettingsPage,
+} from './STATSport'
+import {
+  AutomationPage,
+  EnrichmentPage,
+  GameListPage,
+  OverviewPage,
+  ScrapingPage,
+  SettingsPage,
+  TaskCenterPage,
+} from './SportsDynamics'
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('games')
-  const [darkMode, setDarkMode] = useState(true)
+  const [project, setProject] = useState(() => localStorage.getItem('scomp-project') || 'tactical')
   const [scope, setScope] = useState(() => {
     try { return JSON.parse(localStorage.getItem('scomp-scope')) || null } catch { return null }
   })
@@ -19,6 +29,18 @@ export default function App() {
   useEffect(() => {
     if (scope) localStorage.setItem('scomp-scope', JSON.stringify(scope))
   }, [scope])
+
+  useEffect(() => {
+    localStorage.setItem('scomp-project', project)
+    setCurrentPage(currentPage => project === 'physical'
+      ? (currentPage.startsWith('physical-') || currentPage === 'physical' ? currentPage : 'physical-overview')
+      : (currentPage.startsWith('physical-') || currentPage === 'physical' ? 'games' : currentPage))
+  }, [project])
+
+  const changeProject = (nextProject) => {
+    setProject(nextProject)
+    setCurrentPage(nextProject === 'physical' ? 'physical-overview' : 'games')
+  }
 
   // Initialize page from URL query parameter
   useEffect(() => {
@@ -28,37 +50,19 @@ export default function App() {
     
     if (taskId && page === 'logs') {
       setCurrentPage('logs')
-    } else if (page && ['scraping', 'games', 'game-list', 'analytics', 'logs', 'enrichment', 'automation', 'settings'].includes(page)) {
+    } else if (page && ['scraping', 'games', 'game-list', 'logs', 'enrichment', 'automation', 'physical', 'physical-overview', 'physical-activity', 'physical-players', 'physical-automation', 'physical-logs', 'physical-settings', 'settings'].includes(page)) {
+      if (page === 'physical' || page.startsWith('physical-')) setProject('physical')
       setCurrentPage(page)
     }
   }, [])
 
-  // Persist theme preference
-  useEffect(() => {
-    const saved = localStorage.getItem('theme')
-    if (saved) {
-      setDarkMode(saved === 'dark')
-    }
-  }, [])
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-    localStorage.setItem('theme', darkMode ? 'dark' : 'light')
-  }, [darkMode])
-
-  const toggleTheme = () => setDarkMode(!darkMode)
-
   return (
-    <div className="app-shell">
+    <div className={`app-shell project-${project}`}>
       <Navbar 
         currentPage={currentPage} 
         onPageChange={setCurrentPage}
-        darkMode={darkMode}
-        onThemeToggle={toggleTheme}
+        project={project}
+        onProjectChange={changeProject}
         scope={scope}
         onScopeChange={setScope}
       />
@@ -67,18 +71,24 @@ export default function App() {
         <div className="page-topline">
           <div>
             <p className="eyebrow">SPORTS DATA OPERATIONS</p>
-            <p className="page-context">{scope?.competitionName || 'Select competition'} <span>/</span> {scope?.seasonName || 'Select season'}</p>
+            <p className="page-context">{project === 'physical' ? 'STATSports PhysicalData' : `${scope?.competitionName || 'Select competition'} / ${scope?.seasonName || 'Select season'}`}</p>
           </div>
           <div className="system-state"><span className="status-dot" /> API connected</div>
         </div>
-        {currentPage === 'scraping' && <ScrapingPage scope={scope} />}
-        {currentPage === 'games' && <OverviewPage onNavigate={setCurrentPage} />}
-        {currentPage === 'game-list' && <GameListPage scope={scope} />}
-        {currentPage === 'analytics' && <AnalyticsPage />}
-        {currentPage === 'logs' && <TaskCenterPage />}
-        {currentPage === 'enrichment' && <EnrichmentPage scope={scope} />}
-        {currentPage === 'automation' && <AutomationPage onNavigate={setCurrentPage} />}
-        {currentPage === 'settings' && <SettingsPage scope={scope} onScopeChange={setScope} />}
+        {project === 'tactical' && currentPage === 'scraping' && <ScrapingPage scope={scope} />}
+        {project === 'tactical' && currentPage === 'games' && <OverviewPage onNavigate={setCurrentPage} />}
+        {project === 'tactical' && currentPage === 'game-list' && <GameListPage scope={scope} />}
+        {project === 'tactical' && currentPage === 'logs' && <TaskCenterPage />}
+        {project === 'tactical' && currentPage === 'enrichment' && <EnrichmentPage scope={scope} />}
+        {project === 'tactical' && currentPage === 'automation' && <AutomationPage onNavigate={setCurrentPage} />}
+        {project === 'physical' && currentPage === 'physical-overview' && <StatsportOverviewPage onNavigate={setCurrentPage} />}
+        {project === 'physical' && currentPage === 'physical-activity' && <ActivityPage />}
+        {project === 'physical' && currentPage === 'physical' && <StatsportScrapingPage />}
+        {project === 'physical' && currentPage === 'physical-players' && <PlayersPage />}
+        {project === 'physical' && currentPage === 'physical-automation' && <StatsportAutomationPage />}
+        {project === 'physical' && currentPage === 'physical-logs' && <LogsPage />}
+        {project === 'physical' && currentPage === 'physical-settings' && <StatsportSettingsPage />}
+        {project === 'tactical' && currentPage === 'settings' && <SettingsPage scope={scope} onScopeChange={setScope} />}
       </main>
     </div>
   )

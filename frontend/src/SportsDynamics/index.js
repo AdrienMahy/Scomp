@@ -1,0 +1,7 @@
+export { default as AutomationPage } from './pages/AutomationPage'
+export { default as EnrichmentPage } from './pages/EnrichmentPage'
+export { default as GameListPage } from './pages/GameListPage'
+export { default as OverviewPage } from './pages/OverviewPage'
+export { default as ScrapingPage } from './pages/ScrapingPage'
+export { default as SettingsPage } from './pages/SettingsPage'
+export { default as TaskCenterPage } from './pages/TaskCenterPage'

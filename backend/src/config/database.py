@@ -1,7 +1,7 @@
 """Database connection and session management"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ..models.base import Base
+from ..SportsDynamics.models.base import Base
 from .settings import settings
 
 # Create database engine

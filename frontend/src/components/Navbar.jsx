@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
+import { API_BASE } from '../SportsDynamics/api'
+import packageJson from '../../package.json'
 
-const API_BASE = '/api'
 
-export default function Navbar({ currentPage, onPageChange, darkMode, onThemeToggle, scope, onScopeChange }) {
+export default function Navbar({ currentPage, onPageChange, project, onProjectChange, scope, onScopeChange }) {
   const [leagues, setLeagues] = useState([])
   const [open, setOpen] = useState(false)
 
@@ -25,29 +26,52 @@ export default function Navbar({ currentPage, onPageChange, darkMode, onThemeTog
     const season = league?.Seasons?.find(item => String(item.seasonId) === String(seasonId))
     if (league && season) onScopeChange({ competitionId, competitionName: league.Name, seasonId: String(season.seasonId), seasonName: season.name })
   }
-  const navigation = [
+  const tacticalNavigation = [
     { id: 'games', label: 'Overview', icon: '⌂', group: 'Workspace' },
     { id: 'game-list', label: 'Matches', icon: '▤', group: 'Workspace' },
     { id: 'scraping', label: 'Scraping', icon: '↯', group: 'Workspace' },
-    { id: 'analytics', label: 'Analytics', icon: '◒', group: 'Workspace' },
     { id: 'enrichment', label: 'Enrichment', icon: '✦', group: 'Data' },
     { id: 'automation', label: 'Automation', icon: '◌', group: 'Data' },
     { id: 'logs', label: 'Activity logs', icon: '≡', group: 'System' },
     { id: 'settings', label: 'Settings', icon: '⚙', group: 'System' },
   ]
+  const physicalNavigation = [
+    { id: 'physical-overview', label: 'Overview', icon: '⌂', group: 'Workspace' },
+    { id: 'physical-activity', label: 'Activity', icon: '▤', group: 'Workspace' },
+    { id: 'physical', label: 'Scraping', icon: '↯', group: 'Workspace' },
+    { id: 'physical-players', label: 'Players', icon: '◉', group: 'Data' },
+    { id: 'physical-automation', label: 'Automation', icon: '◌', group: 'Data' },
+    { id: 'physical-logs', label: 'Activity logs', icon: '≡', group: 'System' },
+    { id: 'physical-settings', label: 'Settings', icon: '⚙', group: 'System' },
+  ]
+  const navigation = project === 'physical' ? physicalNavigation : tacticalNavigation
 
   return (
     <nav className="sidebar">
       <div className="brand-lockup">
-        <div className="brand-mark">S</div>
+        <img className="brand-logo" src="/image/logo.png" alt="Scomp" />
         <div><strong>Scomp</strong><span>Data control room</span></div>
       </div>
 
-      <div className={`sidebar-season ${open ? 'is-open' : ''}`}>
+      <div className="project-switcher" role="group" aria-label="Application project">
+        <span className="project-switcher-label">PROJECT</span>
+        <div className="project-switcher-options">
+          <button type="button" className={project === 'tactical' ? 'is-active' : ''} onClick={() => onProjectChange('tactical')}>
+            <span className="project-switcher-mark tactical-mark">T</span>
+            <span><strong>TacticalData</strong><small>Match intelligence</small></span>
+          </button>
+          <button type="button" className={project === 'physical' ? 'is-active' : ''} onClick={() => onProjectChange('physical')}>
+            <span className="project-switcher-mark physical-mark">P</span>
+            <span><strong>PhysicalData</strong><small>STATSports pipeline</small></span>
+          </button>
+        </div>
+      </div>
+
+      {project === 'tactical' && <div className={`sidebar-season ${open ? 'is-open' : ''}`}>
         <span className="season-label">ACTIVE SEASON</span>
         <button className="season-trigger" onClick={() => setOpen(!open)}><strong>{scope?.competitionName || 'Loading...'}</strong><span>{scope?.seasonName || 'Choose a season'} <b>{open ? '⌃' : '⌄'}</b></span></button>
         {open && <div className="season-picker"><label>Competition<select value={scope?.competitionId || ''} onChange={event => { const league = leagues.find(item => item.competitionId === event.target.value); selectScope(event.target.value, league?.Seasons?.[0]?.seasonId) }}><option value="" disabled>Select</option>{leagues.map(league => <option key={league.competitionId} value={league.competitionId}>{league.Name}</option>)}</select></label><label>Season<select value={scope?.seasonId || ''} onChange={event => selectScope(scope?.competitionId || activeLeague?.competitionId, event.target.value)}>{(activeLeague?.Seasons || []).map(season => <option key={season.seasonId} value={season.seasonId}>{season.name}</option>)}</select></label></div>}
-      </div>
+      </div>}
 
       <div className="nav-groups">
         {['Workspace', 'Data', 'System'].map(group => (
@@ -69,10 +93,7 @@ export default function Navbar({ currentPage, onPageChange, darkMode, onThemeTog
       </div>
 
       <div className="sidebar-footer">
-        <div className="operator-card"><span className="avatar">AM</span><div><strong>Operator</strong><span>System ready</span></div><span className="operator-menu">···</span></div>
-        <button className="theme-toggle" onClick={onThemeToggle} title={darkMode ? 'Light mode' : 'Dark mode'}>
-          <span>{darkMode ? '☾' : '☀'}</span>{darkMode ? 'Dark appearance' : 'Light appearance'}
-        </button>
+        <span className="app-version">Scomp v{packageJson.version}</span>
       </div>
     </nav>
   )

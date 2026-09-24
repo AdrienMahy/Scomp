@@ -12,7 +12,7 @@ from decimal import Decimal
 sys.path.insert(0, str(Path.cwd()))
 
 from src.config.database import SessionLocal
-from src.models.game import Game
+from src.SportsDynamics.models.game import Game
 
 
 class DateTimeEncoder(json.JSONEncoder):
