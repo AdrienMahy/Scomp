@@ -7,13 +7,16 @@ from typing import Optional
 from pydantic import Field, ConfigDict
 from pydantic_settings import BaseSettings
 
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+CONFIG_ENV_FILE = PROJECT_ROOT / "config" / ".env"
+
 
 class DatabaseSettings(BaseSettings):
     """Database configuration - supports SQLite (dev) and PostgreSQL (prod)"""
-    model_config = ConfigDict(case_sensitive=False, extra="allow", env_file=".env")
+    model_config = ConfigDict(case_sensitive=False, extra="allow", env_file=CONFIG_ENV_FILE)
     
-    # Direct DATABASE_URL (takes precedence if set)
-    database_url: Optional[str] = Field(default=None, validation_alias="DATABASE_URL")
+    # TacticalData connection URL
+    database_url: Optional[str] = Field(default=None, validation_alias="TACTICAL_DATABASE_URL")
     
     # Database type: "sqlite" or "postgresql"
     db_type: str = Field(default="sqlite", validation_alias="DB_TYPE")
@@ -31,7 +34,7 @@ class DatabaseSettings(BaseSettings):
     @property
     def url(self) -> str:
         """Database connection URL based on type"""
-        # If DATABASE_URL is set directly, use it (takes precedence)
+        # If TACTICAL_DATABASE_URL is set directly, use it (takes precedence)
         if self.database_url:
             return self.database_url
         
@@ -45,7 +48,7 @@ class DatabaseSettings(BaseSettings):
 
 class SportsDynamicsSettings(BaseSettings):
     """SportsDynamics API configuration"""
-    model_config = ConfigDict(case_sensitive=False, extra="allow", env_file=".env", env_prefix="SPORTSDYNAMICS_")
+    model_config = ConfigDict(case_sensitive=False, extra="allow", env_file=CONFIG_ENV_FILE, env_prefix="SPORTSDYNAMICS_")
     
     api_key: str = Field(default="")
     api_url: str = Field(default="https://api-v2.sportsdynamics.eu/graphql")
@@ -53,7 +56,7 @@ class SportsDynamicsSettings(BaseSettings):
 
 class Settings(BaseSettings):
     """Main application settings"""
-    model_config = ConfigDict(env_file=".env", case_sensitive=False, extra="allow")
+    model_config = ConfigDict(env_file=CONFIG_ENV_FILE, case_sensitive=False, extra="allow")
     
     # Environment
     environment: str = "development"
@@ -66,7 +69,7 @@ class Settings(BaseSettings):
     sportsdynamics: Optional[SportsDynamicsSettings] = None
     
     # Paths
-    project_root: Path = Path(__file__).parent.parent.parent.parent
+    project_root: Path = PROJECT_ROOT
     start_dir: Path = project_root / "start"
     ids_config_path_override: Optional[Path] = Field(
         default=None,

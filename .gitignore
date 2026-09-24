@@ -74,6 +74,7 @@ lerna-debug.log*
 # ENVIRONMENT & SECRETS
 # ============================================================================
 .env
+.env_old
 .env.local
 .env.*.local
 .env.production.local

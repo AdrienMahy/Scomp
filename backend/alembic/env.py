@@ -7,9 +7,10 @@ from sqlalchemy import pool
 
 from alembic import context
 
-# Load environment variables from .env
+# Load environment variables from config/.env
 from dotenv import load_dotenv
-load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), "..", ".env"))
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+load_dotenv(os.path.join(project_root, "config", ".env"))
 
 # Add src directory to path so we can import our models
 src_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "src")

@@ -16,8 +16,8 @@ Sports data scraping and API service for aggregating football competition data f
 
 1. **Setup environment**
    ```bash
-   cp .env.example .env
-   # Edit .env with your credentials
+   cp backend/.env.example config/.env
+   # Edit config/.env with your credentials
    ```
 
 2. **Install dependencies**
@@ -83,10 +83,11 @@ backend/
 
 ## Environment Variables
 
-See `.env.example` for all configuration options.
+See `backend/.env.example` for all configuration options.
 
 Key variables:
-- `POSTGRES_*` - Database connection
+- `TACTICAL_DATABASE_URL` - TacticalData database connection
+- `PHYSICAL_DATABASE_URL` - PhysicalData database connection
 - `SPORTSDYNAMICS_API_KEY` - API credentials
 - `CELERY_BROKER_URL` - Redis connection
 

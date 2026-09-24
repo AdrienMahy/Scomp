@@ -6,24 +6,22 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse, urlunparse
 
 from dotenv import dotenv_values
 from sqlalchemy import create_engine, text
 
 
 def physical_database_url(config_path: Path) -> str:
-    """Build the PhysicalData URL from the shared local configuration."""
+    """Read the explicit PhysicalData URL from the shared configuration."""
     configured_url = os.getenv("PHYSICAL_DATABASE_URL")
     if configured_url:
         return configured_url
 
     values = dotenv_values(config_path)
-    database_url = values.get("DATABASE_URL") or os.getenv("DATABASE_URL")
-    if not database_url:
-        raise ValueError("DATABASE_URL or PHYSICAL_DATABASE_URL is required")
-    parsed = urlparse(database_url)
-    return urlunparse(parsed._replace(path="/PhysicalData"))
+    configured_url = values.get("PHYSICAL_DATABASE_URL")
+    if not configured_url:
+        raise ValueError("PHYSICAL_DATABASE_URL is required")
+    return configured_url
 
 
 def json_value(value: Any) -> str:
