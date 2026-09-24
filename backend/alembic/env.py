@@ -16,8 +16,8 @@ load_dotenv(os.path.join(project_root, "config", ".env"))
 src_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "src")
 sys.path.insert(0, src_dir)
 
-# Import Base from models
-from models.base import Base
+# Import the provider-owned model metadata.
+from SportsDynamics.models.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -40,7 +40,7 @@ target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
-    url = os.getenv("DATABASE_URL") or config.get_main_option("sqlalchemy.url")
+    url = os.getenv("TACTICAL_DATABASE_URL") or os.getenv("DATABASE_URL") or config.get_main_option("sqlalchemy.url")
     if not url:
         raise ValueError("DATABASE_URL environment variable not set and no sqlalchemy.url in config")
     
@@ -60,7 +60,7 @@ def run_migrations_offline() -> None:
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode with autogenerate support."""
     # Get database URL from environment or config
-    url = os.getenv("DATABASE_URL")
+    url = os.getenv("TACTICAL_DATABASE_URL") or os.getenv("DATABASE_URL")
     
     if url:
         # Use environment variable

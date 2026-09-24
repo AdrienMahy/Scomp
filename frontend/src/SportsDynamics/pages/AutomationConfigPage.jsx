@@ -11,6 +11,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [runningConfigId, setRunningConfigId] = useState(null);
+  const [togglingConfigId, setTogglingConfigId] = useState(null);
   const [runResult, setRunResult] = useState(null);
   
   const [formData, setFormData] = useState({
@@ -166,6 +167,23 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       await fetchConfigs();
     } catch (err) {
       setError(`Failed to delete configuration: ${err.message}`);
+    }
+  };
+
+  const handleToggle = async (configuration) => {
+    try {
+      setTogglingConfigId(configuration.id);
+      const response = await axios.put(`${API_BASE}/automation/configurations/${configuration.id}`, {
+        enabled: !configuration.enabled,
+      });
+      setConfigs(current => current.map(config => (
+        config.id === configuration.id ? { ...config, ...response.data } : config
+      )));
+      setError(null);
+    } catch (err) {
+      setError(`Failed to update configuration: ${err.response?.data?.detail || err.message}`);
+    } finally {
+      setTogglingConfigId(null);
     }
   };
 
@@ -521,6 +539,20 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
                   )}
                 </div>
                 <div className="flex gap-2 ml-4">
+                  <button
+                    onClick={() => handleToggle(config)}
+                    disabled={togglingConfigId === config.id}
+                    className={`px-3 py-1 rounded text-sm font-semibold transition-colors disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed ${
+                      config.enabled
+                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                        : 'bg-accent-red text-white hover:bg-primary-600'
+                    }`}
+                    title={config.enabled ? 'Disable this configuration' : 'Enable this configuration'}
+                  >
+                    {togglingConfigId === config.id
+                      ? '⏳ Updating'
+                      : config.enabled ? 'Disable' : 'Enable'}
+                  </button>
                   <button
                     onClick={() => handleRunConfiguration(config)}
                     disabled={runningConfigId === config.id || !config.enabled}

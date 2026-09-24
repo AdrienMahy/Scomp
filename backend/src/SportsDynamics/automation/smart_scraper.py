@@ -90,6 +90,16 @@ class SmartScraper:
                 result["errors"].append("No active competitions configured")
                 return result
             
+            scheduled_comps = [
+                comp for comp in active_comps
+                if self.config.is_schedule_due(comp)
+            ]
+            if not scheduled_comps:
+                logger.info("No active competitions are due in the current UTC schedule window")
+                result["status"] = "success"
+                return result
+
+            active_comps = scheduled_comps
             logger.info(f"Active competitions: {len(active_comps)}")
             for comp in active_comps:
                 logger.info(f"  - {comp['name']} (provider: {comp['provider']})")

@@ -54,6 +54,9 @@ class AutomationConfig:
                         "scrape_interval_minutes": c.scrape_interval_minutes,
                         "live_game_window_minutes": c.live_game_window_minutes,
                         "task_timeout_seconds": c.task_timeout_seconds,
+                        "window_start_utc": c.window_start_utc,
+                        "window_end_utc": c.window_end_utc,
+                        "weekdays": [int(day) for day in (c.weekdays or "").split(",") if day != ""],
                     }
                     for c in configs
                 ]
@@ -85,3 +88,15 @@ class AutomationConfig:
         time_to = now + timedelta(days=look_ahead)
         
         return (time_from, time_to)
+
+    @staticmethod
+    def is_schedule_due(configuration: Dict[str, Any], now: datetime | None = None) -> bool:
+        """Return whether a configuration is enabled for the current UTC slot."""
+        current = now or datetime.utcnow()
+        weekdays = configuration.get("weekdays", list(range(7)))
+        if current.weekday() not in weekdays:
+            return False
+
+        start = datetime.strptime(configuration.get("window_start_utc", "00:00")[:5], "%H:%M").time()
+        end = datetime.strptime(configuration.get("window_end_utc", "23:59")[:5], "%H:%M").time()
+        return start <= current.time() <= end

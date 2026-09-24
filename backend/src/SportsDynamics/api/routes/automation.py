@@ -45,6 +45,9 @@ class AutomationConfigCreateSchema(BaseModel):
     provider: str = "sportsdynamics"
     scrape_interval_minutes: int = 20
     enabled: bool = True
+    window_start_utc: str = "00:00"
+    window_end_utc: str = "23:59"
+    weekdays: List[int] = list(range(7))
     look_ahead_days: int = 7
     look_back_days: int = 1
     live_game_window_minutes: int = 120
@@ -57,9 +60,13 @@ class AutomationConfigUpdateSchema(BaseModel):
     description: Optional[str] = None
     competition_id: Optional[str] = None
     competition_name: Optional[str] = None
+    season_id: Optional[str] = None
     season_name: Optional[str] = None
     scrape_interval_minutes: Optional[int] = None
     enabled: Optional[bool] = None
+    window_start_utc: Optional[str] = None
+    window_end_utc: Optional[str] = None
+    weekdays: Optional[List[int]] = None
     look_ahead_days: Optional[int] = None
     look_back_days: Optional[int] = None
     live_game_window_minutes: Optional[int] = None
@@ -78,6 +85,9 @@ class AutomationConfigResponseSchema(BaseModel):
     provider: str
     scrape_interval_minutes: int
     enabled: bool
+    window_start_utc: str
+    window_end_utc: str
+    weekdays: List[int]
     look_ahead_days: int
     look_back_days: int
     live_game_window_minutes: int
@@ -189,7 +199,7 @@ def get_automation_config():
 @router.get("/logs")
 def get_automation_logs(
     limit: int = 50,
-    hours: int = 24,
+    hours: Optional[int] = None,
     status: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
@@ -204,9 +214,10 @@ def get_automation_logs(
         reconcile_stale_tasks(db)
         query = db.query(ScrapingTask).filter(ScrapingTask.workflow == "autonomous_scrape")
         
-        # Filter by time
-        cutoff_time = datetime.utcnow() - timedelta(hours=hours)
-        query = query.filter(ScrapingTask.created_at >= cutoff_time)
+        # Filter by time only when a lookback window is explicitly requested.
+        if hours is not None:
+            cutoff_time = datetime.utcnow() - timedelta(hours=hours)
+            query = query.filter(ScrapingTask.created_at >= cutoff_time)
         
         # Filter by status
         if status:
@@ -214,9 +225,11 @@ def get_automation_logs(
         
         # Order by most recent first
         logs = query.order_by(ScrapingTask.created_at.desc()).limit(limit).all()
-        competition_names = {
-            competition.id: competition.name
-            for competition in db.query(Competition).all()
+        configuration_names = {
+            (config.competition_id, config.season_id): config.name
+            for config in db.query(AutomationConfiguration).order_by(
+                AutomationConfiguration.created_at.desc()
+            ).all()
         }
         
         return {
@@ -224,7 +237,10 @@ def get_automation_logs(
                 {
                     "id": log.id,
                     "competition_id": log.competition_id,
-                    "competition_name": competition_names.get(log.competition_id, log.competition_id),
+                    "configuration_name": configuration_names.get(
+                        (log.competition_id, log.season_id),
+                        f"{log.competition_id} / {log.season_id}",
+                    ),
                     "status": log.status,
                     "games_count": log.processed_items,
                     "error_message": log.error_message,
@@ -412,6 +428,9 @@ def create_automation_configuration(
             provider=payload.provider,
             scrape_interval_minutes=payload.scrape_interval_minutes,
             enabled=payload.enabled,
+            window_start_utc=payload.window_start_utc,
+            window_end_utc=payload.window_end_utc,
+            weekdays=','.join(str(day) for day in payload.weekdays),
             look_ahead_days=payload.look_ahead_days,
             look_back_days=payload.look_back_days,
             live_game_window_minutes=payload.live_game_window_minutes,
@@ -442,6 +461,8 @@ def update_automation_configuration(
         
         # Update only provided fields
         update_data = payload.dict(exclude_unset=True)
+        if "weekdays" in update_data:
+            update_data["weekdays"] = ",".join(str(day) for day in update_data["weekdays"])
         if "competition_id" in update_data:
             competition = db.query(Competition).filter(
                 Competition.id == update_data["competition_id"]

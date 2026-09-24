@@ -4,6 +4,192 @@
   width: 100%;
 }
 
+.physical-offcanvas-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(3, 10, 11, 0.68);
+}
+
+.physical-automation-offcanvas {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(470px, 94vw);
+  overflow-y: auto;
+  border-left: 1px solid rgba(183, 243, 74, 0.3);
+  background: #172326;
+  box-shadow: -18px 0 50px rgba(0, 0, 0, 0.35);
+  animation: sportsdynamics-offcanvas-in 0.2s ease-out;
+}
+
+.physical-automation-offcanvas .physical-panel-heading {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #172326;
+}
+
+.physical-offcanvas-close {
+  display: grid;
+  place-items: center;
+  border: 0;
+  padding: 6px;
+  background: transparent;
+  color: #80958a;
+}
+
+.physical-offcanvas-close:hover {
+  color: #c9f67b;
+}
+
+.physical-config-form select,
+.physical-config-form input[type='time'] {
+  width: 100%;
+  border: 1px solid rgba(150, 183, 171, 0.17);
+  border-radius: 6px;
+  padding: 10px;
+  outline: none;
+  background: #111d20;
+  color: #e3f0e9;
+  font-size: 11px;
+}
+
+.physical-config-form select:focus,
+.physical-config-form input[type='time']:focus {
+  border-color: #b7f34a;
+}
+
+.physical-config-form fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.physical-config-form legend {
+  margin-bottom: 7px;
+  color: #9eb4ac;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.physical-weekday-picker {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.physical-weekday-picker button {
+  border: 1px solid rgba(150, 183, 171, 0.17);
+  border-radius: 5px;
+  padding: 9px 4px;
+  background: #111d20;
+  color: #718a82;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.physical-weekday-picker button.is-selected {
+  border-color: #b7f34a;
+  background: rgba(183, 243, 74, 0.14);
+  color: #c9f67b;
+}
+
+.physical-toggle-label {
+  min-width: 24px;
+  color: #80958a;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.physical-automation-rule-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  color: #80958a;
+  font-size: 9px;
+}
+
+.physical-automation-rule-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid rgba(183, 243, 74, 0.26);
+  border-radius: 5px;
+  padding: 6px 8px;
+  background: rgba(183, 243, 74, 0.08);
+  color: #c9f67b;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.physical-automation-rule-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.physical-automation-run p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #ff9a96;
+  font-size: 9px;
+}
+
+.project-tactical .physical-automation-add,
+.project-tactical .physical-automation-offcanvas .physical-primary-button {
+  background: #ceab5d;
+  color: #172326;
+}
+
+.project-tactical .physical-automation-add:hover,
+.project-tactical .physical-automation-offcanvas .physical-primary-button:hover {
+  background: #e6c978;
+}
+
+.project-tactical .physical-automation-summary > div {
+  color: #e6c978;
+}
+
+.project-tactical .physical-automation-rule.is-enabled {
+  border-color: rgba(206, 171, 93, 0.35);
+  background: rgba(206, 171, 93, 0.07);
+}
+
+.project-tactical .is-enabled .physical-automation-rule-status {
+  background: #ceab5d;
+  box-shadow: 0 0 0 4px rgba(206, 171, 93, 0.14);
+}
+
+.project-tactical .physical-automation-days i.is-selected,
+.project-tactical .physical-weekday-picker button.is-selected {
+  border-color: #ceab5d;
+  background: rgba(206, 171, 93, 0.16);
+  color: #e6c978;
+}
+
+.project-tactical .physical-automation-offcanvas {
+  border-left-color: rgba(206, 171, 93, 0.45);
+}
+
+.project-tactical .physical-config-form select:focus,
+.project-tactical .physical-config-form input[type='time']:focus {
+  border-color: #ceab5d;
+}
+
+.project-tactical .physical-automation-rule-actions button {
+  border-color: rgba(206, 171, 93, 0.3);
+  background: rgba(206, 171, 93, 0.08);
+  color: #e6c978;
+}
+
+@keyframes sportsdynamics-offcanvas-in {
+  from { transform: translateX(18px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
 .automation-header {
   display: flex;
   justify-content: space-between;

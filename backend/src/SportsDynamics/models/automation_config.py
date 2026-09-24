@@ -31,6 +31,9 @@ class AutomationConfiguration(Base, TimestampMixin):
     # Scraping schedule
     scrape_interval_minutes = Column(Integer, default=20, nullable=False)  # How often to scrape
     enabled = Column(Boolean, default=True, nullable=False)  # Enable/disable this config
+    window_start_utc = Column(String(8), default="00:00:00", nullable=False)
+    window_end_utc = Column(String(8), default="23:59:59", nullable=False)
+    weekdays = Column(String(20), default="0,1,2,3,4,5,6", nullable=False)
     
     # Time windows
     look_ahead_days = Column(Integer, default=7, nullable=False)  # Future games to scrape
@@ -56,6 +59,9 @@ class AutomationConfiguration(Base, TimestampMixin):
             "provider": self.provider,
             "scrape_interval_minutes": self.scrape_interval_minutes,
             "enabled": self.enabled,
+            "window_start_utc": self.window_start_utc,
+            "window_end_utc": self.window_end_utc,
+            "weekdays": [int(day) for day in (self.weekdays or "").split(",") if day != ""],
             "look_ahead_days": self.look_ahead_days,
             "look_back_days": self.look_back_days,
             "live_game_window_minutes": self.live_game_window_minutes,

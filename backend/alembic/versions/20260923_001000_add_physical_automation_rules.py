@@ -6,7 +6,7 @@ from sqlalchemy.dialects import postgresql
 
 revision = "20260923_001000"
 down_revision = "20260923_000000"
-branch_labels = ("physical_data",)
+branch_labels = None
 depends_on = None
 
 
