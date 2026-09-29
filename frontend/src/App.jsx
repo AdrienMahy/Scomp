@@ -3,9 +3,11 @@ import Navbar from './components/Navbar'
 import {
   ActivityPage,
   AutomationPage as StatsportAutomationPage,
+  DeletedSessionsPage,
   LogsPage,
   OverviewPage as StatsportOverviewPage,
   PlayersPage,
+  PhysicalDataEditorPage,
   ScrapingPage as StatsportScrapingPage,
   SettingsPage as StatsportSettingsPage,
 } from './STATSport'
@@ -50,7 +52,7 @@ export default function App() {
     
     if (taskId && page === 'logs') {
       setCurrentPage('logs')
-    } else if (page && ['scraping', 'games', 'game-list', 'logs', 'enrichment', 'automation', 'physical', 'physical-overview', 'physical-activity', 'physical-players', 'physical-automation', 'physical-logs', 'physical-settings', 'settings'].includes(page)) {
+    } else if (page && ['scraping', 'games', 'game-list', 'logs', 'enrichment', 'automation', 'physical', 'physical-overview', 'physical-activity', 'physical-players', 'physical-data', 'physical-deleted-sessions', 'physical-automation', 'physical-logs', 'physical-settings', 'settings'].includes(page)) {
       if (page === 'physical' || page.startsWith('physical-')) setProject('physical')
       setCurrentPage(page)
     }
@@ -85,6 +87,8 @@ export default function App() {
         {project === 'physical' && currentPage === 'physical-activity' && <ActivityPage />}
         {project === 'physical' && currentPage === 'physical' && <StatsportScrapingPage />}
         {project === 'physical' && currentPage === 'physical-players' && <PlayersPage />}
+        {project === 'physical' && currentPage === 'physical-data' && <PhysicalDataEditorPage />}
+        {project === 'physical' && currentPage === 'physical-deleted-sessions' && <DeletedSessionsPage />}
         {project === 'physical' && currentPage === 'physical-automation' && <StatsportAutomationPage />}
         {project === 'physical' && currentPage === 'physical-logs' && <LogsPage />}
         {project === 'physical' && currentPage === 'physical-settings' && <StatsportSettingsPage />}

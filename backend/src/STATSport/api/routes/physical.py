@@ -1,6 +1,7 @@
 """PhysicalData browsing and STATSports scraping control routes."""
 
 from datetime import date, time
+import json
 from typing import Any
 from uuid import uuid4
 
@@ -20,6 +21,32 @@ from src.STATSport.orchestration.orchestration import (
 router = APIRouter(prefix="/statsport/physical", tags=["statsport"])
 
 
+def _activity_statuses(logs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    activities: dict[str, dict[str, Any]] = {}
+    for log in logs:
+        activity_id = log.get("activity_id")
+        if not activity_id:
+            continue
+        key = str(activity_id)
+        activity = activities.setdefault(key, {
+            "activity_id": key,
+            "activity_name": log.get("activity_name") or "Unnamed activity",
+            "status": "processing",
+            "reason": None,
+        })
+        details = log.get("details") or {}
+        if log.get("step") in {"activity_failed", "quality_validation"}:
+            activity["status"] = "failed"
+            activity["reason"] = log.get("message") or "Activity processing failed"
+        elif log.get("step") == "data_presence":
+            activity["status"] = "skipped"
+            activity["reason"] = log.get("message") or "Activity was already present and unchanged"
+        elif log.get("step") == "persistence":
+            activity["status"] = "updated" if details.get("updated") else "inserted"
+            activity["reason"] = log.get("message")
+    return list(activities.values())
+
+
 class AutomationConfigurationUpdate(BaseModel):
     name: str = Field(default="statsport_daily", min_length=1, max_length=100)
     enabled: bool = False
@@ -37,6 +64,45 @@ class SeasonUpdate(BaseModel):
     name: str = Field(min_length=1, max_length=100)
     start_date: date
     end_date: date
+
+
+EDITOR_METRICS = {
+    "distanceTotal": "distance",
+    "distancePerMin": "distance",
+    "sprintDistance": "distance",
+    "accelerationsAbs": "acceleration",
+    "accelerationsRel": "acceleration",
+    "maxAcceleration": "acceleration",
+    "totalAccelLoading": "acceleration",
+}
+EXCLUDED_EDITOR_DRILLS = {"entire session", "entire session - live"}
+
+
+class ManualMetricsUpdate(BaseModel):
+    session_id: str
+    player_id: str
+    drill_metadata_id: str
+    metrics: dict[str, float | None]
+
+
+class ManualEditorRow(BaseModel):
+    drill_metadata_id: str
+    metrics: dict[str, float | None]
+
+
+class ManualEditorSave(BaseModel):
+    session_id: str
+    player_id: str
+    rows: list[ManualEditorRow] = Field(min_length=1)
+
+
+class ManualBulkUpdate(BaseModel):
+    session_id: str
+    player_id: str
+    drill_metadata_ids: list[str] = Field(min_length=1)
+    action: str
+    source_player_id: str | None = None
+    persist: bool = False
 
 
 def _scrape_error(error: Exception) -> HTTPException:
@@ -245,10 +311,27 @@ def list_sessions(
             FROM sessions s
             JOIN squads sq ON sq.id = s.squad_id
                  LEFT JOIN seasons se ON se.id = s.season_id
-            {where_clause}
+            {where_clause}{' AND ' if where_clause else 'WHERE '}s.source_status = 'active'
             ORDER BY s.session_date DESC, s.activity_name
             LIMIT :limit
         """), params).mappings()
+        return [dict(row) for row in rows]
+
+
+@router.get("/sessions/deleted")
+def list_deleted_sessions(limit: int = Query(default=100, ge=1, le=500)) -> list[dict[str, Any]]:
+    with get_physical_engine().connect() as connection:
+        rows = connection.execute(text("""
+            SELECT s.id, s.activity_id, s.activity_name, s.share_date,
+                   s.session_date, s.start_time, s.end_time, s.session_type,
+                   s.squad_id, sq.external_id AS squad_external_id, sq.name AS squad_name,
+                   s.deleted_at, s.missing_count, s.last_seen_at
+            FROM sessions s
+            JOIN squads sq ON sq.id = s.squad_id
+            WHERE s.source_status = 'deleted'
+            ORDER BY s.deleted_at DESC NULLS LAST, s.session_date DESC
+            LIMIT :limit
+        """), {"limit": limit}).mappings()
         return [dict(row) for row in rows]
 
 
@@ -277,6 +360,18 @@ def list_players(
             ORDER BY p.display_name NULLS LAST
             LIMIT :limit
         """), params).mappings()
+        return [dict(row) for row in rows]
+
+
+@router.get("/players/all")
+def list_all_players() -> list[dict[str, Any]]:
+    with get_physical_engine().connect() as connection:
+        rows = connection.execute(text("""
+            SELECT p.id, p.display_name, p.first_name, p.last_name,
+                   p.primary_position, p.secondary_position, p.active_squad_name
+            FROM players p
+            ORDER BY p.display_name NULLS LAST, p.last_name NULLS LAST, p.first_name NULLS LAST
+        """)).mappings()
         return [dict(row) for row in rows]
 
 
@@ -312,7 +407,8 @@ def get_physical_log(run_id: str) -> dict[str, Any]:
             WHERE run_id = CAST(:run_id AS uuid)
             ORDER BY sequence_no
         """), {"run_id": run_id}).mappings()
-        return {"run": dict(run), "logs": [dict(log) for log in logs]}
+        log_entries = [dict(log) for log in logs]
+        return {"run": dict(run), "logs": log_entries, "activities": _activity_statuses(log_entries)}
 
 
 @router.get("/activities/{activity_id}/players/{player_id}")
@@ -385,7 +481,13 @@ def get_activity(activity_id: str) -> dict[str, Any]:
         players = connection.execute(text("""
             SELECT p.id, p.display_name, p.first_name, p.last_name,
                    p.primary_position, p.secondary_position,
-                   sp.player_details
+                                     sp.player_details,
+                                     CASE WHEN EXISTS (
+                                             SELECT 1
+                                             FROM manual_drill_values mdv
+                                             WHERE mdv.session_id = sp.session_id
+                                                 AND mdv.player_id = sp.player_id
+                                     ) THEN '"Manual Data"'::json ELSE '[]'::json END AS active_squad_name
             FROM session_players sp
             JOIN players p ON p.id = sp.player_id
             WHERE sp.session_id = :session_id
@@ -408,3 +510,222 @@ def get_activity(activity_id: str) -> dict[str, Any]:
             "players": [dict(player) for player in players],
             "drills": [dict(drill) for drill in drills],
         }
+
+
+def _editor_value(metrics: dict[str, Any] | None, metric: str) -> Any:
+    category = EDITOR_METRICS[metric]
+    return (metrics or {}).get(category, {}).get(metric)
+
+
+def _editor_rows(connection: Any, session_id: str, player_id: str) -> list[dict[str, Any]]:
+    rows = connection.execute(text("""
+        SELECT dm.id, dm.drill_name, dm.primary_label, dm.secondary_label,
+               dm.tertiary_label, dm.session_type,
+               d.metrics AS imported_metrics, mdv.metric_values AS manual_metrics
+        FROM drill_metadata dm
+        LEFT JOIN session_players sp
+          ON sp.session_id = dm.session_id AND sp.player_id = CAST(:player_id AS uuid)
+        LEFT JOIN LATERAL (
+            SELECT d.metrics
+            FROM drills d
+            WHERE d.session_player_id = sp.id AND d.drill_metadata_id = dm.id
+            ORDER BY d.start_time NULLS FIRST, d.id
+            LIMIT 1
+        ) d ON true
+        LEFT JOIN manual_drill_values mdv
+          ON mdv.session_id = dm.session_id
+         AND mdv.player_id = CAST(:player_id AS uuid)
+         AND mdv.drill_metadata_id = dm.id
+        WHERE dm.session_id = CAST(:session_id AS uuid)
+          AND lower(trim(coalesce(dm.drill_name, ''))) NOT IN ('entire session', 'entire session - live')
+        ORDER BY dm.primary_label NULLS FIRST, dm.drill_name, dm.id
+    """), {"session_id": session_id, "player_id": player_id}).mappings()
+    result = []
+    for row in rows:
+        imported = row["imported_metrics"] or {}
+        manual = row["manual_metrics"] or {}
+        result.append({
+            "id": str(row["id"]),
+            "drill_name": row["drill_name"],
+            "primary_label": row["primary_label"],
+            "secondary_label": row["secondary_label"],
+            "tertiary_label": row["tertiary_label"],
+            "session_type": row["session_type"],
+            "has_imported_data": bool(row["imported_metrics"]),
+            "values": {metric: manual.get(metric, _editor_value(imported, metric)) for metric in EDITOR_METRICS},
+        })
+    return result
+
+
+def _validate_editor_metrics(metrics: dict[str, float | None]) -> dict[str, float | None]:
+    unknown = set(metrics) - set(EDITOR_METRICS)
+    if unknown:
+        raise HTTPException(status_code=422, detail=f"Unsupported metrics: {', '.join(sorted(unknown))}")
+    return {key: (None if value is None else float(value)) for key, value in metrics.items()}
+
+
+def _save_manual_values(connection: Any, update: ManualMetricsUpdate) -> None:
+    metrics = _validate_editor_metrics(update.metrics)
+    metadata = connection.execute(text("""
+        SELECT id FROM drill_metadata
+        WHERE id = CAST(:drill_metadata_id AS uuid)
+          AND session_id = CAST(:session_id AS uuid)
+          AND lower(trim(coalesce(drill_name, ''))) NOT IN ('entire session', 'entire session - live')
+    """), update.model_dump()).first()
+    player = connection.execute(text("SELECT id, player_details FROM players WHERE id = CAST(:player_id AS uuid)"), update.model_dump()).mappings().first()
+    if not metadata or not player:
+        raise HTTPException(status_code=404, detail="Session drill or player not found")
+
+    existing_manual = connection.execute(text("""
+        SELECT metric_values FROM manual_drill_values
+        WHERE session_id = CAST(:session_id AS uuid)
+          AND player_id = CAST(:player_id AS uuid)
+          AND drill_metadata_id = CAST(:drill_metadata_id AS uuid)
+    """), update.model_dump()).scalar_one_or_none() or {}
+    merged_metrics = {key: value for key, value in existing_manual.items() if key not in metrics}
+    merged_metrics.update({key: value for key, value in metrics.items() if value is not None})
+    if not merged_metrics:
+        connection.execute(text("""
+            DELETE FROM manual_drill_values
+            WHERE session_id = CAST(:session_id AS uuid)
+              AND player_id = CAST(:player_id AS uuid)
+              AND drill_metadata_id = CAST(:drill_metadata_id AS uuid)
+        """), update.model_dump())
+        return
+
+    participation = connection.execute(text("""
+        SELECT id FROM session_players
+        WHERE session_id = CAST(:session_id AS uuid) AND player_id = CAST(:player_id AS uuid)
+    """), update.model_dump()).first()
+    if not participation:
+        participation_id = str(uuid4())
+        connection.execute(text("""
+            INSERT INTO session_players (id, session_id, player_id, source_id, player_details)
+            VALUES (CAST(:id AS uuid), CAST(:session_id AS uuid), CAST(:player_id AS uuid),
+                    CAST(:source_id AS uuid), CAST(:player_details AS jsonb))
+        """), {**update.model_dump(), "id": participation_id, "source_id": str(uuid4()), "player_details": json.dumps({"manual_only": True})})
+    else:
+        participation_id = str(participation[0])
+
+    existing_drill = connection.execute(text("""
+        SELECT id FROM drills
+        WHERE session_player_id = CAST(:session_player_id AS uuid)
+          AND drill_metadata_id = CAST(:drill_metadata_id AS uuid)
+        LIMIT 1
+    """), {"session_player_id": participation_id, "drill_metadata_id": update.drill_metadata_id}).first()
+    if not existing_drill:
+        connection.execute(text("""
+            INSERT INTO drills (id, session_player_id, drill_metadata_id, source_id, metrics, raw_data)
+            VALUES (CAST(:id AS uuid), CAST(:session_player_id AS uuid), CAST(:drill_metadata_id AS uuid),
+                    CAST(:source_id AS uuid), '{}'::jsonb, '{}'::jsonb)
+        """), {"id": str(uuid4()), "session_player_id": participation_id, "drill_metadata_id": update.drill_metadata_id, "source_id": str(uuid4())})
+
+    connection.execute(text("""
+        INSERT INTO manual_drill_values (id, session_id, player_id, drill_metadata_id, metric_values)
+        VALUES (CAST(:id AS uuid), CAST(:session_id AS uuid), CAST(:player_id AS uuid),
+                CAST(:drill_metadata_id AS uuid), CAST(:metric_values AS jsonb))
+        ON CONFLICT (session_id, player_id, drill_metadata_id)
+        DO UPDATE SET metric_values = EXCLUDED.metric_values,
+                      updated_at = now()
+        """), {**update.model_dump(), "id": str(uuid4()), "metric_values": json.dumps(merged_metrics)})
+
+
+def _cleanup_empty_manual_player(connection: Any, session_id: str, player_id: str) -> None:
+    params = {"session_id": session_id, "player_id": player_id}
+    connection.execute(text("""
+        DELETE FROM manual_drill_values
+        WHERE session_id = CAST(:session_id AS uuid)
+          AND player_id = CAST(:player_id AS uuid)
+          AND NOT EXISTS (
+              SELECT 1
+              FROM manual_drill_values remaining
+              WHERE remaining.session_id = manual_drill_values.session_id
+                AND remaining.player_id = manual_drill_values.player_id
+                AND COALESCE(remaining.metric_values, '{}'::jsonb) <> '{}'::jsonb
+          )
+    """), params)
+    connection.execute(text("""
+        DELETE FROM drills d
+        USING session_players sp
+        WHERE d.session_player_id = sp.id
+          AND sp.session_id = CAST(:session_id AS uuid)
+          AND sp.player_id = CAST(:player_id AS uuid)
+          AND (sp.player_details @> '{"manual_only": true}'::jsonb OR COALESCE(sp.player_details, '{}'::jsonb) = '{}'::jsonb)
+          AND COALESCE(d.metrics, '{}'::jsonb) = '{}'::jsonb
+          AND COALESCE(d.raw_data, '{}'::jsonb) = '{}'::jsonb
+    """), params)
+    connection.execute(text("""
+        DELETE FROM session_players sp
+        WHERE sp.session_id = CAST(:session_id AS uuid)
+          AND sp.player_id = CAST(:player_id AS uuid)
+          AND (sp.player_details @> '{"manual_only": true}'::jsonb OR COALESCE(sp.player_details, '{}'::jsonb) = '{}'::jsonb)
+          AND NOT EXISTS (
+              SELECT 1 FROM manual_drill_values mdv
+              WHERE mdv.session_id = sp.session_id AND mdv.player_id = sp.player_id
+          )
+          AND NOT EXISTS (
+              SELECT 1 FROM drills d
+              WHERE d.session_player_id = sp.id
+                AND (COALESCE(d.metrics, '{}'::jsonb) <> '{}'::jsonb OR COALESCE(d.raw_data, '{}'::jsonb) <> '{}'::jsonb)
+          )
+    """), params)
+
+
+@router.get("/editor/catalog")
+def get_editor_catalog(session_id: str, player_id: str) -> dict[str, Any]:
+    with get_physical_engine().connect() as connection:
+        session = connection.execute(text("""
+            SELECT id, activity_id, activity_name, session_date, squad_id
+            FROM sessions WHERE id = CAST(:session_id AS uuid)
+        """), {"session_id": session_id}).mappings().first()
+        player = connection.execute(text("""
+            SELECT id, display_name, first_name, last_name, primary_position, secondary_position
+            FROM players WHERE id = CAST(:player_id AS uuid)
+        """), {"player_id": player_id}).mappings().first()
+        if not session or not player:
+            raise HTTPException(status_code=404, detail="Session or player not found")
+        return {"session": dict(session), "player": dict(player), "metrics": list(EDITOR_METRICS), "drills": _editor_rows(connection, session_id, player_id)}
+
+
+@router.put("/editor/values")
+def update_editor_values(update: ManualMetricsUpdate) -> dict[str, Any]:
+    with get_physical_engine().begin() as connection:
+        _save_manual_values(connection, update)
+    return {"status": "saved", "drill_metadata_id": update.drill_metadata_id, "metrics": update.metrics}
+
+
+@router.post("/editor/save")
+def save_editor_values(update: ManualEditorSave) -> dict[str, Any]:
+    with get_physical_engine().begin() as connection:
+        for row in update.rows:
+            _save_manual_values(connection, ManualMetricsUpdate(
+                session_id=update.session_id,
+                player_id=update.player_id,
+                drill_metadata_id=row.drill_metadata_id,
+                metrics=row.metrics,
+            ))
+        _cleanup_empty_manual_player(connection, update.session_id, update.player_id)
+    return {"status": "saved", "updated": len(update.rows)}
+
+
+@router.post("/editor/bulk")
+def bulk_editor_values(update: ManualBulkUpdate) -> dict[str, Any]:
+    if update.action not in {"copy", "average"}:
+        raise HTTPException(status_code=422, detail="action must be copy or average")
+    with get_physical_engine().begin() as connection:
+        if update.action == "copy":
+            if not update.source_player_id or update.source_player_id == update.player_id:
+                raise HTTPException(status_code=422, detail="A different source player is required")
+            source_rows = {row["id"]: row for row in _editor_rows(connection, update.session_id, update.source_player_id)}
+            source_values = {metadata_id: source_rows[metadata_id]["values"] for metadata_id in update.drill_metadata_ids if metadata_id in source_rows}
+        else:
+            players = connection.execute(text("SELECT player_id FROM session_players WHERE session_id = CAST(:session_id AS uuid)"), {"session_id": update.session_id}).all()
+            all_rows = [_editor_rows(connection, update.session_id, str(row[0])) for row in players]
+            source_values = {}
+            for metadata_id in update.drill_metadata_ids:
+                values = [row["values"] for rows in all_rows for row in rows if row["id"] == metadata_id]
+                source_values[metadata_id] = {metric: (sum(float(value[metric]) for value in values if value.get(metric) is not None) / len([value for value in values if value.get(metric) is not None]) if any(value.get(metric) is not None for value in values) else None) for metric in EDITOR_METRICS}
+        if update.persist:
+            for metadata_id, metrics in source_values.items():
+                _save_manual_values(connection, ManualMetricsUpdate(session_id=update.session_id, player_id=update.player_id, drill_metadata_id=metadata_id, metrics=metrics))
+    return {"status": "saved" if update.persist else "prepared", "updated": len(source_values), "action": update.action, "rows": [{"drill_metadata_id": metadata_id, "metrics": metrics} for metadata_id, metrics in source_values.items()]}

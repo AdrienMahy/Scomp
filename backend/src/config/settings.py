@@ -61,6 +61,10 @@ class Settings(BaseSettings):
     # Environment
     environment: str = "development"
     debug: bool = True
+    cors_origins: str = Field(
+        default="http://localhost:3002,http://localhost:3000",
+        validation_alias="SCOMP_CORS_ORIGINS",
+    )
     
     # Database (will be initialized separately)
     database: Optional[DatabaseSettings] = None
@@ -81,6 +85,11 @@ class Settings(BaseSettings):
     def ids_config_path(self) -> Path:
         """Path to ID.json"""
         return self.ids_config_path_override or self.start_dir / "ID.json"
+
+    @property
+    def cors_origin_list(self) -> list[str]:
+        """Return configured CORS origins, ignoring empty values."""
+        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
     
     def load_ids_config(self) -> dict:
         """Load ID.json configuration"""

@@ -226,19 +226,37 @@ class WeeklyETLProcessor:
             self.coordinator._persist_output_files(game.id, output_files)
             
             logger.info(f"    Downloading JSON files...")
-            self.coordinator._download_json_output_files(game.id, game.name, output_files)
+            downloaded_data = self.coordinator._download_json_output_files(
+                game.id,
+                game.name,
+                output_files,
+            )
             
             logger.info(f"    Processing metadata (lineups, events)...")
-            self.coordinator._process_metadata_json(game.name, game)
+            self.coordinator.payload_processor.process_metadata(
+                game,
+                downloaded_data.get("metadata", {}),
+            )
             
             logger.info(f"    Processing distance data...")
-            self.coordinator._process_distance_covered_json(game.name, game)
+            self.coordinator.payload_processor.process_distance(
+                game,
+                downloaded_data.get("distance_covered", {}),
+                downloaded_data.get("metadata"),
+            )
             
             logger.info(f"    Processing fitness entities...")
-            self.coordinator._process_fitness_entities_json(game.name, game)
+            self.coordinator.payload_processor.process_fitness(
+                game,
+                downloaded_data.get("fitness_entities", {}),
+            )
             
             logger.info(f"    Processing RGD events...")
-            self.coordinator._process_rgd_json(game, game.name)
+            self.coordinator.payload_processor.process_rgd(
+                game,
+                game.name,
+                downloaded_data.get("rgd"),
+            )
             
             # Refresh to get new counts
             self.db_session.refresh(game)

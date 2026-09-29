@@ -21,15 +21,8 @@ from ..models import (
     PlayerFitnessRun, PlayerFitnessSummary, TeamFitnessSummary
 )
 from src.config.database import SessionLocal
-from .metadata_parser import (
-    parse_and_persist_lineups,
-    parse_and_persist_periods,
-)
-from .substitutions_parser import parse_and_persist_substitutions
-from .player_distance_covered_parser import parse_and_persist_player_distance_covered
-from .distance_covered_parser import parse_and_persist_distance_covered
-from .fitness_entities_parser import parse_and_persist_fitness_entities
-from .rgd_parser import parse_and_persist_rgd, _log_to_db
+from .rgd_parser import _log_to_db
+from .game_payload_processor import GamePayloadProcessor
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +53,7 @@ class ScraperCoordinator:
         self.db_session = SessionLocal()
         self.task_id = task_id  # For logging to DB
         self.request_timestamp = datetime.utcnow()
+        self.payload_processor = GamePayloadProcessor(self.db_session, task_id)
     
     async def scrape_games(
         self,
@@ -345,11 +339,11 @@ class ScraperCoordinator:
                     etl_start = time.time()
                     
                     if "metadata" in downloaded_data:
-                        self._process_metadata_json(game_to_process, downloaded_data["metadata"])
+                        self.payload_processor.process_metadata(game_to_process, downloaded_data["metadata"])
                         logger.info(f"       ✓ Metadata")
                     
                     if "rgd" in downloaded_data:
-                        self._process_rgd_json(
+                        self.payload_processor.process_rgd(
                             game_to_process,
                             game_to_process.name,
                             downloaded_data["rgd"],
@@ -357,11 +351,11 @@ class ScraperCoordinator:
                         logger.info(f"       ✓ RGD events")
 
                     if "distance_covered" in downloaded_data:
-                        self._process_distance_covered_json(game_to_process, downloaded_data["distance_covered"], downloaded_data.get("metadata"))
+                        self.payload_processor.process_distance(game_to_process, downloaded_data["distance_covered"], downloaded_data.get("metadata"))
                         logger.info(f"       ✓ Distance covered")
 
                     if "fitness_entities" in downloaded_data:
-                        self._process_fitness_entities_json(game_to_process, downloaded_data["fitness_entities"])
+                        self.payload_processor.process_fitness(game_to_process, downloaded_data["fitness_entities"])
                         logger.info(f"       ✓ Fitness entities")
                     
                     # Mark game as processed (data downloaded & injected into DB)
@@ -1097,17 +1091,17 @@ class ScraperCoordinator:
                 
                 # 📊 Process metadata.json (lineups, periods, events)
                 if "metadata" in downloaded_data:
-                    self._process_metadata_json(game, downloaded_data["metadata"])
+                    self.payload_processor.process_metadata(game, downloaded_data["metadata"])
                 # 📊 Process rgd.json before fitness entities because fitness rows
                 # reference RGD event records.
                 if "rgd" in downloaded_data:
-                    self._process_rgd_json(game, game.name, downloaded_data["rgd"])
+                    self.payload_processor.process_rgd(game, game.name, downloaded_data["rgd"])
                 # 📏 Process distance_covered.json (team distances)
                 if "distance_covered" in downloaded_data:
-                    self._process_distance_covered_json(game, downloaded_data["distance_covered"], downloaded_data.get("metadata"))
+                    self.payload_processor.process_distance(game, downloaded_data["distance_covered"], downloaded_data.get("metadata"))
                 # 💪 Process fitness_entities.json (player fitness runs)
                 if "fitness_entities" in downloaded_data:
-                    self._process_fitness_entities_json(game, downloaded_data["fitness_entities"])
+                    self.payload_processor.process_fitness(game, downloaded_data["fitness_entities"])
                     
             except Exception as e:
                 logger.warning(f"❌ Failed to persist/download/process files for {game_id}: {e}", exc_info=True)
@@ -1450,228 +1444,6 @@ class ScraperCoordinator:
             logger.error(f"❌ Failed to download JSON files for {game_name}: {e}", exc_info=True)
             # Don't raise - allow scraping to continue even if JSON download fails
             return {}
-    
-    def _process_metadata_json(self, game: Game, metadata_json: Dict[str, Any]) -> None:
-        """
-        Process downloaded metadata.json and persist lineups, periods, and events.
-        
-        This function is called after JSON files are downloaded and processes the metadata
-        to extract and persist:
-        - Lineups (from metadata['lineups'])
-        - Periods with score evolution (from metadata['periods'])
-        - Match events (from metadata['events'])
-        
-        Args:
-            game: Game ORM object
-            metadata_json: Metadata dict from downloaded JSON
-        """
-        try:
-            if not metadata_json:
-                logger.info(f"ℹ️  No metadata JSON provided for game {game.id}")
-                return
-            
-            # Process lineups
-            try:
-                logger.info(f"👥 Processing lineups for game {game.id}...")
-                parse_and_persist_lineups(game, metadata_json, self.db_session)
-                logger.info(f"✅ Lineups processed for game {game.id}")
-            except Exception as e:
-                logger.warning(f"⚠️  Failed to process lineups for {game.id}: {e}", exc_info=True)
-                self.db_session.rollback()  # Clean session after error
-            
-            # Process periods and score evolution
-            try:
-                logger.info(f"📊 Processing periods for game {game.id}...")
-                parse_and_persist_periods(game, metadata_json, self.db_session)
-                logger.info(f"✅ Periods processed for game {game.id}")
-            except Exception as e:
-                logger.warning(f"⚠️  Failed to process periods for {game.id}: {e}", exc_info=True)
-                self.db_session.rollback()  # Clean session after error
-            
-            # Process substitution events
-            try:
-                logger.info(f"⚽ Processing substitutions for game {game.id}...")
-                parse_and_persist_substitutions(game, metadata_json, self.db_session)
-                logger.info(f"✅ Substitutions processed for game {game.id}")
-            except Exception as e:
-                logger.warning(f"⚠️  Failed to process substitutions for {game.id}: {e}", exc_info=True)
-                self.db_session.rollback()  # Clean session after error
-            
-        except Exception as e:
-            logger.error(f"❌ Failed to process metadata for {game.id}: {e}", exc_info=True)
-            # Don't raise - allow scraping to continue even if metadata processing fails
-    
-    def _build_player_to_team_mapping_from_metadata(self, metadata_json: Dict[str, Any]) -> Dict[str, str]:
-        """
-        Extract player_id → team_id mapping from metadata JSON data (in-memory).
-        
-        This allows us to associate players with their teams in distance_covered data.
-        The metadata JSON contains lineups with team_id and player list.
-        
-        Args:
-            metadata_json: Parsed metadata JSON data (dict)
-            
-        Returns:
-            Dict mapping player_id → team_id
-        """
-        try:
-            if not metadata_json:
-                return {}
-            
-            # Extract lineups from metadata
-            lineups = metadata_json.get('metadata', {}).get('lineups', [])
-            if not lineups:
-                logger.debug(f"⚠️  No lineups found in metadata JSON")
-                return {}
-            
-            # Build player_id → team_id mapping
-            mapping = {}
-            for lineup in lineups:
-                team_id = lineup.get('id')  # team_id is stored as 'id' in lineups array
-                players = lineup.get('players', [])
-                for player_data in players:
-                    player_id = player_data.get('id')
-                    if player_id and team_id:
-                        mapping[player_id] = team_id
-            
-            logger.debug(f"✅ Built player→team mapping from metadata JSON: {len(mapping)} players from {len(lineups)} teams")
-            return mapping
-            
-        except Exception as e:
-            logger.warning(f"⚠️  Failed to build player→team mapping from metadata JSON: {e}")
-            return {}
-    
-    def _process_distance_covered_json(self, game: Game, distance_json: Dict[str, Any], metadata_json: Dict[str, Any] = None) -> None:
-        """
-        Process distance_covered JSON data and persist team distance records.
-        
-        Args:
-            game: Game ORM object
-            distance_json: Parsed distance_covered JSON data (dict)
-            metadata_json: Parsed metadata JSON data for player→team mapping (optional)
-        """
-        try:
-            if not distance_json:
-                logger.info(f"ℹ️  No distance_covered JSON data for game {game.id}")
-                return
-            
-            # Process distance covered
-            try:
-                logger.info(f"📏 Processing distance covered for game {game.id}...")
-                parse_and_persist_distance_covered(game, distance_json, self.db_session)
-                logger.info(f"✅ Distance covered processed for game {game.id}")
-                
-                # Build player→team mapping from metadata JSON (in-memory, no disk reads)
-                team_mapping = self._build_player_to_team_mapping_from_metadata(metadata_json) if metadata_json else {}
-                
-                # Process player distance covered with team mapping
-                logger.info(f"👥 Processing player distance covered for game {game.id}...")
-                parse_and_persist_player_distance_covered(game, distance_json, self.db_session, team_mapping=team_mapping)
-                logger.info(f"✅ Player distance covered processed for game {game.id}")
-                
-                # Commit changes to database
-                self.db_session.commit()
-                logger.info(f"💾 Committed distance_covered data for game {game.id}")
-            except Exception as e:
-                logger.warning(f"⚠️  Failed to process distance_covered for {game.id}: {e}", exc_info=True)
-            
-        except Exception as e:
-            logger.error(f"❌ Failed to process distance_covered for {game.id}: {e}", exc_info=True)
-            # Don't raise - allow scraping to continue even if distance processing fails
-    
-    def _process_fitness_entities_json(self, game: Game, fitness_json: Dict[str, Any]) -> None:
-        """
-        Process fitness_entities JSON data and persist player fitness records.
-        
-        Args:
-            game: Game ORM object
-            fitness_json: Parsed fitness_entities JSON data (dict)
-        """
-        try:
-            if not fitness_json:
-                logger.info(f"ℹ️  No fitness_entities JSON data for game {game.id}")
-                return
-            
-            # Process fitness entities
-            try:
-                logger.info(f"💪 Processing fitness entities for game {game.id}...")
-                parse_and_persist_fitness_entities(
-                    game=game,
-                    fitness_data=fitness_json,
-                    db_session=self.db_session,
-                    calculate_summaries=True
-                )
-                logger.info(f"✅ Fitness entities processed for game {game.id}")
-                
-                # Commit changes to database
-                self.db_session.commit()
-                logger.info(f"💾 Committed fitness_entities data for game {game.id}")
-                
-            except Exception as e:
-                logger.warning(f"⚠️  Failed to process fitness_entities for {game.id}: {e}", exc_info=True)
-                # Rollback on error to avoid partial data
-                self.db_session.rollback()
-            
-        except Exception as e:
-            logger.error(f"❌ Failed to process fitness_entities for {game.id}: {e}", exc_info=True)
-            # Don't raise - allow scraping to continue even if fitness processing fails
-    
-    def _process_rgd_json(
-        self,
-        game: Game,
-        game_name: str,
-        rgd_json_data: Optional[Dict[str, Any]] = None,
-    ) -> None:
-        """
-        Process downloaded rgd.json file and persist event data.
-        
-        This function is called after JSON files are downloaded and processes the rgd.json
-        to extract and persist:
-        - Events table (~3,000+ entities per match)
-        - Possession collective records (~200 per match)
-        - Individual possession records (~1,200 per match)
-        - Set pieces records (~110 per match)
-        
-        RGD (Relative Game Data) is the complete match dump with all spatial/temporal data.
-        
-        Args:
-            game_name: Game name for directory organization
-            game: Game ORM object
-        """
-        try:
-            logger.info(f"📊 Processing RGD events for game {game.id}...")
-            
-            # Parse and persist RGD data
-            result = parse_and_persist_rgd(
-                game=game,
-                game_name=game_name,
-                db_session=self.db_session,
-                rgd_json_data=rgd_json_data,
-                clean_existing=True,
-                task_id=self.task_id,
-                round_name=game.round
-            )
-            events, collective, individual, setpieces, errors = result
-            entity_count = len((rgd_json_data or {}).get("entities", []))
-            logger.info(
-                f"✅ RGD events processed for game {game.id}: "
-                f"entities={entity_count}, events={events}, "
-                f"collective={collective}, individual={individual}, "
-                f"setpieces={setpieces}, errors={errors}"
-            )
-            if entity_count and not events:
-                raise RuntimeError(
-                    f"RGD contained {entity_count} entities but inserted no events"
-                )
-            
-            # Commit changes to database
-            self.db_session.commit()
-            logger.info(f"💾 Committed RGD data for game {game.id}")
-            
-        except Exception as e:
-            logger.warning(f"⚠️  Failed to process RGD for {game.id}: {e}", exc_info=True)
-            # Rollback on error to avoid partial data
-            self.db_session.rollback()
     
     def _persist_lineups(self, game_id: str, squads_data: List[Dict[str, Any]]) -> None:
         """

@@ -25,13 +25,13 @@ from src.SportsDynamics.orchestration.scrape_workflows import (
     autonomous_dry_run,
 )
 from src.SportsDynamics.orchestration.task_tracker import TaskTracker
-from src.SportsDynamics.orchestration.task_retention import reconcile_stale_tasks
-from src.tasks.scrape_tasks import (
-    initialize_season_task,
-    scrape_round_task,
-    scrape_game_task,
-    scrape_autonomous_task,
+from src.SportsDynamics.orchestration.workflow_dispatcher import (
+    enqueue_autonomous_scrape,
+    enqueue_game_scrape,
+    enqueue_round_scrape,
+    enqueue_season_initialization,
 )
+from src.SportsDynamics.orchestration.task_retention import reconcile_stale_tasks
 from src.config.filter_config import QueryFilterConfig
 
 router = APIRouter(prefix="/sportsdynamics/games", tags=["sportsdynamics-games"])
@@ -287,24 +287,6 @@ class AutonomousScrapeRequest(SeasonScrapeRequest):
     pass
 
 
-def queue_scrape_task(
-    db: Session,
-    workflow: str,
-    competition_id: str,
-    season_id: str,
-    round_name: Optional[str] = None,
-) -> TaskTracker:
-    tracker = TaskTracker(
-        db,
-        "SportsDynamics",
-        workflow,
-        competition_id,
-        season_id,
-        round_name=round_name,
-    )
-    return tracker
-
-
 # ============================================================================
 # Endpoints
 # ============================================================================
@@ -317,8 +299,7 @@ async def initialize_season_endpoint(
 ):
     """Initialize or refresh the season schedule, then synchronize teams."""
     try:
-        tracker = queue_scrape_task(db, "season_initialization", request.competition_id, request.season_id)
-        initialize_season_task.delay(tracker.id, request.competition_id, request.season_id)
+        tracker = enqueue_season_initialization(db, request.competition_id, request.season_id)
         return {"status": "queued", "task_id": tracker.id, "workflow": "season_initialization"}
     except Exception as exc:
         db.rollback()
@@ -332,8 +313,12 @@ async def scrape_round_endpoint(
 ):
     """Clear and process all available games from one round, then enrich players."""
     try:
-        tracker = queue_scrape_task(db, "round_scrape", request.competition_id, request.season_id, request.round)
-        scrape_round_task.delay(tracker.id, request.competition_id, request.season_id, request.round)
+        tracker = enqueue_round_scrape(
+            db,
+            request.competition_id,
+            request.season_id,
+            request.round,
+        )
         return {"status": "queued", "task_id": tracker.id, "workflow": "round_scrape", "round": request.round}
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
@@ -349,8 +334,7 @@ async def scrape_autonomous_endpoint(
 ):
     """Detect and process new or changed available games for a season."""
     try:
-        tracker = queue_scrape_task(db, "autonomous_scrape", request.competition_id, request.season_id)
-        scrape_autonomous_task.delay(tracker.id, request.competition_id, request.season_id)
+        tracker = enqueue_autonomous_scrape(db, request.competition_id, request.season_id)
         return {"status": "queued", "task_id": tracker.id, "workflow": "autonomous_scrape"}
     except Exception as exc:
         db.rollback()
@@ -2027,8 +2011,13 @@ async def scrape_game_endpoint(
         game = db.query(Game).filter(Game.id == game_id).first()
         if not game:
             raise HTTPException(status_code=404, detail="Game not found")
-        tracker = queue_scrape_task(db, "game_scrape", game.competition_id, game.season_id, game.round_name)
-        scrape_game_task.delay(tracker.id, game_id)
+        tracker = enqueue_game_scrape(
+            db,
+            game_id,
+            game.competition_id,
+            game.season_id,
+            game.round_name,
+        )
         return {"status": "queued", "task_id": tracker.id, "workflow": "game_scrape", "game_id": game_id}
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc))

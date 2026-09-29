@@ -4,6 +4,8 @@ import os
 from datetime import date, datetime, timedelta, timezone
 from typing import Any, Awaitable, Callable
 
+from sqlalchemy import create_engine, text
+
 from ..api.client import StatsportAPIClient
 from ..api.config import StatsportSettings
 from ..etl.export_dataset import build_dataset
@@ -67,10 +69,64 @@ async def process_activities(
     result = import_dataset(dataset, database_url, run_id)
     result["found"] = len(activities)
     result["endpoint"] = endpoint
+    if not result["failed"]:
+        _reconcile_missing_sessions(database_url, activities, endpoint, request_payload)
     if run_id:
         finish_run(database_url, run_id, result, status="partial" if result["failed"] else "completed")
         result["run_id"] = run_id
     return result
+
+
+def _reconcile_missing_sessions(
+    database_url: str,
+    activities: list[dict[str, Any]],
+    endpoint: str,
+    request_payload: dict[str, Any],
+) -> None:
+    """Mark sessions missing from a complete successful API response."""
+    if endpoint == "getFullSessionByShareDate":
+        scope_column = "s.share_date::date"
+        scope_start = request_payload.get("shareDate")
+        scope_end = scope_start
+    elif endpoint == "getFullSessionsByDateRange":
+        scope_column = "s.session_date::date"
+        scope_start = request_payload.get("sessionStartDate")
+        scope_end = request_payload.get("sessionEndDate")
+    else:
+        return
+    if not scope_start or not scope_end:
+        return
+
+    received_ids = {str(activity.get("id")) for activity in activities if activity.get("id")}
+    engine = create_engine(database_url, pool_pre_ping=True)
+    try:
+        with engine.begin() as connection:
+            squad_clause = ""
+            params: dict[str, Any] = {"scope_start": scope_start, "scope_end": scope_end}
+            if request_payload.get("squadId"):
+                squad_clause = " AND sq.external_id = CAST(:squad_id AS uuid)"
+                params["squad_id"] = request_payload["squadId"]
+            rows = connection.execute(text(f"""
+                SELECT s.id, s.activity_id, s.missing_count
+                FROM sessions s
+                JOIN squads sq ON sq.id = s.squad_id
+                WHERE {scope_column} BETWEEN CAST(:scope_start AS date) AND CAST(:scope_end AS date)
+                  {squad_clause}
+            """), params).mappings().all()
+            for row in rows:
+                if str(row["activity_id"]) in received_ids:
+                    continue
+                missing_count = int(row["missing_count"] or 0) + 1
+                connection.execute(text("""
+                    UPDATE sessions
+                    SET missing_count = :missing_count,
+                        source_status = CASE WHEN :missing_count >= 2 THEN 'deleted' ELSE 'missing' END,
+                        deleted_at = CASE WHEN :missing_count >= 2 THEN COALESCE(deleted_at, now()) ELSE NULL END,
+                        updated_at = now()
+                    WHERE id = CAST(:id AS uuid)
+                """), {"id": row["id"], "missing_count": missing_count})
+    finally:
+        engine.dispose()
 
 
 def _project_env_path():

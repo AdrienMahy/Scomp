@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config.database import init_db
 from .config.database import SessionLocal
+from .config.settings import settings
 from .SportsDynamics.orchestration.task_retention import purge_task_history
 from .SportsDynamics.api.routes import competitions, games, teams, players, automation
 from .STATSport.api.routes import physical
@@ -23,7 +24,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.cors_origin_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

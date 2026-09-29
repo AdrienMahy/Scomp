@@ -40,6 +40,8 @@ export default function Navbar({ currentPage, onPageChange, project, onProjectCh
     { id: 'physical-activity', label: 'Activity', icon: '▤', group: 'Workspace' },
     { id: 'physical', label: 'Scraping', icon: '↯', group: 'Workspace' },
     { id: 'physical-players', label: 'Players', icon: '◉', group: 'Data' },
+    { id: 'physical-data', label: 'Manual Data editor', icon: '✎', group: 'Data' },
+    { id: 'physical-deleted-sessions', label: 'Deleted sessions', icon: '↶', group: 'Data' },
     { id: 'physical-automation', label: 'Automation', icon: '◌', group: 'Data' },
     { id: 'physical-logs', label: 'Activity logs', icon: '≡', group: 'System' },
     { id: 'physical-settings', label: 'Settings', icon: '⚙', group: 'System' },

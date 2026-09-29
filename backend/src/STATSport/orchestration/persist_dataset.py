@@ -40,6 +40,13 @@ class ActivityQualityError(ValueError):
     """Raised when too many activity players have no usable distance metric."""
 
 
+EXCLUDED_DRILL_NAMES = {"entire session", "entire session - live"}
+
+
+def is_quality_only_drill(drill_name: Any) -> bool:
+    return str(drill_name or "").strip().casefold() in EXCLUDED_DRILL_NAMES
+
+
 def find_existing_activity(connection: Any, session: dict[str, Any]) -> Any:
     """Lock and return the stored activity before any related row is written."""
     return connection.execute(
@@ -79,7 +86,7 @@ def invalid_distance_players(
     for activity_player in activity_players:
         distances: list[Any] = []
         for drill in drills_by_player.get(activity_player["id"], []):
-            if (drill.get("raw_data") or {}).get("drillName") != "Entire Session":
+            if not is_quality_only_drill((drill.get("raw_data") or {}).get("drillName")):
                 continue
             metrics = drill.get("metrics") or {}
             distance = (metrics.get("distance") or {}).get("distanceTotal")
@@ -158,6 +165,7 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
                     ), session_date = CAST(:session_date AS timestamptz),
                     start_time = CAST(:start_time AS timestamptz), end_time = CAST(:end_time AS timestamptz),
                     session_type = :session_type, raw_data = CAST(:raw_data AS jsonb), response_hash = :response_hash,
+                    source_status = 'active', missing_count = 0, last_seen_at = now(), deleted_at = NULL,
                     version = version + 1, updated_at = now()
                 WHERE id = CAST(:id AS uuid)
             """),
@@ -170,7 +178,8 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
             text("""
                 INSERT INTO sessions (
                     id, activity_id, activity_name, share_date, squad_id, season_id, session_date,
-                    start_time, end_time, session_type, raw_data, response_hash, version
+                    start_time, end_time, session_type, raw_data, response_hash, version,
+                    source_status, missing_count, last_seen_at
                 ) VALUES (
                     CAST(:id AS uuid), CAST(:activity_id AS uuid), :activity_name,
                                         CAST(:share_date AS timestamptz), CAST(:squad_id AS uuid), (
@@ -179,7 +188,7 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
                                                     AND CAST(:session_date AS timestamptz)::date < end_date
                                         ), CAST(:session_date AS timestamptz),
                     CAST(:start_time AS timestamptz), CAST(:end_time AS timestamptz), :session_type,
-                    CAST(:raw_data AS jsonb), :response_hash, :version
+                    CAST(:raw_data AS jsonb), :response_hash, :version, 'active', 0, now()
                 )
             """),
             {**session, "raw_data": json_value(session["raw_data"])},
@@ -187,7 +196,11 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
         session_id = session["id"]
         counts["inserted"] += 1
 
-    metadata = [row for row in tables["drill_metadata"] if row["session_id"] == session["id"]]
+    metadata = [
+        row for row in tables["drill_metadata"]
+        if row["session_id"] == session["id"]
+        and not is_quality_only_drill(row.get("drill_name"))
+    ]
     for row in metadata:
         connection.execute(
             text("""
@@ -218,6 +231,8 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
 
     for drill in tables["drills"]:
         if drill["session_player_id"] not in activity_player_ids:
+            continue
+        if is_quality_only_drill((drill.get("raw_data") or {}).get("drillName")):
             continue
         connection.execute(
             text("""
