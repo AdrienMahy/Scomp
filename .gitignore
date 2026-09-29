@@ -145,3 +145,4 @@ dmypy.json
 *.pid
 tmp/
 temp/
+/Makefile
