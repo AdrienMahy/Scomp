@@ -287,10 +287,14 @@ def list_sessions(
     squad_id: str | None = Query(default=None),
     activity_name: str | None = Query(default=None),
     session_date: date | None = Query(default=None),
+    start_date: date | None = Query(default=None),
+    end_date: date | None = Query(default=None),
     limit: int = Query(default=100, ge=1, le=500),
 ) -> list[dict[str, Any]]:
     filters = []
     params: dict[str, Any] = {"limit": limit}
+    if start_date and end_date and start_date > end_date:
+        raise HTTPException(status_code=422, detail="start_date must be before or equal to end_date")
     if squad_id:
         filters.append("s.squad_id = CAST(:squad_id AS uuid)")
         params["squad_id"] = squad_id
@@ -300,6 +304,12 @@ def list_sessions(
     if session_date:
         filters.append("s.session_date::date = :session_date")
         params["session_date"] = session_date
+    elif start_date:
+        filters.append("s.session_date::date >= :start_date")
+        params["start_date"] = start_date
+    if end_date and not session_date:
+        filters.append("s.session_date::date <= :end_date")
+        params["end_date"] = end_date
     where_clause = "WHERE " + " AND ".join(filters) if filters else ""
 
     with get_physical_engine().connect() as connection:

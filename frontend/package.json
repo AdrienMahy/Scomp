@@ -1,6 +1,6 @@
 {
   "name": "scomp-frontend",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Scomp Frontend - Sports Data Analytics & Scraping Management",
   "type": "module",
   "scripts": {

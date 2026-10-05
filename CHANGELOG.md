@@ -2,6 +2,15 @@
 
 All notable changes to Scomp are documented in this file.
 
+## [1.1.2] - 2026-10-05
+
+### Changed
+
+- Activity now loads sessions month by month and refreshes the calendar when navigating between months.
+- Added server-side date range filtering for PhysicalData sessions.
+- Updated Activity calendar navigation and today highlighting to use the PhysicalData red accent.
+- Improved squad display support through editable squad names in Settings.
+
 ## [1.1.0] - 2026-09-24
 
 STATSports physical data provider and frontend architecture update.
@@ -64,5 +73,6 @@ First production release prepared for deployment.
 - Added cooperative task cancellation support.
 - Merged the five existing Alembic heads into a single head: `20260921_003000`.
 
+[1.1.2]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.1.2
 [1.1.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.1.0
 [1.0.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.0.0
