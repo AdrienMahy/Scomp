@@ -635,13 +635,18 @@ output_files (Raw API responses)
 ├─ fileType (VARCHAR)
 ├─ file_url (TEXT)
 
-game_goals (Match events)
+goals (Canonical match goals)
 ├─ id (UUID)
 ├─ game_id → games
+├─ period_id (INTEGER)
 ├─ player_id → players
 ├─ team_id → teams
-├─ timestamp (FLOAT)
-└─ goal_type (VARCHAR) [own, penalty, etc.]
+├─ opponent_team_id → teams
+├─ is_own_goal (BOOL)
+├─ possession_id, type_of_play_id, phase_of_play_id
+├─ individual_possession_id
+├─ own_goal_context (JSONB)
+└─ entity, time, phase, spatial, actors, shot (JSONB)
 
 game_cards (Match events)
 ├─ id (UUID)

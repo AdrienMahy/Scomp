@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import json
 
 from src.SportsDynamics.models import Game, Team, TeamDistanceCovered
+from .distance_covered_data import build_distance_data
 
 logger = logging.getLogger(__name__)
 
@@ -95,37 +96,7 @@ def parse_and_persist_distance_covered(
                 logger.warning(f"Team {team_id} not found in database for game {game.id}")
                 continue
             
-            # Extract speed zones, game state, and time intervals from breakdowns
-            speed_zones = {}
-            game_state = {}
-            time_intervals = {}  # Changed to dict instead of list
-            
-            for breakdown in breakdowns:
-                # Skip if breakdown is None or not a dict
-                if not breakdown or not isinstance(breakdown, dict):
-                    logger.debug(f"Skipping invalid breakdown: {breakdown}")
-                    continue
-                    
-                category = breakdown.get("category", {})
-                distance_m = breakdown.get("distance_m")
-                
-                if distance_m is None:
-                    continue
-                
-                # Check if it's a speed zone
-                if "speed_zone" in category:
-                    speed_zone = category["speed_zone"]
-                    speed_zones[speed_zone] = distance_m
-                
-                # Check if it's a game state
-                if "game_state" in category:
-                    state = category["game_state"]
-                    game_state[state] = distance_m
-                
-                # Check if it's a time interval (convert to dict with category_name as key)
-                if "time_interval_5min" in category:
-                    time_interval = category["time_interval_5min"]
-                    time_intervals[time_interval] = distance_m
+            structured_data = build_distance_data(total_distance, breakdowns)
             
             # Create TeamDistanceCovered record with JSONB structure
             record_id = f"{game.id}_{team_id}"
@@ -136,12 +107,8 @@ def parse_and_persist_distance_covered(
                     id=record_id,
                     game_id=game.id,
                     team_id=team_id,
-                    metrics={
-                        "total_distance_m": total_distance
-                    },
-                    speed_zones=speed_zones,
-                    game_state=game_state,
-                    time_intervals=time_intervals
+                    match_data=structured_data["match_data"],
+                    intervals=structured_data["intervals"],
                 )
                 db_session.add(distance_record)
                 

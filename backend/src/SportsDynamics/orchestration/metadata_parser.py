@@ -42,6 +42,8 @@ def parse_and_persist_lineups(
     game: Game,
     metadata_json: dict,
     db_session: Session,
+    update_game_score: bool = True,
+    create_missing_entities: bool = True,
 ) -> None:
     """
     Parse metadata['lineups'] and persist LineupTeam/LineupPlayer records.
@@ -86,26 +88,27 @@ def parse_and_persist_lineups(
 
         # The schedule API can omit scores while metadata.json contains the
         # authoritative final score for the processed match.
-        final_score = metadata.get("final_score") or {}
-        home_score = final_score.get("home")
-        away_score = final_score.get("away")
-        if home_score is not None and away_score is not None:
-            game.home_score = home_score
-            game.away_score = away_score
-            if home_score > away_score:
-                game.result = "HOME_TEAM_WIN"
-            elif away_score > home_score:
-                game.result = "AWAY_TEAM_WIN"
-            else:
-                game.result = "DRAW"
-            db_session.add(game)
-            db_session.commit()
-            logger.info(
-                "     ✅ Updated game score from metadata: %s-%s (%s)",
-                home_score,
-                away_score,
-                game.result,
-            )
+        if update_game_score:
+            final_score = metadata.get("final_score") or {}
+            home_score = final_score.get("home")
+            away_score = final_score.get("away")
+            if home_score is not None and away_score is not None:
+                game.home_score = home_score
+                game.away_score = away_score
+                if home_score > away_score:
+                    game.result = "HOME_TEAM_WIN"
+                elif away_score > home_score:
+                    game.result = "AWAY_TEAM_WIN"
+                else:
+                    game.result = "DRAW"
+                db_session.add(game)
+                db_session.commit()
+                logger.info(
+                    "     ✅ Updated game score from metadata: %s-%s (%s)",
+                    home_score,
+                    away_score,
+                    game.result,
+                )
 
         lineups = metadata.get("lineups", [])
         if not lineups:
@@ -141,6 +144,10 @@ def parse_and_persist_lineups(
             # Verify team exists in database, CREATE if missing
             team = db_session.query(Team).filter(Team.id == team_id).first()
             if not team:
+                if not create_missing_entities:
+                    raise ValueError(
+                        f"Lineup parser requires existing team {team_id}"
+                    )
                 logger.info(f"Creating missing team: {team_name} (id={team_id})")
                 team = Team(
                     id=team_id,
@@ -179,6 +186,10 @@ def parse_and_persist_lineups(
                 # Create a minimal player record when metadata arrives first.
                 player = db_session.query(Player).filter(Player.id == player_id).first()
                 if not player:
+                    if not create_missing_entities:
+                        raise ValueError(
+                            f"Lineup parser requires existing player {player_id}"
+                        )
                     player_name = (
                         player_data.get("name")
                         or player_data.get("usage_name")

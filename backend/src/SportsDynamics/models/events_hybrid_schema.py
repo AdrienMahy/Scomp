@@ -4,7 +4,7 @@ Tables implementing critical columns + JSONB sections pattern for optimal perfor
 """
 
 from uuid import uuid4
-from sqlalchemy import Column, String, Integer, Index, ForeignKey, UUID
+from sqlalchemy import Boolean, Column, String, Integer, Index, ForeignKey, UUID
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from .base import Base, TimestampMixin
@@ -190,7 +190,7 @@ class GoalKick(Base, TimestampMixin):
 # ============================================================================
 
 class Goals(Base, TimestampMixin):
-    """Goal events"""
+    """Canonical goal records with own-goal and phase context."""
     __tablename__ = "goals"
     
     id = Column(UUID, primary_key=True, default=uuid4)
@@ -198,12 +198,20 @@ class Goals(Base, TimestampMixin):
     period_id = Column(Integer, index=True)
     player_id = Column(String(50), ForeignKey("players.id"), index=True)
     team_id = Column(String(50), ForeignKey("teams.id"), index=True)
+    opponent_team_id = Column(String(50), ForeignKey("teams.id"), index=True)
+    is_own_goal = Column(Boolean, nullable=False, default=False, server_default="false")
+    possession_id = Column(UUID, index=True)
+    type_of_play_id = Column(UUID, index=True)
+    phase_of_play_id = Column(UUID, index=True)
+    individual_possession_id = Column(UUID, index=True)
     
     entity = Column(JSONB)
     time = Column(JSONB)
+    phase = Column(JSONB)
     spatial = Column(JSONB)
     actors = Column(JSONB)
     shot = Column(JSONB)
+    own_goal_context = Column(JSONB)
     
     # Relationships
     game = relationship("Game", foreign_keys=[game_id], passive_deletes=True)
@@ -212,6 +220,10 @@ class Goals(Base, TimestampMixin):
         Index('idx_goals_game_period', 'game_id', 'period_id'),
         Index('idx_goals_player', 'player_id'),
         Index('idx_goals_team', 'team_id'),
+        Index('idx_goals_opponent_team', 'opponent_team_id'),
+        Index('idx_goals_possession', 'possession_id'),
+        Index('idx_goals_phase_jointure', 'phase_of_play_id', 'type_of_play_id'),
+        Index('idx_goals_individual_possession', 'individual_possession_id'),
     )
 
 

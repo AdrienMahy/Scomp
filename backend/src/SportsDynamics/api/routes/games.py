@@ -4,7 +4,7 @@ from fastapi.responses import StreamingResponse
 from typing import List, Optional
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from sqlalchemy import cast, Integer
+from sqlalchemy import cast, Integer, func
 from datetime import datetime
 import uuid
 import logging
@@ -25,6 +25,10 @@ from src.SportsDynamics.orchestration.scrape_workflows import (
     autonomous_dry_run,
 )
 from src.SportsDynamics.orchestration.task_tracker import TaskTracker
+from src.SportsDynamics.orchestration.parser_selection import (
+    ParserName,
+    normalize_parser_selection,
+)
 from src.SportsDynamics.orchestration.workflow_dispatcher import (
     enqueue_autonomous_scrape,
     enqueue_game_scrape,
@@ -281,6 +285,7 @@ class SeasonScrapeRequest(BaseModel):
 
 class RoundScrapeRequest(SeasonScrapeRequest):
     round: str
+    parsers: Optional[List[ParserName]] = None
 
 
 class AutonomousScrapeRequest(SeasonScrapeRequest):
@@ -311,15 +316,29 @@ async def scrape_round_endpoint(
     request: RoundScrapeRequest,
     db: Session = Depends(get_db),
 ):
-    """Clear and process all available games from one round, then enrich players."""
+    """Queue a full round scrape or a selected-parser-only refresh."""
+    parser_names = request.parsers
+    if parser_names is not None:
+        try:
+            parser_names = normalize_parser_selection(parser_names)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
     try:
         tracker = enqueue_round_scrape(
             db,
             request.competition_id,
             request.season_id,
             request.round,
+            parser_names=parser_names,
         )
-        return {"status": "queued", "task_id": tracker.id, "workflow": "round_scrape", "round": request.round}
+        return {
+            "status": "queued",
+            "task_id": tracker.id,
+            "workflow": "round_scrape",
+            "round": request.round,
+            "parsers": parser_names,
+        }
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
     except Exception as exc:
@@ -1432,7 +1451,7 @@ async def get_task_game_stats(task_id: str, db: Session = Depends(get_db)):
 
 @router.get("/tasks/list")
 async def list_tasks(
-    limit: int = Query(50, ge=1, le=500),
+    limit: int = Query(25, ge=1, le=25),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db)
 ):
@@ -1445,7 +1464,7 @@ async def list_tasks(
     ```json
     {
       "total": 150,
-      "limit": 50,
+      "limit": 25,
       "offset": 0,
       "tasks": [
         {
@@ -1474,14 +1493,27 @@ async def list_tasks(
         # Get tasks (most recent first)
         tasks = db.query(ScrapingTask).order_by(ScrapingTask.created_at.desc()).offset(offset).limit(limit).all()
         
-        # Build response with log counts per task
+        # Aggregate log and game counts in one query instead of querying per task.
+        task_ids = [task.id for task in tasks]
+        task_counts = {}
+        if task_ids:
+            task_counts = {
+                task_id: (log_count, game_count)
+                for task_id, log_count, game_count in (
+                    db.query(
+                        ScrapingLog.task_id,
+                        func.count(ScrapingLog.id),
+                        func.count(func.distinct(ScrapingLog.item_id)),
+                    )
+                    .filter(ScrapingLog.task_id.in_(task_ids))
+                    .group_by(ScrapingLog.task_id)
+                    .all()
+                )
+            }
+
         tasks_data = []
         for task in tasks:
-            log_count = db.query(ScrapingLog).filter(ScrapingLog.task_id == task.id).count()
-            game_count = db.query(ScrapingLog).filter(
-                ScrapingLog.task_id == task.id,
-                ScrapingLog.item_id.isnot(None)
-            ).distinct(ScrapingLog.item_id).count()
+            log_count, game_count = task_counts.get(task.id, (0, 0))
             
             tasks_data.append({
                 "id": task.id,

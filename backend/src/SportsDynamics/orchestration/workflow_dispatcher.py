@@ -1,5 +1,5 @@
 """HTTP-facing dispatch helpers for SportsDynamics workflows."""
-from typing import Optional
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
@@ -44,6 +44,7 @@ def enqueue_round_scrape(
     competition_id: str,
     season_id: str,
     round_name: str,
+    parser_names: Optional[List[str]] = None,
 ) -> TaskTracker:
     tracker = _create_tracker(
         db,
@@ -52,7 +53,13 @@ def enqueue_round_scrape(
         season_id,
         round_name,
     )
-    scrape_round_task.delay(tracker.id, competition_id, season_id, round_name)
+    scrape_round_task.delay(
+        tracker.id,
+        competition_id,
+        season_id,
+        round_name,
+        parser_names,
+    )
     return tracker
 
 

@@ -2,7 +2,7 @@
 import json
 import logging
 import hashlib
-from typing import Callable, Dict, Any, List, Optional
+from typing import Callable, Dict, Any, List, Optional, Set
 from datetime import datetime
 from dateutil import parser as date_parser
 import time
@@ -23,6 +23,7 @@ from ..models import (
 from src.config.database import SessionLocal
 from .rgd_parser import _log_to_db
 from .game_payload_processor import GamePayloadProcessor
+from .parser_selection import required_file_types
 
 logger = logging.getLogger(__name__)
 
@@ -223,10 +224,9 @@ class ScraperCoordinator:
         """
         Scrape available JSON files for games that have them (WEEK/Weekly scrape)
         
-        Fetches games matching the filters, then:
-        1. Filters for available=true games only
-        2. Downloads JSON files (metadata, distance_covered, fitness_entities, rgd)
-        3. Parses and injects data into database
+        Fetches games matching the caller-provided filters, then:
+        1. Downloads the matching games' JSON files
+        2. Parses and injects data into database
         
         Perfect for weekly processing of available match data.
         
@@ -426,6 +426,136 @@ class ScraperCoordinator:
             logger.error(f"\n❌ [ERROR] Weekly scrape failed after {total_time:.1f}s: {e}", exc_info=True)
             logger.error(f"{'='*80}\n")
             raise
+        finally:
+            self.close()
+
+    def scrape_selected_parsers(
+        self,
+        filters: Dict[str, Any],
+        parser_names: List[str],
+        limit: int = 380,
+        page: int = 1,
+        progress_callback: Optional[Callable[[int, int, int, Optional[str]], None]] = None,
+        cancellation_callback: Optional[Callable[[], bool]] = None,
+    ) -> Dict[str, Any]:
+        """Run only the requested parsers and leave unrelated game data untouched."""
+        processed_count = 0
+        error_count = 0
+        skipped_count = 0
+        required_types = required_file_types(parser_names)
+        try:
+            raw_games = self.provider.fetch_games(filters, limit, page)
+            for raw_game in raw_games:
+                game_id = raw_game.get("id")
+                if cancellation_callback and cancellation_callback():
+                    return {
+                        "total_games": len(raw_games),
+                        "processed_count": processed_count,
+                        "skipped_count": skipped_count,
+                        "error_count": error_count,
+                        "cancelled": True,
+                        "message": "Selected-parser scrape cancelled",
+                    }
+
+                if not game_id:
+                    error_count += 1
+                    logger.error("Skipping selected-parser item without a game ID")
+                    if progress_callback:
+                        progress_callback(processed_count, error_count, skipped_count, None)
+                    continue
+
+                try:
+                    game = self.db_session.query(Game).filter(
+                        Game.id == game_id,
+                        Game.competition_id == filters.get("competition_id"),
+                        Game.season_id == filters.get("season_id"),
+                    ).first()
+                    if game is None:
+                        raise ValueError(
+                            f"Game {game_id} is not present in the selected competition "
+                            "and season; initialize the schedule before parsing it."
+                        )
+
+                    output_files_data = raw_game.get("outputFiles") or {"items": []}
+                    downloaded_data = self._download_json_output_files(
+                        game_id,
+                        game.name,
+                        output_files_data,
+                        requested_types=required_types,
+                    )
+                    missing_types = sorted(required_types - downloaded_data.keys())
+                    if missing_types:
+                        raise RuntimeError(
+                            f"Required JSON files unavailable for game {game_id}: "
+                            f"{', '.join(missing_types)}"
+                        )
+
+                    if (
+                        "player_distance" in parser_names
+                        and "metadata" not in downloaded_data
+                        and self.payload_processor.player_distance_needs_metadata(
+                            game,
+                            downloaded_data["distance_covered"],
+                        )
+                    ):
+                        metadata_data = self._download_json_output_files(
+                            game_id,
+                            game.name,
+                            output_files_data,
+                            requested_types={"metadata"},
+                        )
+                        if "metadata" not in metadata_data:
+                            raise RuntimeError(
+                                f"Player distance parser needs metadata to resolve "
+                                f"team assignments for game {game_id}"
+                            )
+                        downloaded_data.update(metadata_data)
+
+                    self.payload_processor.validate_selected_parser_combination(
+                        game,
+                        parser_names,
+                    )
+                    for parser_name in parser_names:
+                        try:
+                            self.payload_processor.process_selected_parser(
+                                game,
+                                parser_name,
+                                downloaded_data,
+                            )
+                        except Exception:
+                            self.db_session.rollback()
+                            raise
+
+                    processed_count += 1
+                except Exception as exc:
+                    self.db_session.rollback()
+                    error_count += 1
+                    logger.error(
+                        "Selected parser scrape failed for game %s: %s",
+                        game_id,
+                        exc,
+                        exc_info=True,
+                    )
+                finally:
+                    if progress_callback:
+                        progress_callback(
+                            processed_count,
+                            error_count,
+                            skipped_count,
+                            game_id,
+                        )
+
+            return {
+                "total_games": len(raw_games),
+                "processed_count": processed_count,
+                "skipped_count": skipped_count,
+                "error_count": error_count,
+                "parsers": parser_names,
+                "message": (
+                    f"Processed {processed_count} games with selected parsers; "
+                    f"{error_count} failed."
+                ),
+            }
         finally:
             self.close()
     
@@ -1308,6 +1438,7 @@ class ScraperCoordinator:
         game_name: str,
         output_files_data: Dict[str, Any],
         refresh_expired_urls: bool = True,
+        requested_types: Optional[Set[str]] = None,
     ) -> Dict[str, Any]:
         """
         Download JSON output files from S3 URLs into RAM, parse them, and export to disk.
@@ -1383,6 +1514,8 @@ class ScraperCoordinator:
                 if not json_type:
                     logger.warning(f"  ⚠️  Unknown JSON type: {file_name}")
                     continue
+                if requested_types is not None and json_type not in requested_types:
+                    continue
                 
                 try:
                     logger.info(f"  📥 Downloading {json_type} to RAM...")
@@ -1419,7 +1552,12 @@ class ScraperCoordinator:
                 f"✅ JSON download complete for game {game_name}: "
                 f"types={sorted(downloaded_data)}, files={json_file_names}"
             )
-            expected_types = {"metadata", "rgd", "distance_covered", "fitness_entities"}
+            expected_types = requested_types or {
+                "metadata",
+                "rgd",
+                "distance_covered",
+                "fitness_entities",
+            }
             missing_types = sorted(expected_types - downloaded_data.keys())
             if missing_types:
                 logger.warning(
@@ -1436,6 +1574,7 @@ class ScraperCoordinator:
                             game_name,
                             refreshed_files,
                             refresh_expired_urls=False,
+                            requested_types=requested_types,
                         )
             
             return downloaded_data
@@ -1646,4 +1785,3 @@ class ScraperCoordinator:
             self.db_session.rollback()
             logger.error(f"❌ Failed to create default periods: {e}", exc_info=True)
             raise
-

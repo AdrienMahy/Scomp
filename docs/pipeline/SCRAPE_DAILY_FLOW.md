@@ -353,6 +353,40 @@ SET output_files = jsonb_build_object(
 WHERE name = 'Red Star vs Sochaux';
 ```
 
+## Scraping manuel avec sélection de parsers
+
+Pipeline Control transmet les parsers choisis dans la requête de round :
+
+```json
+{
+  "competition_id": "competition-id",
+  "season_id": "season-id",
+  "round": "1",
+  "parsers": ["team_distance", "player_distance"]
+}
+```
+
+Les scrapes de données de match ne filtrent plus sur `available=true`. Ils
+retiennent les matchs dont `rgdStatus` vaut `FINISHED`. Comme le schéma
+GraphQL SportsDynamics n'expose pas `rgdStatus` dans `GameFilter`, ce filtrage
+est effectué localement après récupération paginée des matchs. La
+synchronisation du calendrier reste distincte afin de conserver les matchs à
+venir.
+
+Les options disponibles sont `lineups`, `periods`, `substitutions`,
+`team_distance`, `player_distance`, `rgd` et `fitness`. Seuls les fichiers JSON
+nécessaires sont téléchargés. Les données auxiliaires, comme les métadonnées
+utilisées pour attribuer une équipe aux joueurs, sont lues sans lancer leurs
+autres parsers.
+
+Ce mode ne modifie pas `games`, `game_status` ni les métadonnées
+`output_files`. Si les données prérequises ne sont pas présentes, la tâche
+signale une erreur plutôt que de créer ou modifier des enregistrements hors
+sélection. Lorsqu’un match possède déjà des données Fitness, RGD et Fitness
+doivent être sélectionnés ensemble afin de préserver leurs références.
+
+Sans le champ `parsers`, les appels existants conservent le workflow complet.
+
 ### Option 3: Vérifier L'API SportsDynamics
 ```bash
 # Vérifier directement auprès de l'API
@@ -375,4 +409,3 @@ WHERE name = 'Red Star vs Sochaux';
 | 5. Logs | ✅ OK | 0 events (normal) | Expected behavior |
 
 **Le code fonctionne exactement comme prévu pour les données disponibles!**
-

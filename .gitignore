@@ -7,6 +7,10 @@ __pycache__/
 *.so
 .Python
 tests/
+!backend/tests/
+backend/tests/*
+!backend/tests/conftest.py
+!backend/tests/test_distance_covered_data.py
 
 # ==========================================================================
 # AGENT INSTRUCTIONS & LOCAL PROJECT MATERIAL

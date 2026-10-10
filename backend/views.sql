@@ -6,13 +6,64 @@
 -- ============================================================================
 
 -- Drop existing views (needed when changing SELECT structure)
-DROP VIEW IF EXISTS v_player_distance_summary CASCADE;
 DROP VIEW IF EXISTS v_player_distance_by_speed_zone CASCADE;
 DROP VIEW IF EXISTS v_player_distance_by_zone_interval CASCADE;
 DROP VIEW IF EXISTS v_periods CASCADE;
 DROP VIEW IF EXISTS v_player_speed_zones_by_interval CASCADE;
 DROP VIEW IF EXISTS v_team_speed_zones_by_interval CASCADE;
 DROP VIEW IF EXISTS v_team_matches_summary CASCADE;
+DROP VIEW IF EXISTS v_goals CASCADE;
+
+-- ============================================================================
+-- VIEW: Canonical goals with team, round, and tactical context
+-- ============================================================================
+CREATE OR REPLACE VIEW v_goals AS
+SELECT
+    go.id AS goal_id,
+    g.id AS game_id,
+    g.name AS game_name,
+    COALESCE(g.round_name, g.round) AS round,
+    go.team_id,
+    t.name AS team_name,
+    go.is_own_goal AS own_goal,
+    shot_event.entity->>'phase_of_play_label' AS phase_play,
+    go.possession_id,
+    type_of_play.entity->>'gata_display_name' AS type,
+    shot_event.id AS shot_event_id,
+    shot_event.entity->>'outcome' AS shot_outcome,
+    CASE
+        WHEN jsonb_typeof(shot_event.entity->'xg') = 'number'
+        THEN (shot_event.entity->>'xg')::double precision
+    END AS shot_xg,
+    shot_event.entity->>'body_part' AS shot_body_part,
+    CASE
+        WHEN jsonb_typeof(shot_event.entity->'start_x') = 'number'
+        THEN (shot_event.entity->>'start_x')::double precision
+    END AS shot_start_x,
+    CASE
+        WHEN jsonb_typeof(shot_event.entity->'start_y') = 'number'
+        THEN (shot_event.entity->>'start_y')::double precision
+    END AS shot_start_y,
+    CASE
+        WHEN jsonb_typeof(shot_event.entity->'end_x') = 'number'
+        THEN (shot_event.entity->>'end_x')::double precision
+    END AS shot_end_x,
+    CASE
+        WHEN jsonb_typeof(shot_event.entity->'end_y') = 'number'
+        THEN (shot_event.entity->>'end_y')::double precision
+    END AS shot_end_y,
+    shot_event.entity AS shot_event
+FROM goals AS go
+JOIN games AS g
+    ON g.id = go.game_id
+LEFT JOIN teams AS t
+    ON t.id = go.team_id
+LEFT JOIN type_of_play
+    ON type_of_play.id = go.type_of_play_id::text
+   AND type_of_play.game_id = go.game_id
+LEFT JOIN events AS shot_event
+    ON shot_event.game_id = go.game_id
+   AND shot_event.entity->>'sequence_id' = go.shot #>> '{}';
 
 -- ============================================================================
 -- VIEW 1: Periods with Orientation Coefficients
@@ -115,26 +166,6 @@ JOIN speed_zone_breakdown szb ON pdc.game_id = szb.game_id AND pdc.player_id = s
 ORDER BY g.name, p.name, szb.speed_zone;
 
 -- ============================================================================
--- VIEW 2b: Player Distance Summary (total distance + minutes played only)
--- ============================================================================
--- Minimal per-player, per-game summary: just total distance and minutes played
-CREATE OR REPLACE VIEW v_player_distance_summary AS
-SELECT
-    pdc.game_id,
-    pdc.player_id,
-    pdc.team_id,
-    g.name as game_name,
-    p.name as player_name,
-    t.name as team_name,
-    ROUND((pdc.metrics->>'total_distance_m')::NUMERIC, 2) as total_distance_m,
-    ROUND((pdc.metrics->>'minutes_played')::NUMERIC, 2) as minutes_played
-FROM player_distance_covered pdc
-LEFT JOIN games g ON pdc.game_id = g.id
-LEFT JOIN players p ON pdc.player_id = p.id
-LEFT JOIN teams t ON pdc.team_id = t.id
-ORDER BY g.name, p.name;
-
--- ============================================================================
 -- VIEW 3: Player Distance by Speed Zone and Time Interval
 -- ============================================================================
 -- Shows player distance metrics broken down by speed zone and time interval
@@ -230,7 +261,6 @@ ORDER BY g.name, p.name, tib.time_interval, szb.speed_zone;
 -- VIEW SUMMARY
 -- ============================================================================
 -- v_periods: Periods with team orientation coefficient
--- v_player_distance_summary: Total distance and minutes played per player/game
 -- v_player_distance_by_zone_interval: Player distance metrics by speed zone and time interval
 -- v_team_speed_zones_by_interval: Speed zones × Time intervals for teams
 -- v_player_speed_zones_by_interval: Speed zones × Time intervals for players

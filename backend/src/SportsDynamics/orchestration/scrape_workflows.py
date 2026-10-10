@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional
 from sqlalchemy.orm import Session
 
 from ..models import Game
+from .parser_selection import normalize_parser_selection
 from .scraper_coordinator import ScraperCoordinator
 from .task_tracker import TaskTracker
 
@@ -65,7 +66,6 @@ async def initialize_season(
     tracker.phase("schedule", "Fetching and persisting season schedule")
     coordinator = ScraperCoordinator(task_id=tracker.id)
     filters = {
-        "available": True,
         "competition_id": competition_id,
         "season_id": season_id,
         "season_name": str(season_id),
@@ -103,7 +103,7 @@ async def initialize_season(
     }
 
 
-async def _available_games_for_round(
+async def _finished_games_for_round(
     coordinator: ScraperCoordinator,
     competition_id: str,
     season_id: str,
@@ -111,7 +111,7 @@ async def _available_games_for_round(
 ) -> List[Dict[str, Any]]:
     return coordinator.provider.fetch_games(
         {
-            "available": True,
+            "rgd_status": "FINISHED",
             "competition_id": competition_id,
             "season_id": season_id,
             "round": [round_name],
@@ -127,20 +127,90 @@ async def scrape_round(
     season_id: str,
     round_name: str,
     task_id: Optional[str] = None,
+    parser_names: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
-    """Clear and reprocess all available games in one round."""
+    """Clear and reprocess all RGD-finished games in one round."""
+    selected_parsers = (
+        normalize_parser_selection(parser_names)
+        if parser_names is not None
+        else None
+    )
     tracker = TaskTracker(db, "SportsDynamics", "round_scrape", competition_id, season_id, round_name, task_id=task_id)
     tracker.start()
     try:
-        tracker.phase("api_fetch", f"Fetching available games for round {round_name}")
+        if selected_parsers is not None:
+            tracker.phase(
+                "api_fetch",
+                f"Fetching files for selected parsers in round {round_name}",
+            )
+            coordinator = ScraperCoordinator(task_id=tracker.id)
+            tracker.phase(
+                "game_processing",
+                f"Running selected parsers for round {round_name}",
+            )
+            result = coordinator.scrape_selected_parsers(
+                {
+                    "rgd_status": "FINISHED",
+                    "competition_id": competition_id,
+                    "season_id": season_id,
+                    "round": [round_name],
+                },
+                selected_parsers,
+                progress_callback=lambda processed, failed, skipped, current_item_id:
+                    tracker.progress(
+                        processed=processed + failed + skipped,
+                        failed=failed,
+                        current_item_id=current_item_id,
+                        message=(
+                            "Selected-parser progress: "
+                            f"{processed + failed + skipped} games processed"
+                        ),
+                    ),
+                cancellation_callback=tracker.cancellation_requested,
+            )
+            processed = result.get("processed_count", 0)
+            failed = result.get("error_count", 0)
+            skipped = result.get("skipped_count", 0)
+            if result.get("cancelled"):
+                tracker.cancel()
+                return {
+                    "status": "cancelled",
+                    "task_id": tracker.id,
+                    "competition_id": competition_id,
+                    "season_id": season_id,
+                    "round": round_name,
+                    "parsers": selected_parsers,
+                    "scrape": result,
+                }
+            tracker.progress(
+                processed=processed + failed + skipped,
+                failed=failed,
+                message=(
+                    f"Round processed: {processed} games, "
+                    f"{failed} errors, {skipped} skipped"
+                ),
+            )
+            status = "completed" if failed == 0 else "partial"
+            tracker.finish(status, f"Round completed with {failed} errors")
+            return {
+                "status": status,
+                "task_id": tracker.id,
+                "competition_id": competition_id,
+                "season_id": season_id,
+                "round": round_name,
+                "parsers": selected_parsers,
+                "scrape": result,
+            }
+
+        tracker.phase("api_fetch", f"Fetching RGD-finished games for round {round_name}")
         coordinator = ScraperCoordinator(task_id=tracker.id)
-        raw_games = await _available_games_for_round(coordinator, competition_id, season_id, round_name)
+        raw_games = await _finished_games_for_round(coordinator, competition_id, season_id, round_name)
         game_ids = [game.get("id") for game in raw_games if game.get("id")]
         tracker.task.total_items = len(game_ids)
         tracker._commit()
         tracker.phase("game_processing", f"Parsing and persisting round {round_name}")
         result = await coordinator.scrape_available_files(
-            {"available": True, "competition_id": competition_id, "season_id": season_id, "round": [round_name]},
+            {"rgd_status": "FINISHED", "competition_id": competition_id, "season_id": season_id, "round": [round_name]},
             limit=380,
             page=1,
             progress_callback=lambda processed, failed, skipped, current_item_id: tracker.progress(
@@ -190,7 +260,7 @@ async def scrape_round(
 
 
 async def scrape_game(db: Session, game_id: str, task_id: Optional[str] = None) -> Dict[str, Any]:
-    """Clear and reprocess one available game, keeping the Game row."""
+    """Clear and reprocess one RGD-finished game, keeping the Game row."""
     game = db.query(Game).filter(Game.id == game_id).first()
     if not game:
         raise ValueError(f"Game not found: {game_id}")
@@ -199,25 +269,25 @@ async def scrape_game(db: Session, game_id: str, task_id: Optional[str] = None) 
 
     tracker = TaskTracker(db, "SportsDynamics", "game_scrape", str(game.competition_id), str(game.season_id), game.round_name, task_id=task_id)
     tracker.start(total_items=1)
-    tracker.phase("api_fetch", "Checking game availability in SportsDynamics")
+    tracker.phase("api_fetch", "Checking game RGD status in SportsDynamics")
     coordinator = ScraperCoordinator(task_id=tracker.id)
-    raw_games = await _available_games_for_round(
+    raw_games = await _finished_games_for_round(
         coordinator, game.competition_id, str(game.season_id), game.round_name
     )
     matching = [raw for raw in raw_games if raw.get("id") == game_id]
     if not matching:
-        tracker.finish("skipped", "Game is not currently available in SportsDynamics")
+        tracker.finish("skipped", "Game RGD status is not FINISHED in SportsDynamics")
         return {
             "status": "skipped",
             "task_id": tracker.id,
             "game_id": game_id,
-            "message": "Game is not currently available in SportsDynamics",
+            "message": "Game RGD status is not FINISHED in SportsDynamics",
         }
 
     tracker.phase("game_processing", "Parsing and persisting match data")
     scraped = await coordinator.scrape_games(
         {
-            "available": True,
+            "rgd_status": "FINISHED",
             "competition_id": game.competition_id,
             "season_id": str(game.season_id),
             "round": [game.round_name],
@@ -244,13 +314,13 @@ async def scrape_autonomous(
     season_id: str,
     task_id: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Detect new or changed available games, then process only those games."""
+    """Detect new or changed RGD-finished games, then process only those games."""
     tracker = TaskTracker(db, "SportsDynamics", "autonomous_scrape", competition_id, season_id, task_id=task_id)
     tracker.start()
     tracker.phase("change_detection", "Comparing SportsDynamics games with the database")
     coordinator = ScraperCoordinator(task_id=tracker.id)
     filters = {
-        "available": True,
+        "rgd_status": "FINISHED",
         "competition_id": competition_id,
         "season_id": season_id,
     }
@@ -299,7 +369,7 @@ async def scrape_autonomous(
             continue
         games = await coordinator.scrape_games(
             {
-                "available": True,
+                "rgd_status": "FINISHED",
                 "competition_id": competition_id,
                 "season_id": season_id,
                 "round": [round_name],
@@ -356,7 +426,7 @@ def autonomous_dry_run(
     try:
         raw_games = coordinator.provider.fetch_games(
             {
-                "available": True,
+                "rgd_status": "FINISHED",
                 "competition_id": competition_id,
                 "season_id": season_id,
             },

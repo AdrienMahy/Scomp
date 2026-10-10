@@ -23,7 +23,7 @@ import time
 from typing import Optional, Tuple, Dict, Any
 from datetime import datetime
 from pathlib import Path
-from uuid import uuid4
+from uuid import UUID as UUIDValue, uuid4
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
@@ -32,6 +32,152 @@ from src.SportsDynamics.etl.rgd_to_events_transformer import RGDToEventsTransfor
 from src.SportsDynamics.etl.rgd_to_setpieces_transformer import RGDToSetpiecesTransformer
 
 logger = logging.getLogger(__name__)
+
+GOAL_DISPLAY_NAMES = frozenset({"goal", "own goal"})
+
+
+def _is_goal_display_name(display_name: Any) -> bool:
+    return (
+        isinstance(display_name, str)
+        and display_name.strip().casefold() in GOAL_DISPLAY_NAMES
+    )
+
+
+def _canonical_goal_entities(event_entities: list) -> list:
+    goals_by_sequence = {
+        entity.get("sequence_id"): entity
+        for entity in event_entities
+        if entity.get("sequence_id")
+    }
+    own_goal_references = {
+        entity.get("own_goal")
+        for entity in event_entities
+        if str(entity.get("gata_display_name") or "").strip().casefold() == "goal"
+        and entity.get("own_goal")
+    }
+
+    canonical_goals = []
+    seen_goal_sequences = set()
+    for entity in event_entities:
+        display_name = str(entity.get("gata_display_name") or "").strip().casefold()
+        sequence_id = entity.get("sequence_id")
+        if display_name == "own goal" and sequence_id in own_goal_references:
+            continue
+        if sequence_id and sequence_id in seen_goal_sequences:
+            continue
+        if sequence_id:
+            seen_goal_sequences.add(sequence_id)
+
+        linked_own_goal = goals_by_sequence.get(entity.get("own_goal"))
+        canonical_goals.append((entity, linked_own_goal))
+
+    return canonical_goals
+
+
+def _resolve_goal_phase_reference(
+    db_session: Session,
+    game_id: str,
+    table_name: str,
+    source_id: Any,
+) -> Optional[str]:
+    if not isinstance(source_id, str) or not source_id.strip():
+        return None
+
+    try:
+        canonical_source_id = str(UUIDValue(source_id))
+    except ValueError:
+        logger.warning(
+            "Cannot resolve %s goal context from invalid source UUID %r",
+            table_name,
+            source_id,
+        )
+        return None
+
+    if table_name in {"possession_collective", "individual_possession"}:
+        result = db_session.execute(
+            text(
+                f"SELECT id FROM {table_name} "
+                "WHERE game_id = :game_id AND id = :source_id LIMIT 1"
+            ),
+            {
+                "game_id": game_id,
+                "source_id": canonical_source_id.replace("-", ""),
+            },
+        )
+    else:
+        result = db_session.execute(
+            text(
+                f"SELECT id FROM {table_name} "
+                "WHERE game_id = :game_id "
+                "AND entity->>'sequence_id' = :source_id LIMIT 1"
+            ),
+            {"game_id": game_id, "source_id": canonical_source_id},
+        )
+    resolved_id = result.scalar()
+    return str(resolved_id) if resolved_id is not None else None
+
+
+def _goal_phase_values(
+    entity: dict,
+    linked_own_goal: Optional[dict],
+    game_id: str,
+    db_session: Session,
+) -> tuple[dict, dict]:
+    source = linked_own_goal or entity
+    source_fields = {
+        "possession_id": ("possession_collective", "possession"),
+        "type_of_play_id": ("type_of_play", "play"),
+        "phase_of_play_id": ("phase_of_play", "phase_of_play"),
+        "individual_possession_id": ("individual_possession", "individual_possession"),
+    }
+    identifiers = {
+        column: _resolve_goal_phase_reference(
+            db_session, game_id, table_name, source.get(source_key)
+        )
+        for column, (table_name, source_key) in source_fields.items()
+    }
+    phase = {
+        key: source[key]
+        for key in (
+            "possession_label",
+            "play_label",
+            "phase_of_play_label",
+            "individual_possession_label",
+            "next_individual_possession",
+            "next_individual_possession_label",
+            "context",
+            "direction",
+        )
+        if source.get(key) is not None
+    }
+    return identifiers, phase
+
+
+def _own_goal_context(
+    entity: dict,
+    linked_own_goal: Optional[dict],
+) -> Optional[dict]:
+    if not linked_own_goal and str(
+        entity.get("gata_display_name") or ""
+    ).strip().casefold() != "own goal":
+        return None
+
+    source = linked_own_goal or entity
+    player_id = source.get("own_goal_player") or source.get("player")
+    team_players = source.get("team_players_on_pitch") or []
+    opponent_players = source.get("opponent_players_on_pitch") or []
+    if player_id in opponent_players:
+        responsible_team_id = source.get("opponent_team")
+    elif player_id in team_players:
+        responsible_team_id = source.get("team")
+    else:
+        responsible_team_id = source.get("opponent_team")
+
+    return {
+        "player_id": player_id,
+        "team_id": responsible_team_id,
+        "source_sequence_id": source.get("sequence_id"),
+    }
 
 
 def _log_to_db(
@@ -88,7 +234,7 @@ def _clean_game_data(
     round_name: Optional[str] = None,
 ) -> bool:
     """
-    Delete a game and cascade-delete all related event data (23 tables).
+    Delete only event and possession data owned by the RGD parser.
     
     Uses manual deletion in reverse dependency order (leaf tables first).
     Ignores FK errors on individual table deletes to maximize cleanup.
@@ -118,34 +264,27 @@ def _clean_game_data(
         _log_to_db(db_session, task_id, f"🧹 Cleaning existing game data", 
                    context="game_cleaning", item_id=game_id, item_name=game_name, round_name=round_name)
         
-        # Delete in reverse dependency order (leaf tables first)
-        # Use NEW table names from migration 015 (game_goals, game_cards)
+        # Delete RGD-owned tables in reverse dependency order (leaf tables first).
         # SKIP player_fitness_summary and team_fitness_summary - let calculate_fitness_summaries handle them
         # to avoid FK constraint issues
         tables_in_order = [
-            'game_score_evolution', 'individual_possession', 'possession_collective', 
+            'individual_possession', 'possession_collective',
             'setpieces', 'ball_in_play', 'foul', 'goalkick', 'kickoff', 
-            'offside', 'phase_of_play', 'type_of_play', 'events',
-            'player_fitness_runs'
+            'offside', 'phase_of_play', 'type_of_play', 'goals', 'events',
         ]
         
         deleted_count = 0
         for table in tables_in_order:
-            try:
-                result = db_session.execute(
-                    text(f"DELETE FROM {table} WHERE game_id = :gid"),
-                    {"gid": game_id}
-                )
-                if result.rowcount > 0:
-                    deleted_count += result.rowcount
-                    if table == 'setpieces':
-                        logger.info(f"  🎯 DELETED {result.rowcount} setpieces from table")
-                    else:
-                        logger.info(f"  ✓ Deleted {result.rowcount} from {table}")
-            except Exception as e:
-                # Log but continue - FK violations are common during cleanup
-                logger.info(f"  ⚠️  Could not clean {table}: {type(e).__name__}: {str(e)[:100]}")
-                # Don't rollback individual table errors, just skip and continue
+            result = db_session.execute(
+                text(f"DELETE FROM {table} WHERE game_id = :gid"),
+                {"gid": game_id}
+            )
+            if result.rowcount > 0:
+                deleted_count += result.rowcount
+                if table == 'setpieces':
+                    logger.info(f"  🎯 DELETED {result.rowcount} setpieces from table")
+                else:
+                    logger.info(f"  ✓ Deleted {result.rowcount} from {table}")
         
         # Finally delete the game itself
         # COMMENTED OUT: Don't delete the game record itself!
@@ -190,7 +329,7 @@ def parse_and_persist_rgd(
         db_session: SQLAlchemy session
         rgd_json_path: Optional custom path to rgd.json for legacy callers
         rgd_json_data: Optional in-memory RGD data (dict) - takes priority over rgd_json_path
-        clean_existing: If True (DEFAULT), delete existing game data before scraping (CASCADE deletes all 23 related tables)
+        clean_existing: If True (DEFAULT), replace existing RGD event and possession data
         task_id: Optional scraping task ID (for logging to DB)
         round_name: Optional round name (for logging)
     
@@ -211,10 +350,11 @@ def parse_and_persist_rgd(
         try:
             _clean_game_data(game.id, db_session, task_id=task_id, game_name=game_name, round_name=round_name)
         except Exception as e:
-            logger.warning(f"⚠️  Cleaning failed, will keep old data and continue: {type(e).__name__}: {e}")
+            logger.error(f"RGD cleanup failed: {type(e).__name__}: {e}")
             _log_to_db(db_session, task_id, f"⚠️  Cleaning failed: {str(e)[:200]}", 
                        level="WARNING", context="game_cleaning", item_id=game.id, item_name=game_name, round_name=round_name)
             db_session.rollback()  # Rollback any partial deletes
+            raise
     
     # Try to use in-memory data first (highest priority)
     if rgd_json_data:
@@ -270,14 +410,16 @@ def parse_and_persist_rgd(
                 logger.debug(f"Skipping invalid entity: {entity}")
                 continue
             
-            display_name = entity.get("gata_display_name", "").lower()
+            display_name = str(
+                entity.get("gata_display_name") or ""
+            ).strip().casefold()
             
             # Route by display name
             if "individual possession" in display_name:
                 individual_possessions.append(entity)
             elif "collective possession" in display_name or ("possession" in display_name and "individual" not in display_name):
                 collective_possessions.append(entity)
-            elif "goal" == display_name:
+            elif _is_goal_display_name(display_name):
                 goal_entities.append(entity)
             elif "card" == display_name:
                 card_entities.append(entity)
@@ -335,7 +477,6 @@ def parse_and_persist_rgd(
         )
         
         # Process specialized event types
-        # Note: Goals and Cards are now stored in events table with type filtering
         # Note: no specialized table for substitutions - kept in events table
         fouls_inserted = _persist_event_type("foul", game, foul_entities, db_session)
         ball_in_play_inserted = _persist_event_type("ball_in_play", game, ball_in_play_entities, db_session)
@@ -354,6 +495,12 @@ def parse_and_persist_rgd(
         individual_inserted = _persist_individual_possessions(
             game, individual_possessions, db_session
         )
+
+        # Goals are persisted after phase and possession entities so their
+        # source identifiers can be resolved to the stored context rows.
+        goals_inserted = _persist_event_type(
+            "goals", game, goal_entities, db_session
+        )
         
         # Process set pieces
         setpieces_inserted = _persist_setpieces(
@@ -366,6 +513,7 @@ def parse_and_persist_rgd(
         logger.info(f"╚════════════════════════════════════════════╝")
         logger.info(f"  📊 Summary of inserted rows:")
         logger.info(f"     📌 Events table: {events_inserted}")
+        logger.info(f"     ⚽ Goals table: {goals_inserted}")
         logger.info(f"     📌 Fouls table: {fouls_inserted}")
         logger.info(f"     📌 Ball in play table: {ball_in_play_inserted}")
         logger.info(f"     📌 Goal kicks table: {goalkicks_inserted}")
@@ -828,8 +976,13 @@ def _persist_event_type(
         table_columns = {col['name'] for col in inspector.get_columns(table_name)}
         
         insert_values = []
-        
-        for entity in event_entities:
+        entities_to_persist = (
+            _canonical_goal_entities(event_entities)
+            if table_name == "goals"
+            else [(entity, None) for entity in event_entities]
+        )
+
+        for entity, linked_own_goal in entities_to_persist:
             # Build base values that all event tables have
             values = {
                 "id": str(uuid4()),
@@ -850,15 +1003,104 @@ def _persist_event_type(
             
             # Add optional columns if they exist in the target table
             if "player_id" in table_columns:
-                values["player_id"] = clean_uuid_field(
-                    entity.get("player_in_possession") or entity.get("passer") or entity.get("player")
-                )
+                is_own_goal = bool(linked_own_goal) or str(
+                    entity.get("gata_display_name") or ""
+                ).strip().casefold() == "own goal"
+                if table_name == "goals" and is_own_goal:
+                    values["player_id"] = None
+                else:
+                    values["player_id"] = clean_uuid_field(
+                        entity.get("player_in_possession")
+                        or entity.get("passer")
+                        or entity.get("player")
+                        or entity.get("own_goal_player")
+                    )
             if "team_id" in table_columns:
                 values["team_id"] = clean_uuid_field(entity.get("team"))
-            
+
+            if table_name == "goals":
+                if "opponent_team_id" in table_columns:
+                    values["opponent_team_id"] = clean_uuid_field(
+                        entity.get("opponent_team")
+                    )
+                if "is_own_goal" in table_columns:
+                    values["is_own_goal"] = bool(linked_own_goal) or str(
+                        entity.get("gata_display_name") or ""
+                    ).strip().casefold() == "own goal"
+                if "own_goal_context" in table_columns:
+                    context = _own_goal_context(entity, linked_own_goal)
+                    values["own_goal_context"] = (
+                        json.dumps(context) if context is not None else None
+                    )
+
+                if any(
+                    column in table_columns
+                    for column in (
+                        "possession_id",
+                        "type_of_play_id",
+                        "phase_of_play_id",
+                        "individual_possession_id",
+                        "phase",
+                    )
+                ):
+                    phase_identifiers, phase = _goal_phase_values(
+                        entity, linked_own_goal, game.id, db_session
+                    )
+                    for column, value in phase_identifiers.items():
+                        if column in table_columns:
+                            values[column] = value
+                    if "phase" in table_columns:
+                        values["phase"] = json.dumps(phase) if phase else None
+
+                if "time" in table_columns:
+                    values["time"] = json.dumps(
+                        {
+                            key: entity.get(key)
+                            for key in (
+                                "start",
+                                "end",
+                                "duration",
+                                "start_frame",
+                                "end_frame",
+                            )
+                            if entity.get(key) is not None
+                        }
+                    )
+                if "spatial" in table_columns:
+                    values["spatial"] = json.dumps(
+                        {
+                            key: entity.get(key)
+                            for key in ("start_x", "start_y", "end_x", "end_y")
+                            if entity.get(key) is not None
+                        }
+                    )
+                if "actors" in table_columns:
+                    values["actors"] = json.dumps(
+                        {
+                            key: entity.get(key)
+                            for key in (
+                                "assist_player",
+                                "goalkeeper",
+                                "own_goal_player",
+                                "team",
+                                "opponent_team",
+                            )
+                            if entity.get(key) is not None
+                        }
+                    )
+                if "shot" in table_columns:
+                    values["shot"] = (
+                        json.dumps(entity["shot"])
+                        if entity.get("shot") is not None
+                        else None
+                    )
+
             # All tables should have entity column (store entire entity as JSONB)
             if "entity" in table_columns:
-                values["entity"] = json.dumps(entity)
+                stored_entity = dict(entity)
+                if linked_own_goal is not None:
+                    stored_entity["linked_own_goal"] = linked_own_goal
+                values["entity"] = json.dumps(stored_entity)
             
             # Validate FKs to avoid constraint violations (set missing FKs to None)
             values = _validate_event_fks(values, db_session)
@@ -904,6 +1146,51 @@ def _persist_event_type(
         # Don't raise - allow ETL to continue
     
     return 0
+
+
+def parse_and_persist_goals(
+    game: Game,
+    rgd_json_data: Dict[str, Any],
+    db_session: Session,
+) -> int:
+    """Replace only one game's goals from an RGD payload."""
+    if not isinstance(rgd_json_data, dict):
+        raise ValueError("RGD payload must be an object.")
+
+    entities = rgd_json_data.get("entities")
+    if not isinstance(entities, list):
+        raise ValueError("RGD payload must contain an entities list.")
+
+    goal_entities = [
+        entity
+        for entity in entities
+        if isinstance(entity, dict)
+        and _is_goal_display_name(entity.get("gata_display_name"))
+    ]
+    expected_count = len(_canonical_goal_entities(goal_entities))
+
+    db_session.execute(
+        text("DELETE FROM goals WHERE game_id = :game_id"),
+        {"game_id": game.id},
+    )
+    inserted_count = _persist_event_type(
+        "goals",
+        game,
+        goal_entities,
+        db_session,
+    )
+    if inserted_count != expected_count:
+        raise RuntimeError(
+            f"Goals-only refresh inserted {inserted_count} of "
+            f"{expected_count} expected goal rows for game {game.id}."
+        )
+
+    logger.info(
+        "Goals-only refresh replaced %s rows for game %s",
+        inserted_count,
+        game.id,
+    )
+    return inserted_count
 
 
 def _validate_event_fks(values: Dict[str, Any], db_session: Session) -> Dict[str, Any]:

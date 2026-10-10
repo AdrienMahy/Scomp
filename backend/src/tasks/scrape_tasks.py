@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import asyncio
 import logging
 import os
+from typing import List, Optional
 
 import redis
 from sqlalchemy import text
@@ -40,13 +41,15 @@ def _record_beat_cycle_start() -> datetime:
     return started_at
 
 
-def _run_workflow(workflow, task_id: str, *args):
+def _run_workflow(workflow, task_id: str, *args, **workflow_kwargs):
     """Run an async coordination workflow inside a synchronous Celery worker."""
     import asyncio
 
     db = SessionLocal()
     try:
-        return asyncio.run(workflow(db, *args, task_id=task_id))
+        return asyncio.run(
+            workflow(db, *args, task_id=task_id, **workflow_kwargs)
+        )
     except Exception as exc:
         task = db.query(ScrapingTask).filter(ScrapingTask.id == task_id).first()
         if task:
@@ -65,8 +68,22 @@ def initialize_season_task(self, task_id: str, competition_id: str, season_id: s
 
 
 @app.task(bind=True, name="scomp.scrape_round")
-def scrape_round_task(self, task_id: str, competition_id: str, season_id: str, round_name: str):
-    return _run_workflow(scrape_round, task_id, competition_id, season_id, round_name)
+def scrape_round_task(
+    self,
+    task_id: str,
+    competition_id: str,
+    season_id: str,
+    round_name: str,
+    parser_names: Optional[List[str]] = None,
+):
+    return _run_workflow(
+        scrape_round,
+        task_id,
+        competition_id,
+        season_id,
+        round_name,
+        parser_names=parser_names,
+    )
 
 
 @app.task(bind=True, name="scomp.scrape_game")

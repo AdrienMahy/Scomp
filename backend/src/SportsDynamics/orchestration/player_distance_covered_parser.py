@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 import json
 
 from src.SportsDynamics.models import Game, Player, PlayerDistanceCovered, LineupPlayer, LineupTeam
+from .distance_covered_data import build_distance_data
 
 logger = logging.getLogger(__name__)
 
@@ -120,37 +121,14 @@ def parse_and_persist_player_distance_covered(
                 else:
                     logger.warning(f"⚠️  Could not find team_id for player {player_id} in game {game.id}")
             
-            # Extract speed zones, game state, and time intervals from breakdowns
-            speed_zones = {}
-            game_state = {}
-            time_intervals = {}  # Changed to dict instead of list
-            
-            for breakdown in breakdowns:
-                # Skip if breakdown is None or not a dict
-                if not breakdown or not isinstance(breakdown, dict):
-                    logger.debug(f"Skipping invalid breakdown: {breakdown}")
-                    continue
-                    
-                category = breakdown.get("category", {})
-                distance_m = breakdown.get("distance_m")
-                
-                if distance_m is None:
-                    continue
-                
-                # Check if it's a speed zone
-                if "speed_zone" in category:
-                    speed_zone = category["speed_zone"]
-                    speed_zones[speed_zone] = distance_m
-                
-                # Check if it's a game state
-                if "game_state" in category:
-                    state = category["game_state"]
-                    game_state[state] = distance_m
-                
-                # Check if it's a time interval (convert to dict with category_name as key)
-                if "time_interval_5min" in category:
-                    time_interval = category["time_interval_5min"]
-                    time_intervals[time_interval] = distance_m
+            structured_data = build_distance_data(
+                total_distance,
+                breakdowns,
+                match_metrics={
+                    "distance_per_min_played_m": distance_per_min,
+                    "minutes_played": minutes_played,
+                },
+            )
             
             # Create PlayerDistanceCovered record with JSONB structure
             record_id = f"{game.id}_{player_id}"
@@ -162,14 +140,8 @@ def parse_and_persist_player_distance_covered(
                     game_id=game.id,
                     player_id=player_id,
                     team_id=team_id,
-                    metrics={
-                        "total_distance_m": total_distance,
-                        "distance_per_min_played_m": distance_per_min,
-                        "minutes_played": minutes_played
-                    },
-                    speed_zones=speed_zones,
-                    game_state=game_state,
-                    time_intervals=time_intervals
+                    match_data=structured_data["match_data"],
+                    intervals=structured_data["intervals"],
                 )
                 db_session.add(distance_record)
                 

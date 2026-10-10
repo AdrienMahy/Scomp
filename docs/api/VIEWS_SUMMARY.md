@@ -229,7 +229,6 @@ estimated_distance_m = (distance_interval_total * speed_zone_distance / total_di
 
 ## 📁 Fichiers
 
-- **backend/views.sql**: Définition des 3 vues
+- **backend/views.sql**: Définitions des vues analytiques complémentaires (les vues de distance joueur/équipe sont gérées par Alembic)
 - **test_views.py**: Script de test
 - **DATABASE_SCHEMA.md**: Documentation des structures
-

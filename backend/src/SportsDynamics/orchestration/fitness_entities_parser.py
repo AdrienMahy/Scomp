@@ -8,6 +8,7 @@ Handles 3,082+ Run entities per match with proper validation and error handling.
 
 import logging
 import time
+from collections import Counter
 from uuid import uuid4
 from typing import Dict, Any, List, Optional
 from sqlalchemy.orm import Session
@@ -23,6 +24,14 @@ from src.SportsDynamics.models import (
 )
 
 logger = logging.getLogger(__name__)
+
+FITNESS_RUN_REQUIRED_FIELDS = ("player", "team", "opponent_team", "period_id")
+
+
+def has_fitness_run_references(entity: Any) -> bool:
+    return isinstance(entity, dict) and all(
+        entity.get(field) for field in FITNESS_RUN_REQUIRED_FIELDS
+    )
 
 
 def parse_and_persist_fitness_entities(
@@ -99,6 +108,25 @@ def parse_and_persist_fitness_entities(
             return
         
         logger.info(f"Processing {len(entities)} fitness entities for game {game.id}")
+
+        persistable_entities = []
+        skipped_entity_counts = Counter()
+        for entity in entities:
+            if has_fitness_run_references(entity):
+                persistable_entities.append(entity)
+            else:
+                entity_type = (
+                    entity.get("gata_display_name", "Unknown")
+                    if isinstance(entity, dict)
+                    else "Invalid entity"
+                )
+                skipped_entity_counts[str(entity_type)] += 1
+
+        if not persistable_entities:
+            raise ValueError(
+                f"Fitness payload for game {game.id} contains no entities "
+                "with player, team, opponent_team, and period_id references"
+            )
         
         # Delete existing fitness records for this game (idempotency)
         db_session.query(PlayerFitnessRun).filter(
@@ -110,7 +138,7 @@ def parse_and_persist_fitness_entities(
         # ====================================================================
         
         runs_created = 0
-        runs_skipped = 0
+        runs_skipped = len(entities) - len(persistable_entities)
         missing_refs = {
             'possession': [],
             'phase_of_play': [],
@@ -118,12 +146,7 @@ def parse_and_persist_fitness_entities(
             'individual_possession': [],
         }
         
-        for entity in entities:
-            # Skip if entity is None or not a dict
-            if not entity or not isinstance(entity, dict):
-                logger.debug(f"Skipping invalid entity: {entity}")
-                continue
-            
+        for entity in persistable_entities:
             try:
                 run_record = _transform_entity_to_run(
                     entity=entity,
@@ -168,6 +191,14 @@ def parse_and_persist_fitness_entities(
                 runs_skipped += 1
                 continue
         
+        if skipped_entity_counts:
+            logger.info(
+                "Skipped %s non-persistable Fitness entities for game %s by type: %s",
+                sum(skipped_entity_counts.values()),
+                game.id,
+                dict(sorted(skipped_entity_counts.items())),
+            )
+
         # Batch insert all runs
         try:
             db_session.flush()

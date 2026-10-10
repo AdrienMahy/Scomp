@@ -38,7 +38,7 @@ class SportsDynamicsProvider:
                     "competition_id": "comp-123",
                     "season_id": "season-456",
                     "round": ["Round 1", "Round 2"],
-                    "available": True
+                    "rgd_status": "FINISHED"
                 }
             limit: Number of results per page
             page: Page number
@@ -77,12 +77,14 @@ class SportsDynamicsProvider:
         season_id = filters.get("season_id")
         round_names = filters.get("round")
         available = filters.get("available")  # Extract available filter
+        rgd_status = filters.get("rgd_status")
         
         logger.info(f"🎯 Extracted parameters:")
         logger.info(f"  - competition_id: {competition_id}")
         logger.info(f"  - season_id: {season_id}")
         logger.info(f"  - round_names: {round_names}")
         logger.info(f"  - available: {available}")
+        logger.info(f"  - rgd_status: {rgd_status}")
         
         # 3️⃣ Call API client
         try:
@@ -93,7 +95,8 @@ class SportsDynamicsProvider:
                 game_days=round_names,
                 available=available,  # Pass available filter to client
                 limit=limit,
-                page=page
+                page=page,
+                rgd_status=rgd_status,
             )
             
             logger.info(f"✅ Successfully fetched {len(games)} games")

@@ -83,7 +83,8 @@ class SportsDynamicsClient:
                   game_days: List[str] = None,
                   available: bool = None,
                   limit: int = 100,
-                  page: int = 1) -> List[Dict[str, Any]]:
+                  page: int = 1,
+                  rgd_status: Optional[str] = None) -> List[Dict[str, Any]]:
         """Get games for a competition/season"""
         query = """
         query getGames(
@@ -139,8 +140,32 @@ class SportsDynamicsClient:
             "pagination": {"limit": limit, "page": page}
         }
         
-        result = self.query(query, variables)
-        return result.get("getGames", {}).get("items", [])
+        if rgd_status is None:
+            result = self.query(query, variables)
+            return result.get("getGames", {}).get("items", [])
+
+        # rgdStatus is returned by the API but is not a field in its GameFilter.
+        # Filter matching results locally while paging through the API response.
+        matching_games = []
+        target_count = limit * page
+        source_page = 1
+        while len(matching_games) < target_count:
+            page_variables = {
+                **variables,
+                "pagination": {"limit": limit, "page": source_page},
+            }
+            result = self.query(query, page_variables)
+            page_games = result.get("getGames", {}).get("items", [])
+            matching_games.extend(
+                game for game in page_games
+                if game.get("rgdStatus") == rgd_status
+            )
+            if len(page_games) < limit:
+                break
+            source_page += 1
+
+        start = limit * (page - 1)
+        return matching_games[start:target_count]
     
     def get_game_output_files(self, game_id: str, limit: int = 30) -> Dict[str, Any]:
         """

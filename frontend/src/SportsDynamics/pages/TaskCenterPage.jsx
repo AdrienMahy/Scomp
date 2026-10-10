@@ -28,7 +28,7 @@ export default function TaskCenterPage() {
 
   async function loadTasks() {
     try {
-      const response = await axios.get(`${API_BASE}/games/tasks/list?limit=100`)
+      const response = await axios.get(`${API_BASE}/games/tasks/list?limit=25`)
       setTasks(response.data.tasks || [])
       if (selected) {
         const fresh = (response.data.tasks || []).find(task => task.id === selected.id)
