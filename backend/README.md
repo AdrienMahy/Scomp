@@ -8,6 +8,7 @@ Sports data scraping and API service for aggregating football competition data f
 - **Database**: PostgreSQL with SQLAlchemy ORM
 - **Scraper**: Modular scrapers for different providers (SportsDynamics, Perform, SecondSpectrum)
 - **Queue**: Celery with Redis for async scraping tasks
+- **Workers**: Dedicated SportsDynamics and STATSports workers, one task at a time per domain
 - **UI**: React frontend (future) for monitoring and control
 
 ## Quick Start
@@ -47,7 +48,8 @@ This starts:
 - PostgreSQL database
 - Redis cache/broker
 - FastAPI backend (http://localhost:8000)
-- Celery worker for scraping
+- Celery worker for SportsDynamics (`sportsdynamics` queue)
+- Celery worker for STATSports (`statsport` queue)
 - Celery Beat for scheduling
 
 ## Project Structure

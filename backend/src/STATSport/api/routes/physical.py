@@ -10,11 +10,10 @@ from pydantic import BaseModel, Field
 from sqlalchemy import text
 
 from src.STATSport.models.database import get_physical_engine
-from src.STATSport.api.client import StatsportAPIError
-from src.STATSport.orchestration.orchestration import (
-    scrape_activity,
-    scrape_by_date_range,
-    scrape_by_share_date,
+from src.tasks.scrape_tasks import (
+    statsport_activity_task,
+    statsport_automation_task,
+    statsport_date_range_task,
 )
 
 
@@ -105,35 +104,38 @@ class ManualBulkUpdate(BaseModel):
     persist: bool = False
 
 
-def _scrape_error(error: Exception) -> HTTPException:
-    status_code = error.status_code if isinstance(error, StatsportAPIError) and error.status_code else 502
-    return HTTPException(status_code=status_code, detail=str(error))
+@router.post("/scraping/automation/run", status_code=202)
+def run_automation(
+    share_date: date | None = Query(default=None),
+    squad_external_id: str | None = Query(default=None),
+) -> dict[str, Any]:
+    task = statsport_automation_task.delay(
+        share_date.isoformat() if share_date else None,
+        squad_external_id,
+    )
+    return {"status": "queued", "task_id": task.id}
 
 
-@router.post("/scraping/automation/run")
-async def run_automation(share_date: date | None = Query(default=None), squad_external_id: str | None = Query(default=None)) -> dict[str, Any]:
-    try:
-        return await scrape_by_share_date(share_date, squad_external_id=squad_external_id)
-    except (StatsportAPIError, ValueError) as error:
-        raise _scrape_error(error) from error
-
-
-@router.post("/scraping/range-date")
-async def run_date_range(start_date: date, end_date: date, squad_external_id: str | None = Query(default=None)) -> dict[str, Any]:
+@router.post("/scraping/range-date", status_code=202)
+def run_date_range(
+    start_date: date,
+    end_date: date,
+    squad_external_id: str | None = Query(default=None),
+) -> dict[str, Any]:
     if end_date < start_date:
         raise HTTPException(status_code=422, detail="end_date must be on or after start_date")
-    try:
-        return await scrape_by_date_range(start_date, end_date, squad_external_id=squad_external_id)
-    except (StatsportAPIError, ValueError) as error:
-        raise _scrape_error(error) from error
+    task = statsport_date_range_task.delay(
+        start_date.isoformat(),
+        end_date.isoformat(),
+        squad_external_id,
+    )
+    return {"status": "queued", "task_id": task.id}
 
 
-@router.post("/scraping/activity")
-async def run_activity(session_date: date, activity_id: str) -> dict[str, Any]:
-    try:
-        return await scrape_activity(session_date, activity_id)
-    except (StatsportAPIError, ValueError) as error:
-        raise _scrape_error(error) from error
+@router.post("/scraping/activity", status_code=202)
+def run_activity(session_date: date, activity_id: str) -> dict[str, Any]:
+    task = statsport_activity_task.delay(session_date.isoformat(), activity_id)
+    return {"status": "queued", "task_id": task.id}
 
 
 def _validate_automation_rule(configuration: AutomationConfigurationUpdate) -> None:

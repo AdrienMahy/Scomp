@@ -115,7 +115,7 @@ def enrich_players_task(self, task_id: str, competition_id: str, season_id: str)
     return _run_workflow(enrich_players, task_id, competition_id, season_id)
 
 
-@app.task(bind=True)
+@app.task(bind=True, name="scomp.smart_scrape_cycle")
 def smart_scrape_cycle(self):
     """
     Execute automated smart scraping cycle
@@ -196,3 +196,43 @@ def physical_statsport_automation_task(self):
         return {"status": "completed", "rules": results}
     finally:
         lock.release()
+
+
+@app.task(name="scomp.statsport_automation")
+def statsport_automation_task(
+    share_date: str | None = None,
+    squad_external_id: str | None = None,
+):
+    """Run a manual STATSports share-date scrape on the dedicated worker."""
+    return asyncio.run(
+        scrape_by_share_date(
+            share_date,
+            squad_external_id=squad_external_id,
+        )
+    )
+
+
+@app.task(name="scomp.statsport_date_range")
+def statsport_date_range_task(
+    start_date: str,
+    end_date: str,
+    squad_external_id: str | None = None,
+):
+    """Run a manual STATSports date-range scrape on the dedicated worker."""
+    from ..STATSport.orchestration.orchestration import scrape_by_date_range
+
+    return asyncio.run(
+        scrape_by_date_range(
+            start_date,
+            end_date,
+            squad_external_id=squad_external_id,
+        )
+    )
+
+
+@app.task(name="scomp.statsport_activity")
+def statsport_activity_task(session_date: str, activity_id: str):
+    """Run a manual STATSports activity scrape on the dedicated worker."""
+    from ..STATSport.orchestration.orchestration import scrape_activity
+
+    return asyncio.run(scrape_activity(session_date, activity_id))

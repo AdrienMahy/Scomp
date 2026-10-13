@@ -23,3 +23,17 @@ app.conf.update(
     task_time_limit=30 * 60,  # 30 minutes
     task_soft_time_limit=25 * 60,  # 25 minutes
 )
+
+app.conf.task_routes = {
+    "scomp.initialize_season": {"queue": "sportsdynamics"},
+    "scomp.scrape_round": {"queue": "sportsdynamics"},
+    "scomp.scrape_game": {"queue": "sportsdynamics"},
+    "scomp.scrape_autonomous": {"queue": "sportsdynamics"},
+    "scomp.enrich_players": {"queue": "sportsdynamics"},
+    "scomp.smart_scrape_cycle": {"queue": "sportsdynamics"},
+    "scomp.reconcile_stale_tasks": {"queue": "sportsdynamics"},
+    "scomp.physical_statsport_automation": {"queue": "statsport"},
+    "scomp.statsport_automation": {"queue": "statsport"},
+    "scomp.statsport_date_range": {"queue": "statsport"},
+    "scomp.statsport_activity": {"queue": "statsport"},
+}

@@ -16,7 +16,7 @@ print(
 # tasks remain available regardless of this setting.
 app.conf.beat_schedule = {
     'smart-scrape-cycle': {
-        'task': 'src.tasks.scrape_tasks.smart_scrape_cycle',
+        'task': 'scomp.smart_scrape_cycle',
         'schedule': schedule(run_every=SCRAPE_INTERVAL * 60),
         'options': {
             'expires': (SCRAPE_INTERVAL + 5) * 60,
@@ -42,4 +42,3 @@ app.conf.beat_schedule["reconcile-stale-tasks"] = {
 # Enable UTC timezone
 app.conf.timezone = 'UTC'
 app.conf.enable_utc = True
-
