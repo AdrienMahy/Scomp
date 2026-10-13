@@ -9,8 +9,15 @@ Les VIEWs SQL fournissent des données de match et des analyses sportives:
 Cette vue retourne une ligne par but canonique. `team_id` et `team_name`
 désignent l'équipe créditée du but ; `own_goal` indique s'il s'agit d'un but
 contre son camp. `phase_play` contient le libellé de phase du fournisseur,
+`quarter` est extrait du champ `quarter` du payload de l'événement Shot lié,
 `possession_id` l'identifiant de possession collective et `type` le libellé
 du type de jeu (par exemple `Fast play` ou `Structured play`).
+`period` est le numéro de période associé au but (`1`, `2`, etc.).
+Si le Shot n'est pas disponible, notamment pour un Own goal, `quarter` est lu
+dans le payload de l'événement Goal. `scorer_id` et `scorer_name` identifient
+le buteur ; pour un Own goal, ils désignent le joueur responsable indiqué par
+`own_goal_context`. `opponent_team_id` et `opponent_team_name` identifient
+l'équipe adverse.
 
 La vue inclut également `goal_id`, `game_id`, `game_name` et `round` pour
 identifier et filtrer les buts. Les valeurs de phase ou de type restent
@@ -23,11 +30,74 @@ ainsi que l'entité Shot complète dans `shot_event`. La jointure externe conser
 les buts qui n'ont pas d'événement Shot associé.
 
 ```sql
-SELECT game_name, round, team_name, own_goal, phase_play, possession_id, type,
+SELECT game_name, round, period, team_name, own_goal, scorer_name, opponent_team_name,
+       phase_play, quarter, possession_id, type,
        shot_outcome, shot_xg, shot_body_part, shot_start_x, shot_start_y,
        shot_end_x, shot_end_y
 FROM v_goals
 ORDER BY round, game_name, goal_id;
+```
+
+## Corners : `v_corners`
+
+Cette vue retourne une ligne par corner, avec son identifiant de séquence, le
+match et le round, l'équipe qui tire et son adversaire, le tireur, la période
+et le quarter. Elle expose aussi le côté, l'indicateur de corner court,
+`outcome_detail` (le détail de l'issue) et l'indicateur `goal_in_sequence`
+fourni par SportsDynamics.
+`pass_sequence_id` référence l'événement Pass associé ; `arrival_x` et
+`arrival_y` sont extraits de ses coordonnées `end_x` et `end_y`. Les corners
+sans référence Pass restent présents, avec ces coordonnées à `NULL`.
+`corner_effect` distingue `INSWING` et `OUTSWING`, tandis que `side` indique
+si le corner est tiré depuis la gauche ou la droite. `first_contact` classe le
+premier contact selon les indicateurs de but, tir, action offensive ou contact
+du gardien. `second_contact` classe le deuxième contact en `Shot` ou
+`Offensive` lorsque les indicateurs correspondants sont présents ; sinon sa
+valeur est `NULL`. `first_contact_is_cross` indique si le premier contact est
+un centre ; sa valeur est `NULL` lorsque le fournisseur ne fournit pas
+l'indicateur.
+
+```sql
+SELECT game_name, round, period, quarter, team_name, opponent_team_name,
+       taker_name, side, short_corner, outcome_detail, goal_in_sequence,
+       arrival_x, arrival_y, corner_effect, first_contact, second_contact,
+       first_contact_is_cross
+FROM v_corners
+ORDER BY round, game_name, period, quarter, corner_id;
+```
+
+## Acteurs des corners : `v_corner_actors`
+
+Cette vue contient une ligne par couple corner/joueur/rôle, avec l'identité du
+joueur et le contexte du corner. Elle expose également le côté du corner et le
+numéro de maillot du joueur lorsqu'il est présent dans la feuille du match.
+Les rôles `first_contact_player` et `second_contact_player` ne sont conservés
+que lorsque leur indicateur offensif respectif est vrai. Les autres rôles
+incluent le tireur, le gardien et les listes tactiques du payload. Un même
+joueur peut donc apparaître plusieurs fois pour un corner s'il remplit
+plusieurs rôles.
+
+```sql
+SELECT game_name, round, period, team_name, side, actor_name, shirt_number, role
+FROM v_corner_actors
+WHERE role IN ('taker', 'goalkeeper', 'first_contact_player', 'second_contact_player')
+ORDER BY round, game_name, period, role, actor_name;
+```
+
+## Stratégie des corners : `v_corner_strategy`
+
+Cette vue contient une seule ligne par corner et ajoute le nombre de joueurs
+distincts affectés à chaque rôle tactique. Les compteurs ne sont donc pas
+répétés sur chaque acteur, contrairement à un agrégat joint directement à
+`v_corner_actors`.
+
+```sql
+SELECT game_name, round, period, team_name, corner_effect,
+       attackers_in_box_count, attackers_near_post_count,
+       defenders_at_first_contact_count, rest_defenders_count,
+       short_connectors_count, goal_in_sequence
+FROM v_corner_strategy
+ORDER BY round, game_name, period, corner_id;
 ```
 
 ## Distances par état de jeu
