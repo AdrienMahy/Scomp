@@ -33,6 +33,325 @@ from src.SportsDynamics.etl.rgd_to_setpieces_transformer import RGDToSetpiecesTr
 
 logger = logging.getLogger(__name__)
 
+
+_PHASE_OF_PLAY_JSONB_FIELDS = {
+    "time": (
+        "start",
+        "end",
+        "duration",
+        "start_frame",
+        "end_frame",
+        "quarter",
+    ),
+    "spatial": (
+        "start_x",
+        "start_y",
+        "end_x",
+        "end_y",
+        "start_channel",
+        "end_channel",
+        "start_third",
+        "end_third",
+        "functional_start_zone",
+        "functional_end_zone",
+        "tactical_space_start",
+        "tactical_space_end",
+        "tactical_subspace_start",
+        "tactical_subspace_end",
+        "defensive_block_area",
+        "defensive_block_depth",
+        "defensive_block_width",
+        "backline_height",
+        "frontline_height",
+        "goalkeeper_height",
+        "distance_gained",
+        "distance_gained_pct",
+        "dominant_corridor",
+        "dominant_progression_corridor",
+        "wide_balance",
+    ),
+    "actors": (
+        "team",
+        "team_id",
+        "opponent_team",
+        "on_ball_players",
+        "team_players_on_pitch",
+        "opponent_players_on_pitch",
+        "n_team_players_on_pitch",
+        "n_opponent_players_on_pitch",
+        "player_difference",
+        "n_backline_players",
+        "n_basis_players",
+        "n_frontline_players",
+        "n_in_behind_players",
+        "n_initiation_players",
+        "n_inside_players",
+        "n_pocket_players",
+        "n_wide_left_players",
+        "n_wide_players",
+        "n_wide_right_players",
+        "from_goalkeeper",
+        "goalkeeper_involved",
+        "goalkeeper_involved_outside_box",
+    ),
+    "phase": (
+        "structured_play",
+        "starting_individual_possession",
+        "game_week",
+        "best_stage",
+        "outcome",
+        "outcome_detail",
+        "restart_type",
+        "goal_in_sequence",
+        "shot_in_sequence",
+        "counter_attack_conceded",
+        "team_score",
+        "opponent_score",
+        "score_difference",
+        "peak_bypassed_players",
+        "peak_bypassed_backline_players",
+    ),
+}
+
+_TYPE_OF_PLAY_JSONB_FIELDS = {
+    "time": (
+        "start",
+        "end",
+        "duration",
+        "start_frame",
+        "end_frame",
+        "quarter",
+        "duration_category",
+    ),
+    "spatial": (
+        "start_x",
+        "start_y",
+        "end_x",
+        "end_y",
+        "start_channel",
+        "end_channel",
+        "start_third",
+        "end_third",
+        "functional_start_zone",
+        "functional_end_zone",
+        "tactical_space_start",
+        "tactical_space_end",
+        "tactical_subspace_start",
+        "tactical_subspace_end",
+        "defensive_block_area",
+        "defensive_block_depth",
+        "defensive_block_width",
+        "backline_height",
+        "frontline_height",
+        "goalkeeper_height",
+        "distance_gained",
+        "distance_gained_pct",
+        "distance_to_goal",
+        "dominant_corridor",
+        "dominant_progression_corridor",
+        "wide_balance",
+        "direct_verticality",
+        "directness_category",
+        "directness_pct",
+    ),
+    "actors": (
+        "team",
+        "opponent_team",
+        "ending_player",
+        "on_ball_players",
+        "team_players_on_pitch",
+        "opponent_players_on_pitch",
+        "n_team_players_on_pitch",
+        "n_opponent_players_on_pitch",
+        "n_on_ball_players",
+        "n_players_to_bypass_at_start",
+        "player_difference",
+        "n_backline_players",
+        "n_basis_players",
+        "n_frontline_players",
+        "n_in_behind_players",
+        "n_initiation_players",
+        "n_inside_players",
+        "n_pocket_players",
+        "n_wide_left_players",
+        "n_wide_players",
+        "n_wide_right_players",
+        "from_goalkeeper",
+        "goalkeeper_involved",
+        "goalkeeper_involved_outside_box",
+    ),
+    "type_of_play": (
+        "possession",
+        "starting_individual_possession",
+        "game_week",
+        "best_stage",
+        "start_type",
+        "restart_type",
+        "outcome",
+        "outcome_detail",
+        "goal_in_sequence",
+        "shot_in_sequence",
+        "counter_attack_conceded",
+        "following_set_play",
+        "team_score",
+        "opponent_score",
+        "score_difference",
+        "sequence_xg",
+        "pass_tempo",
+        "n_passes",
+        "n_passes_category",
+        "peak_bypassed_players",
+        "peak_bypassed_backline_players",
+        "bypassed_player_differential_7s",
+    ),
+}
+
+_COLLECTIVE_POSSESSION_JSONB_FIELDS = {
+    "time": (
+        "start",
+        "end",
+        "duration",
+        "start_frame",
+        "end_frame",
+        "quarter",
+        "duration_category",
+    ),
+    "spatial": (
+        "start_x",
+        "start_y",
+        "end_x",
+        "end_y",
+        "start_channel",
+        "end_channel",
+        "start_third",
+        "end_third",
+        "functional_start_zone",
+        "functional_end_zone",
+        "tactical_space_start",
+        "tactical_space_end",
+        "tactical_subspace_start",
+        "tactical_subspace_end",
+        "defensive_block_area",
+        "defensive_block_depth",
+        "defensive_block_width",
+        "backline_height",
+        "frontline_height",
+        "goalkeeper_height",
+        "distance_gained",
+        "distance_gained_pct",
+        "dominant_corridor",
+        "dominant_progression_corridor",
+        "wide_balance",
+        "directness_category",
+        "directness_pct",
+    ),
+    "actors": (
+        "team",
+        "opponent_team",
+        "starting_player",
+        "ending_player",
+        "shooter",
+        "on_ball_players",
+        "team_players_on_pitch",
+        "opponent_players_on_pitch",
+        "n_team_players_on_pitch",
+        "n_opponent_players_on_pitch",
+        "n_on_ball_players",
+        "n_backline_players",
+        "n_basis_players",
+        "n_frontline_players",
+        "n_in_behind_players",
+        "n_initiation_players",
+        "n_inside_players",
+        "n_pocket_players",
+        "n_wide_left_players",
+        "n_wide_players",
+        "n_wide_right_players",
+        "player_difference",
+        "from_goalkeeper",
+        "goalkeeper_involved",
+        "goalkeeper_involved_outside_box",
+    ),
+    "phase": (
+        "game_week",
+        "best_stage",
+        "start_type",
+        "restart_type",
+        "outcome",
+        "outcome_detail",
+        "goal_in_sequence",
+        "shot_in_sequence",
+        "counter_attack_conceded",
+        "non_shot_threats",
+        "team_score",
+        "opponent_score",
+        "score_difference",
+    ),
+    "possession": (
+        "ball_in_play",
+        "n_passes",
+        "n_passes_category",
+        "pass_tempo",
+        "peak_bypassed_players",
+        "peak_bypassed_backline_players",
+    ),
+}
+
+_INDIVIDUAL_POSSESSION_JSONB_FIELDS = {
+    "time": (
+        "start",
+        "end",
+        "duration",
+        "start_frame",
+        "end_frame",
+        "quarter",
+    ),
+    "spatial": (
+        "distance",
+        "distance_gained",
+        "distance_gained_pct",
+        "start_x",
+        "start_y",
+        "end_x",
+        "end_y",
+        "start_channel",
+        "end_channel",
+        "start_third",
+        "end_third",
+        "functional_start_zone",
+        "functional_end_zone",
+    ),
+    "actors": (
+        "player_in_possession",
+        "team",
+        "opponent_team",
+        "goalkeeper",
+        "team_players_on_pitch",
+        "opponent_players_on_pitch",
+        "n_team_players_on_pitch",
+        "n_opponent_players_on_pitch",
+        "player_difference",
+    ),
+    "phase": (
+        "game_week",
+        "possession",
+        "possession_label",
+        "phase_of_play",
+        "phase_of_play_label",
+        "play",
+        "play_label",
+        "pass",
+        "reception_pass",
+        "shot",
+        "restart",
+        "restart_type",
+        "progressive_carry",
+        "team_score",
+        "opponent_score",
+        "score_difference",
+    ),
+}
+
 GOAL_DISPLAY_NAMES = frozenset({"goal", "own goal"})
 
 
@@ -87,7 +406,7 @@ def _resolve_goal_phase_reference(
         canonical_source_id = str(UUIDValue(source_id))
     except ValueError:
         logger.warning(
-            "Cannot resolve %s goal context from invalid source UUID %r",
+            "Cannot resolve %s context from invalid source UUID %r",
             table_name,
             source_id,
         )
@@ -115,6 +434,22 @@ def _resolve_goal_phase_reference(
         )
     resolved_id = result.scalar()
     return str(resolved_id) if resolved_id is not None else None
+
+
+def _jsonb_section_values(
+    entity: dict,
+    fields_by_section: Dict[str, tuple],
+) -> Dict[str, str]:
+    return {
+        section: json.dumps(
+            {
+                key: entity[key]
+                for key in keys
+                if entity.get(key) is not None
+            }
+        )
+        for section, keys in fields_by_section.items()
+    }
 
 
 def _goal_phase_values(
@@ -310,6 +645,37 @@ def _clean_game_data(
         raise
 
 
+def _clean_rgd_scope(game_id: str, db_session: Session, scope: str) -> None:
+    tables_by_scope = {
+        "events": (
+            "setpieces",
+            "foul",
+            "card",
+            "goalkick",
+            "kickoff",
+            "offside",
+            "goals",
+            "events",
+        ),
+        "phases": (
+            "individual_possession",
+            "possession_collective",
+            "ball_in_play",
+            "phase_of_play",
+            "type_of_play",
+        ),
+    }
+    tables = tables_by_scope.get(scope)
+    if tables is None:
+        raise ValueError(f"Unsupported RGD parser scope: {scope}")
+
+    for table in tables:
+        db_session.execute(
+            text(f"DELETE FROM {table} WHERE game_id = :game_id"),
+            {"game_id": game_id},
+        )
+
+
 def parse_and_persist_rgd(
     game: Game,
     game_name: str,
@@ -319,6 +685,7 @@ def parse_and_persist_rgd(
     clean_existing: bool = True,
     task_id: Optional[str] = None,
     round_name: Optional[str] = None,
+    data_scope: str = "all",
 ) -> Tuple[int, int, int, int, int]:
     """
     Parse RGD.json and persist events and possession data to database.
@@ -344,8 +711,11 @@ def parse_and_persist_rgd(
     - setpieces: ~110 records per match
     - Plus 19 other specialized tables (goals, card, foul, ball_in_play, fitness data, etc.)
     """
+    if data_scope not in {"all", "events", "phases"}:
+        raise ValueError(f"Unsupported RGD parser scope: {data_scope}")
+
     # Clean existing data before scraping (CASCADE deletes all 23 related tables)
-    if clean_existing:
+    if clean_existing and data_scope == "all":
         logger.info(f"🧹 Cleaning existing game data before scraping")
         try:
             _clean_game_data(game.id, db_session, task_id=task_id, game_name=game_name, round_name=round_name)
@@ -357,7 +727,7 @@ def parse_and_persist_rgd(
             raise
     
     # Try to use in-memory data first (highest priority)
-    if rgd_json_data:
+    if rgd_json_data is not None:
         logger.info(f"ℹ️  Using in-memory RGD data for game {game_name}")
         rgd_json = rgd_json_data
     elif rgd_json_path and rgd_json_path.exists():
@@ -378,11 +748,19 @@ def parse_and_persist_rgd(
         logger.info(f"ℹ️  No rgd.json found for game {game_name}")
         _log_to_db(db_session, task_id, f"ℹ️  No rgd.json found", 
                    level="INFO", context="rgd_loading", item_id=game.id, item_name=game_name, round_name=round_name)
-        return 0, 0, 0, 0
+        return 0, 0, 0, 0, 0
     
     try:
         # Extract entities
-        entities = rgd_json.get("entities", [])
+        if not isinstance(rgd_json, dict) or not isinstance(
+            rgd_json.get("entities"), list
+        ):
+            raise ValueError("RGD payload must contain an entities list")
+        entities = rgd_json["entities"]
+
+        if clean_existing and data_scope != "all":
+            _clean_rgd_scope(game.id, db_session, data_scope)
+
         logger.info(f"  📊 Found {len(entities)} RGD entities")
         
         # Initialize transformer
@@ -471,41 +849,64 @@ def parse_and_persist_rgd(
         logger.info(f"     - {len(individual_possessions)} individual possessions")
         logger.info(f"     - {len(setpiece_entities)} set pieces")
         
-        # Process generic events
-        events_inserted = _persist_events(
-            game, event_entities, transformer, db_session
-        )
-        
-        # Process specialized event types
-        # Note: no specialized table for substitutions - kept in events table
-        fouls_inserted = _persist_event_type("foul", game, foul_entities, db_session)
-        ball_in_play_inserted = _persist_event_type("ball_in_play", game, ball_in_play_entities, db_session)
-        goalkicks_inserted = _persist_event_type("goalkick", game, goalkick_entities, db_session)
-        kickoffs_inserted = _persist_event_type("kickoff", game, kickoff_entities, db_session)
-        offsides_inserted = _persist_event_type("offside", game, offside_entities, db_session)
-        phase_of_play_inserted = _persist_event_type("phase_of_play", game, phase_of_play_entities, db_session)
-        type_of_play_inserted = _persist_event_type("type_of_play", game, type_of_play_entities, db_session)
-        
-        # Process collective possessions
-        collective_inserted = _persist_collective_possessions(
-            game, collective_possessions, db_session
-        )
-        
-        # Process individual possessions
-        individual_inserted = _persist_individual_possessions(
-            game, individual_possessions, db_session
-        )
+        events_inserted = 0
+        collective_inserted = 0
+        individual_inserted = 0
+        setpieces_inserted = 0
+        ball_in_play_inserted = 0
+        type_of_play_inserted = 0
+        phase_of_play_inserted = 0
+        goals_inserted = 0
+        cards_inserted = 0
+        fouls_inserted = 0
+        goalkicks_inserted = 0
+        kickoffs_inserted = 0
+        offsides_inserted = 0
 
-        # Goals are persisted after phase and possession entities so their
-        # source identifiers can be resolved to the stored context rows.
-        goals_inserted = _persist_event_type(
-            "goals", game, goal_entities, db_session
-        )
-        
-        # Process set pieces
-        setpieces_inserted = _persist_setpieces(
-            game, setpiece_entities, db_session
-        )
+        if data_scope in {"all", "phases"}:
+            ball_in_play_inserted = _persist_event_type(
+                "ball_in_play", game, ball_in_play_entities, db_session
+            )
+            type_of_play_inserted = _persist_event_type(
+                "type_of_play", game, type_of_play_entities, db_session
+            )
+            collective_inserted = _persist_collective_possessions(
+                game, collective_possessions, db_session
+            )
+            individual_inserted = _persist_individual_possessions(
+                game, individual_possessions, db_session
+            )
+            phase_of_play_inserted = _persist_event_type(
+                "phase_of_play", game, phase_of_play_entities, db_session
+            )
+
+        if data_scope in {"all", "events"}:
+            events_inserted = _persist_events(
+                game, event_entities, transformer, db_session
+            )
+            fouls_inserted = _persist_event_type(
+                "foul", game, foul_entities, db_session
+            )
+            cards_inserted = _persist_event_type(
+                "card", game, card_entities, db_session
+            )
+            goalkicks_inserted = _persist_event_type(
+                "goalkick", game, goalkick_entities, db_session
+            )
+            kickoffs_inserted = _persist_event_type(
+                "kickoff", game, kickoff_entities, db_session
+            )
+            offsides_inserted = _persist_event_type(
+                "offside", game, offside_entities, db_session
+            )
+            goals_inserted = _persist_event_type(
+                "goals", game, goal_entities, db_session
+            )
+            setpieces_inserted = _persist_setpieces(
+                game, setpiece_entities, db_session
+            )
+        elif data_scope == "phases":
+            _refresh_rgd_event_references(game.id, db_session)
         
         logger.info(f"")
         logger.info(f"╔════════════════════════════════════════════╗")
@@ -514,6 +915,7 @@ def parse_and_persist_rgd(
         logger.info(f"  📊 Summary of inserted rows:")
         logger.info(f"     📌 Events table: {events_inserted}")
         logger.info(f"     ⚽ Goals table: {goals_inserted}")
+        logger.info(f"     🟨 Cards table: {cards_inserted}")
         logger.info(f"     📌 Fouls table: {fouls_inserted}")
         logger.info(f"     📌 Ball in play table: {ball_in_play_inserted}")
         logger.info(f"     📌 Goal kicks table: {goalkicks_inserted}")
@@ -539,6 +941,111 @@ def parse_and_persist_rgd(
     except Exception as e:
         logger.error(f"❌ RGD processing error for {game_name}: {e}", exc_info=True)
         return 0, 0, 0, 0, 1
+
+
+def parse_and_persist_rgd_phases(
+    game: Game,
+    rgd_json_data: Dict[str, Any],
+    db_session: Session,
+) -> Tuple[int, int, int, int, int]:
+    """Replace only this game's RGD phase, play-type, and possession data."""
+    if not isinstance(rgd_json_data, dict) or not isinstance(
+        rgd_json_data.get("entities"), list
+    ):
+        raise ValueError("RGD phase parser requires an entities list")
+    return parse_and_persist_rgd(
+        game=game,
+        game_name=game.name,
+        db_session=db_session,
+        rgd_json_data=rgd_json_data,
+        clean_existing=True,
+        data_scope="phases",
+    )
+
+
+def parse_and_persist_rgd_events(
+    game: Game,
+    rgd_json_data: Dict[str, Any],
+    db_session: Session,
+) -> Tuple[int, int, int, int, int]:
+    """Replace only this game's RGD events and event-specific data."""
+    if not isinstance(rgd_json_data, dict) or not isinstance(
+        rgd_json_data.get("entities"), list
+    ):
+        raise ValueError("RGD events parser requires an entities list")
+    return parse_and_persist_rgd(
+        game=game,
+        game_name=game.name,
+        db_session=db_session,
+        rgd_json_data=rgd_json_data,
+        clean_existing=True,
+        data_scope="events",
+    )
+
+
+def _rgd_event_reference_values(
+    entity: Dict[str, Any],
+    game_id: str,
+    db_session: Session,
+) -> Dict[str, Optional[str]]:
+    source_fields = {
+        "possession_id": ("possession_collective", "possession"),
+        "type_of_play_id": ("type_of_play", "type_of_play"),
+        "phase_of_play_id": ("phase_of_play", "phase_of_play"),
+        "individual_possession_id": (
+            "individual_possession",
+            "individual_possession",
+        ),
+    }
+    return {
+        column: _resolve_goal_phase_reference(
+            db_session,
+            game_id,
+            table_name,
+            entity.get(source_key),
+        )
+        for column, (table_name, source_key) in source_fields.items()
+    }
+
+
+def _refresh_rgd_event_references(game_id: str, db_session: Session) -> None:
+    for table_name in ("events", "goals"):
+        rows = db_session.execute(
+            text(f"SELECT id, entity FROM {table_name} WHERE game_id = :game_id"),
+            {"game_id": game_id},
+        ).fetchall()
+        for row in rows:
+            entity = row[1]
+            if isinstance(entity, str):
+                entity = json.loads(entity)
+            if not isinstance(entity, dict):
+                entity = {}
+
+            if table_name == "goals":
+                values, _ = _goal_phase_values(
+                    entity,
+                    entity.get("linked_own_goal"),
+                    game_id,
+                    db_session,
+                )
+            else:
+                values = _rgd_event_reference_values(
+                    entity,
+                    game_id,
+                    db_session,
+                )
+
+            db_session.execute(
+                text(
+                    f"UPDATE {table_name} SET "
+                    "possession_id = :possession_id, "
+                    "type_of_play_id = :type_of_play_id, "
+                    "phase_of_play_id = :phase_of_play_id, "
+                    "individual_possession_id = :individual_possession_id "
+                    "WHERE id = :record_id"
+                ),
+                {**values, "record_id": row[0]},
+            )
 
 
 def _persist_events(
@@ -597,11 +1104,11 @@ def _persist_events(
                 "goalkeeper_id": clean_uuid_field(entity.get("goalkeeper")),
                 "expected_defender_at_arrival_id": clean_uuid_field(entity.get("expected_defender_at_arrival")),
                 "previous_passer_id": clean_uuid_field(entity.get("previous_passer")),
-                # Phase jointure columns (UUIDs from RGD - may not exist in DB)
-                "possession_id": clean_uuid_field(entity.get("possession")),
-                "type_of_play_id": clean_uuid_field(entity.get("type_of_play")),
-                "phase_of_play_id": clean_uuid_field(entity.get("phase_of_play")),
-                "individual_possession_id": clean_uuid_field(entity.get("individual_possession")),
+                **_rgd_event_reference_values(
+                    entity,
+                    game.id,
+                    db_session,
+                ),
                 # JSONB: store entire entity as-is (flat structure)
                 "entity": json.dumps(entity),
             }
@@ -656,44 +1163,35 @@ def _persist_collective_possessions(
         insert_values = []
         
         for entity in collective_entities:
-            # Extract critical columns
+            ball_in_play_source_id = entity.get("ball_in_play")
+            ball_in_play_id = _resolve_goal_phase_reference(
+                db_session,
+                game.id,
+                "ball_in_play",
+                ball_in_play_source_id,
+            )
+            if ball_in_play_source_id and ball_in_play_id is None:
+                logger.warning(
+                    "Could not resolve collective possession ball_in_play "
+                    "reference %r for game %s",
+                    ball_in_play_source_id,
+                    game.id,
+                )
+
             values = {
                 "id": entity.get("sequence_id", "").replace("-", "")[:50],  # Use sequence_id (unique) instead of entity_id
                 "game_id": game.id,
                 "period_id": entity.get("period_id"),
                 "team_id": entity.get("team"),
                 "opponent_team_id": entity.get("opponent_team"),
-                "ball_in_play_id": None,  # Can be linked later if needed
+                "ball_in_play_id": ball_in_play_id,
                 "created_at": now,
                 "updated_at": now,
-                # JSONB sections
-                "entity": json.dumps({"gata_display_name": entity.get("gata_display_name")}),
-                "time": json.dumps({
-                    "start": entity.get("start"),
-                    "end": entity.get("end"),
-                    "duration": entity.get("duration"),
-                    "start_frame": entity.get("start_frame"),
-                    "end_frame": entity.get("end_frame"),
-                }),
-                "phase": json.dumps({
-                    "possession": entity.get("possession"),
-                    "context": entity.get("context"),
-                    "play": entity.get("play"),
-                    "phase_of_play": entity.get("phase_of_play"),
-                }),
-                "spatial": json.dumps({
-                    "distance": entity.get("distance"),
-                    "distance_gained": entity.get("distance_gained"),
-                }),
-                "actors": json.dumps({
-                    "team": entity.get("team"),
-                    "opponent_team": entity.get("opponent_team"),
-                }),
-                "possession": json.dumps({
-                    "possession_id": entity.get("possession"),
-                    "context": entity.get("context"),
-                    "direction": entity.get("direction"),
-                }),
+                "entity": json.dumps(dict(entity)),
+                **_jsonb_section_values(
+                    entity,
+                    _COLLECTIVE_POSSESSION_JSONB_FIELDS,
+                ),
             }
             
             # Validate team FKs (set to None if not in DB)
@@ -760,28 +1258,11 @@ def _persist_individual_possessions(
                 "team_id": entity.get("team"),
                 "created_at": now,
                 "updated_at": now,
-                # JSONB sections
-                "entity": json.dumps({"gata_display_name": entity.get("gata_display_name")}),
-                "time": json.dumps({
-                    "start": entity.get("start"),
-                    "end": entity.get("end"),
-                    "duration": entity.get("duration"),
-                    "start_frame": entity.get("start_frame"),
-                    "end_frame": entity.get("end_frame"),
-                }),
-                "phase": json.dumps({
-                    "possession": entity.get("possession"),
-                    "context": entity.get("context"),
-                }),
-                "spatial": json.dumps({
-                    "distance": entity.get("distance"),
-                    "distance_gained": entity.get("distance_gained"),
-                }),
-                "actors": json.dumps({
-                    "player_in_possession": entity.get("player_in_possession"),
-                    "team": entity.get("team"),
-                    "opponent_team": entity.get("opponent_team"),
-                }),
+                "entity": json.dumps(dict(entity)),
+                **_jsonb_section_values(
+                    entity,
+                    _INDIVIDUAL_POSSESSION_JSONB_FIELDS,
+                ),
             }
             
             # Validate player & team FKs (set to None if not in DB)
@@ -1008,6 +1489,10 @@ def _persist_event_type(
                 ).strip().casefold() == "own goal"
                 if table_name == "goals" and is_own_goal:
                     values["player_id"] = None
+                elif table_name == "card":
+                    values["player_id"] = clean_uuid_field(
+                        entity.get("player")
+                    )
                 else:
                     values["player_id"] = clean_uuid_field(
                         entity.get("player_in_possession")
@@ -1094,6 +1579,88 @@ def _persist_event_type(
                         if entity.get("shot") is not None
                         else None
                     )
+
+            elif table_name == "type_of_play":
+                values.update(
+                    _jsonb_section_values(entity, _TYPE_OF_PLAY_JSONB_FIELDS)
+                )
+
+            elif table_name == "phase_of_play":
+                if "opponent_team_id" in table_columns:
+                    values["opponent_team_id"] = clean_uuid_field(
+                        entity.get("opponent_team")
+                    )
+
+                for column, source_key, reference_table in (
+                    (
+                        "type_of_play_id",
+                        "structured_play",
+                        "type_of_play",
+                    ),
+                    (
+                        "starting_individual_possession_id",
+                        "starting_individual_possession",
+                        "individual_possession",
+                    ),
+                ):
+                    if column not in table_columns:
+                        continue
+                    source_id = entity.get(source_key)
+                    resolved_id = _resolve_goal_phase_reference(
+                        db_session,
+                        game.id,
+                        reference_table,
+                        source_id,
+                    )
+                    if source_id and resolved_id is None:
+                        logger.warning(
+                            "Could not resolve phase_of_play %s reference %r "
+                            "for game %s",
+                            source_key,
+                            source_id,
+                            game.id,
+                        )
+                    values[column] = resolved_id
+
+                values.update(
+                    _jsonb_section_values(entity, _PHASE_OF_PLAY_JSONB_FIELDS)
+                )
+
+            elif table_name == "card":
+                values.update(
+                    {
+                        "time": json.dumps(
+                            {
+                                key: entity[key]
+                                for key in (
+                                    "period_id",
+                                    "seconds_elapsed",
+                                    "time_clock",
+                                )
+                                if entity.get(key) is not None
+                            }
+                        ),
+                        "spatial": json.dumps({}),
+                        "actors": json.dumps(
+                            {
+                                key: entity[key]
+                                for key in ("player", "team")
+                                if entity.get(key) is not None
+                            }
+                        ),
+                        "card": json.dumps(
+                            {
+                                key: entity[key]
+                                for key in (
+                                    "card_type",
+                                    "offense_type",
+                                    "reason",
+                                )
+                                if entity.get(key) is not None
+                            }
+                        ),
+                    }
+                )
 
             # All tables should have entity column (store entire entity as JSONB)
             if "entity" in table_columns:

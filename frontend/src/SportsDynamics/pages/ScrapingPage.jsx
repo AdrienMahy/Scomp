@@ -4,19 +4,14 @@ import { Card, Badge, ErrorAlert, SuccessAlert } from '../../components'
 import { API_BASE } from '../api'
 
 const PARSER_OPTIONS = [
-  { id: 'lineups', label: 'Lineups', description: 'Teams and players must already exist.' },
-  { id: 'periods', label: 'Periods and score evolution', description: 'Match periods and score timeline.' },
-  { id: 'substitutions', label: 'Substitutions', description: 'Uses players and teams already in the database.' },
-  { id: 'team_distance', label: 'Team distances', description: 'Team distance metrics and intervals.' },
-  { id: 'player_distance', label: 'Player distances', description: 'Reads metadata only if existing lineups cannot assign teams.' },
-  { id: 'rgd', label: 'RGD events and phases', description: 'If fitness runs exist, select Fitness too to refresh their references.' },
-  { id: 'goals', label: 'Goals only', description: 'Downloads RGD and replaces only this match’s goals.' },
+  { id: 'lineups', label: 'LineUps', description: 'Teams and players must already exist.' },
+  { id: 'periods_phase', label: 'Periods, score evolution, Phase', description: 'Refreshes periods, score timeline and RGD phase context; linked event and Fitness references are updated without replacing those rows.' },
+  { id: 'distances', label: 'Distances (Teams & players)', description: 'Refreshes team and player distance metrics and intervals.' },
+  { id: 'events', label: 'Events', description: 'Refreshes RGD events, goals and substitutions.' },
   { id: 'fitness', label: 'Fitness runs', description: 'Fitness runs and their summaries.' },
 ]
 
-const STANDARD_PARSER_IDS = PARSER_OPTIONS
-  .filter(parser => parser.id !== 'goals')
-  .map(parser => parser.id)
+const STANDARD_PARSER_IDS = PARSER_OPTIONS.map(parser => parser.id)
 
 export default function ScrapingPage({ scope }) {
   const [rounds, setRounds] = useState([])
@@ -56,13 +51,9 @@ export default function ScrapingPage({ scope }) {
 
   const toggleParser = (parserId) => {
     setSelectedParsers(current => {
-      if (parserId === 'goals') {
-        return current.includes('goals') ? [] : ['goals']
-      }
-      const compatible = current.filter(id => id !== 'goals')
-      return compatible.includes(parserId)
-        ? compatible.filter(id => id !== parserId)
-        : [...compatible, parserId]
+      return current.includes(parserId)
+        ? current.filter(id => id !== parserId)
+        : [...current, parserId]
     })
   }
 
@@ -146,7 +137,7 @@ export default function ScrapingPage({ scope }) {
             <div className="parser-selection-heading">
               <div>
                 <h2 id="parser-selection-title">Parsers to run</h2>
-                <p>Only selected parsers and their required files will be processed. Goals only is an exclusive refresh.</p>
+                <p>Only selected data groups and their required files will be processed. Each group replaces only its own data.</p>
               </div>
               <div className="parser-selection-actions">
                 <button

@@ -476,14 +476,25 @@ class ScraperCoordinator:
                             "and season; initialize the schedule before parsing it."
                         )
 
+                    game_required_types = set(required_types)
+                    if (
+                        "periods_phase" in parser_names
+                        and self.db_session.query(PlayerFitnessRun.id).filter(
+                            PlayerFitnessRun.game_id == game.id
+                        ).first()
+                    ):
+                        game_required_types.add("fitness_entities")
+
                     output_files_data = raw_game.get("outputFiles") or {"items": []}
                     downloaded_data = self._download_json_output_files(
                         game_id,
                         game.name,
                         output_files_data,
-                        requested_types=required_types,
+                        requested_types=game_required_types,
                     )
-                    missing_types = sorted(required_types - downloaded_data.keys())
+                    missing_types = sorted(
+                        game_required_types - downloaded_data.keys()
+                    )
                     if missing_types:
                         raise RuntimeError(
                             f"Required JSON files unavailable for game {game_id}: "
@@ -491,7 +502,7 @@ class ScraperCoordinator:
                         )
 
                     if (
-                        "player_distance" in parser_names
+                        ("player_distance" in parser_names or "distances" in parser_names)
                         and "metadata" not in downloaded_data
                         and self.payload_processor.player_distance_needs_metadata(
                             game,

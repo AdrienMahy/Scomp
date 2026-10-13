@@ -362,7 +362,7 @@ Pipeline Control transmet les parsers choisis dans la requête de round :
   "competition_id": "competition-id",
   "season_id": "season-id",
   "round": "1",
-  "parsers": ["team_distance", "player_distance"]
+  "parsers": ["distances"]
 }
 ```
 
@@ -373,19 +373,31 @@ est effectué localement après récupération paginée des matchs. La
 synchronisation du calendrier reste distincte afin de conserver les matchs à
 venir.
 
-Les options disponibles sont `lineups`, `periods`, `substitutions`,
-`team_distance`, `player_distance`, `rgd` et `fitness`. Seuls les fichiers JSON
-nécessaires sont téléchargés. Les données auxiliaires, comme les métadonnées
-utilisées pour attribuer une équipe aux joueurs, sont lues sans lancer leurs
-autres parsers.
+Les cinq sélecteurs sont `lineups`, `periods_phase`, `distances`, `events` et
+`fitness`. Chaque sélecteur ne remplace que ses propres tables :
+
+- `lineups` traite les compositions ;
+- `periods_phase` traite les périodes, l'évolution du score et le contexte de
+  phase RGD ;
+- `distances` traite les distances des équipes et des joueurs ;
+- `events` traite les événements RGD, les buts et les substitutions ;
+- `fitness` traite les runs et leurs résumés.
+
+Seuls les fichiers JSON nécessaires sont téléchargés. Si des runs Fitness
+existent, `periods_phase` télécharge aussi leur fichier afin d'actualiser leurs
+références de contexte sans remplacer les lignes des runs. Les références dans
+les événements et les buts sont également recalculées après le rafraîchissement
+des phases.
 
 Ce mode ne modifie pas `games`, `game_status` ni les métadonnées
 `output_files`. Si les données prérequises ne sont pas présentes, la tâche
 signale une erreur plutôt que de créer ou modifier des enregistrements hors
-sélection. Lorsqu’un match possède déjà des données Fitness, RGD et Fitness
-doivent être sélectionnés ensemble afin de préserver leurs références.
+sélection. Les anciens identifiants de parseurs restent acceptés par l'API pour
+compatibilité, mais ne sont plus proposés dans l'interface.
 
 Sans le champ `parsers`, les appels existants conservent le workflow complet.
+L'automatisation continue elle aussi à traiter tous les fichiers disponibles
+pour chaque match détecté comme modifié.
 
 ### Option 3: Vérifier L'API SportsDynamics
 ```bash

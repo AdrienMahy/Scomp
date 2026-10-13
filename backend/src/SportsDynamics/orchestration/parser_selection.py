@@ -5,17 +5,24 @@ from typing import Literal, TypeAlias
 
 ParserName: TypeAlias = Literal[
     "lineups",
+    "periods_phase",
+    "distances",
+    "events",
+    "fitness",
+    # Retained for existing API clients; the frontend uses the grouped selectors above.
     "periods",
     "substitutions",
     "team_distance",
     "player_distance",
     "rgd",
     "goals",
-    "fitness",
 ]
 
 PARSER_EXECUTION_ORDER = (
     "lineups",
+    "periods_phase",
+    "distances",
+    "events",
     "periods",
     "substitutions",
     "team_distance",
@@ -27,14 +34,26 @@ PARSER_EXECUTION_ORDER = (
 
 PARSER_FILE_TYPES = {
     "lineups": ("metadata",),
+    "periods_phase": ("metadata", "rgd"),
+    "distances": ("distance_covered",),
+    "events": ("metadata", "rgd"),
+    "fitness": ("fitness_entities",),
     "periods": ("metadata",),
     "substitutions": ("metadata",),
     "team_distance": ("distance_covered",),
     "player_distance": ("distance_covered",),
     "rgd": ("rgd",),
     "goals": ("rgd",),
-    "fitness": ("fitness_entities",),
 }
+
+PARSER_CONFLICTS = (
+    ("periods_phase", "periods"),
+    ("periods_phase", "rgd"),
+    ("distances", "team_distance"),
+    ("distances", "player_distance"),
+    ("events", "substitutions"),
+    ("events", "rgd"),
+)
 
 
 def normalize_parser_selection(parser_names: list[str]) -> list[str]:
@@ -48,6 +67,12 @@ def normalize_parser_selection(parser_names: list[str]) -> list[str]:
         raise ValueError(
             "The Goals-only parser cannot be combined with other parsers."
         )
+    selected = set(parser_names)
+    for left, right in PARSER_CONFLICTS:
+        if left in selected and right in selected:
+            raise ValueError(
+                f"The {left} and {right} parsers overlap and cannot be combined."
+            )
 
     return [
         parser_name

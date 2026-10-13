@@ -17,8 +17,14 @@ from .distance_covered_parser import parse_and_persist_distance_covered
 from .fitness_entities_parser import (
     has_fitness_run_references,
     parse_and_persist_fitness_entities,
+    refresh_fitness_run_references,
 )
-from .rgd_parser import parse_and_persist_goals, parse_and_persist_rgd
+from .rgd_parser import (
+    parse_and_persist_goals,
+    parse_and_persist_rgd,
+    parse_and_persist_rgd_events,
+    parse_and_persist_rgd_phases,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -175,7 +181,76 @@ class GamePayloadProcessor:
         downloaded_data: Dict[str, Any],
     ) -> None:
         """Run one selected parser without invoking any sibling parser."""
-        if parser_name == "lineups":
+        if parser_name == "periods_phase":
+            metadata = self._required_payload(downloaded_data, "metadata")
+            parse_and_persist_periods(
+                game,
+                metadata,
+                self.db_session,
+                commit=False,
+            )
+            result = parse_and_persist_rgd_phases(
+                game,
+                self._required_payload(downloaded_data, "rgd"),
+                self.db_session,
+            )
+            if result[4]:
+                raise RuntimeError(
+                    f"Phase parser failed for game {game.id} with "
+                    f"{result[4]} parsing error(s)"
+                )
+            has_fitness_runs = self.db_session.query(
+                PlayerFitnessRun.id
+            ).filter(PlayerFitnessRun.game_id == game.id).first()
+            if has_fitness_runs:
+                refresh_fitness_run_references(
+                    game,
+                    self._required_payload(downloaded_data, "fitness_entities"),
+                    self.db_session,
+                )
+        elif parser_name == "distances":
+            distance_data = self._required_payload(
+                downloaded_data, "distance_covered"
+            )
+            self._validate_team_distance_references(distance_data)
+            parse_and_persist_distance_covered(
+                game,
+                distance_data,
+                self.db_session,
+            )
+            team_mapping = self.build_player_to_team_mapping(
+                downloaded_data.get("metadata") or {}
+            )
+            team_mapping = self.resolve_player_team_mapping(
+                game,
+                distance_data,
+                team_mapping,
+            )
+            parse_and_persist_player_distance_covered(
+                game,
+                distance_data,
+                self.db_session,
+                team_mapping=team_mapping,
+            )
+        elif parser_name == "events":
+            metadata = self._required_payload(downloaded_data, "metadata")
+            self._validate_substitution_references(game, metadata)
+            parse_and_persist_substitutions(
+                game,
+                metadata,
+                self.db_session,
+            )
+            result = parse_and_persist_rgd_events(
+                game,
+                self._required_payload(downloaded_data, "rgd"),
+                self.db_session,
+            )
+            if result[4]:
+                raise RuntimeError(
+                    f"Events parser failed for game {game.id} with "
+                    f"{result[4]} parsing error(s)"
+                )
+        elif parser_name == "lineups":
             metadata = self._required_payload(downloaded_data, "metadata")
             self._validate_lineup_payload(metadata)
             parse_and_persist_lineups(

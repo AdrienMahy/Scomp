@@ -253,6 +253,7 @@ def parse_and_persist_periods(
     game: Game,
     metadata_json: dict,
     db_session: Session,
+    commit: bool = True,
 ) -> None:
     """
     Parse metadata['periods'] and persist Period + GameScoreEvolution records.
@@ -398,18 +399,26 @@ def parse_and_persist_periods(
         
         # Explicit commit for periods and score evolution
         if periods_created > 0 or score_evolutions_created > 0:
-            try:
-                logger.info(f"🔄 ABOUT TO COMMIT: {periods_created} periods + {score_evolutions_created} score evolutions for game {game.id}")
-                db_session.commit()
-                logger.info(f"✅✅✅ COMMIT SUCCESSFUL: Persisted periods for game {game.id}: {periods_created} periods, {score_evolutions_created} score evolutions")
-                
-                # Verify data actually exists in DB
-                verification_count = db_session.query(Period).filter(Period.game_id == game.id).count()
-                logger.info(f"🔍 VERIFICATION: Query shows {verification_count} periods now in DB for game {game.id}")
-            except Exception as e:
-                logger.error(f"❌❌❌ COMMIT FAILED for game {game.id}: {e}")
-                db_session.rollback()
-                raise
+            if commit:
+                try:
+                    logger.info(f"🔄 ABOUT TO COMMIT: {periods_created} periods + {score_evolutions_created} score evolutions for game {game.id}")
+                    db_session.commit()
+                    logger.info(f"✅✅✅ COMMIT SUCCESSFUL: Persisted periods for game {game.id}: {periods_created} periods, {score_evolutions_created} score evolutions")
+
+                    # Verify data actually exists in DB
+                    verification_count = db_session.query(Period).filter(Period.game_id == game.id).count()
+                    logger.info(f"🔍 VERIFICATION: Query shows {verification_count} periods now in DB for game {game.id}")
+                except Exception as e:
+                    logger.error(f"❌❌❌ COMMIT FAILED for game {game.id}: {e}")
+                    db_session.rollback()
+                    raise
+            else:
+                logger.info(
+                    "Prepared %s periods and %s score evolutions for game %s",
+                    periods_created,
+                    score_evolutions_created,
+                    game.id,
+                )
         else:
             logger.warning(f"⚠️  No periods created for game {game.id}")
         

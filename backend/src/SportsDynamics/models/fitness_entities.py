@@ -6,7 +6,7 @@ Relationships to event tables: PossessionCollective, PhaseOfPlay, TypeOfPlay, In
 """
 
 from uuid import uuid4
-from sqlalchemy import Column, String, Integer, Float, Index, ForeignKey, UUID, Boolean
+from sqlalchemy import Column, String, Integer, Float, Index, ForeignKey, Boolean
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from .base import Base, TimestampMixin
@@ -32,7 +32,7 @@ class PlayerFitnessRun(Base, TimestampMixin):
     # ========================================================================
     # PRIMARY IDENTIFIERS & GAME CONTEXT
     # ========================================================================
-    id = Column(UUID, primary_key=True, default=uuid4)
+    id = Column(String(50), primary_key=True, default=lambda: str(uuid4()))
     game_id = Column(String(50), ForeignKey("games.id", ondelete="CASCADE"), nullable=False, index=True)
     period_id = Column(Integer, nullable=False, index=True)
     
@@ -193,7 +193,7 @@ class PlayerFitnessSummary(Base, TimestampMixin):
     """
     __tablename__ = "player_fitness_summary"
     
-    id = Column(UUID, primary_key=True, default=uuid4)
+    id = Column(String(50), primary_key=True, default=lambda: str(uuid4()))
     game_id = Column(String(50), ForeignKey("games.id", ondelete="CASCADE"), nullable=False, index=True)
     player_id = Column(String(50), ForeignKey("players.id", ondelete="CASCADE"), nullable=False, index=True)
     team_id = Column(String(50), ForeignKey("teams.id", ondelete="CASCADE"), nullable=False, index=True)
@@ -240,7 +240,7 @@ class TeamFitnessSummary(Base, TimestampMixin):
     """
     __tablename__ = "team_fitness_summary"
     
-    id = Column(UUID, primary_key=True, default=uuid4)
+    id = Column(String(50), primary_key=True, default=lambda: str(uuid4()))
     game_id = Column(String(50), ForeignKey("games.id", ondelete="CASCADE"), nullable=False, index=True)
     team_id = Column(String(50), ForeignKey("teams.id", ondelete="CASCADE"), nullable=False, index=True)
     

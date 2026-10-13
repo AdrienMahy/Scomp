@@ -6,6 +6,7 @@ to event tables (PossessionCollective, PhaseOfPlay, TypeOfPlay, IndividualPosses
 Handles 3,082+ Run entities per match with proper validation and error handling.
 """
 
+import json
 import logging
 import time
 from collections import Counter
@@ -22,6 +23,7 @@ from src.SportsDynamics.models import (
     PlayerFitnessSummary,
     TeamFitnessSummary,
 )
+from .rgd_parser import _resolve_goal_phase_reference
 
 logger = logging.getLogger(__name__)
 
@@ -163,26 +165,26 @@ def parse_and_persist_fitness_entities(
                 
                 # Log missing event references (for data quality monitoring)
                 possession_id = entity.get("possession")
-                if possession_id and not _check_event_reference_exists(
-                    db_session, "possession_collective", possession_id
+                if possession_id and not _resolve_goal_phase_reference(
+                    db_session, game.id, "possession_collective", possession_id
                 ):
                     missing_refs['possession'].append(possession_id)
                 
                 phase_of_play_id = entity.get("phase_of_play")
-                if phase_of_play_id and not _check_event_reference_exists(
-                    db_session, "phase_of_play", phase_of_play_id
+                if phase_of_play_id and not _resolve_goal_phase_reference(
+                    db_session, game.id, "phase_of_play", phase_of_play_id
                 ):
                     missing_refs['phase_of_play'].append(phase_of_play_id)
                 
                 type_of_play_id = entity.get("play")
-                if type_of_play_id and not _check_event_reference_exists(
-                    db_session, "type_of_play", type_of_play_id
+                if type_of_play_id and not _resolve_goal_phase_reference(
+                    db_session, game.id, "type_of_play", type_of_play_id
                 ):
                     missing_refs['type_of_play'].append(type_of_play_id)
                 
                 individual_possession_id = entity.get("individual_possession")
-                if individual_possession_id and not _check_event_reference_exists(
-                    db_session, "individual_possession", individual_possession_id
+                if individual_possession_id and not _resolve_goal_phase_reference(
+                    db_session, game.id, "individual_possession", individual_possession_id
                 ):
                     missing_refs['individual_possession'].append(individual_possession_id)
                 
@@ -313,25 +315,24 @@ def _transform_entity_to_run(
         # VALIDATE FOREIGN KEY REFERENCES (SET TO NULL IF MISSING)
         # ====================================================================
         
-        possession_id = entity.get("possession")
-        if possession_id and not _check_event_reference_exists(db_session, "possession_collective", possession_id):
-            logger.warning(f"Possession {possession_id} not found, setting to NULL")
-            possession_id = None
-        
-        phase_of_play_id = entity.get("phase_of_play")
-        if phase_of_play_id and not _check_event_reference_exists(db_session, "phase_of_play", phase_of_play_id):
-            logger.warning(f"Phase of play {phase_of_play_id} not found, setting to NULL")
-            phase_of_play_id = None
-        
-        type_of_play_id = entity.get("play")
-        if type_of_play_id and not _check_event_reference_exists(db_session, "type_of_play", type_of_play_id):
-            logger.warning(f"Type of play {type_of_play_id} not found, setting to NULL")
-            type_of_play_id = None
-        
-        individual_possession_id = entity.get("individual_possession")
-        if individual_possession_id and not _check_event_reference_exists(db_session, "individual_possession", individual_possession_id):
-            logger.warning(f"Individual possession {individual_possession_id} not found, setting to NULL")
-            individual_possession_id = None
+        context_references = _resolve_fitness_context_references(
+            entity,
+            game.id,
+            db_session,
+        )
+        for source_key, column_name in (
+            ("possession", "possession_id"),
+            ("phase_of_play", "phase_of_play_id"),
+            ("play", "type_of_play_id"),
+            ("individual_possession", "individual_possession_id"),
+        ):
+            if entity.get(source_key) and context_references[column_name] is None:
+                logger.warning(
+                    "%s %s not found for game %s; setting fitness reference to NULL",
+                    source_key,
+                    entity[source_key],
+                    game.id,
+                )
         
         # ====================================================================
         # CREATE ORM OBJECT
@@ -403,10 +404,10 @@ def _transform_entity_to_run(
             opponent_team_id=opponent_team_id,
             
             # === EVENT REFERENCES (Foreign Keys) ===
-            possession_id=possession_id,
-            phase_of_play_id=phase_of_play_id,
-            type_of_play_id=type_of_play_id,
-            individual_possession_id=individual_possession_id,
+            possession_id=context_references["possession_id"],
+            phase_of_play_id=context_references["phase_of_play_id"],
+            type_of_play_id=context_references["type_of_play_id"],
+            individual_possession_id=context_references["individual_possession_id"],
             
             # === TIMING ===
             start_time_s=float(entity.get("start", 0)),
@@ -474,6 +475,112 @@ def _transform_entity_to_run(
     except Exception as e:
         logger.error(f"Error transforming fitness entity: {str(e)}", exc_info=True)
         return None
+
+
+def _resolve_fitness_context_references(
+    entity: Dict[str, Any],
+    game_id: str,
+    db_session: Session,
+) -> Dict[str, Optional[str]]:
+    source_fields = {
+        "possession_id": ("possession_collective", "possession"),
+        "phase_of_play_id": ("phase_of_play", "phase_of_play"),
+        "type_of_play_id": ("type_of_play", "play"),
+        "individual_possession_id": (
+            "individual_possession",
+            "individual_possession",
+        ),
+    }
+    return {
+        column: _resolve_goal_phase_reference(
+            db_session,
+            game_id,
+            table_name,
+            entity.get(source_key),
+        )
+        for column, (table_name, source_key) in source_fields.items()
+    }
+
+
+def refresh_fitness_run_references(
+    game: Game,
+    fitness_data: Dict[str, Any],
+    db_session: Session,
+) -> int:
+    """Refresh only the event references on existing fitness runs for one game."""
+    if not isinstance(fitness_data, dict) or not isinstance(
+        fitness_data.get("entities"), list
+    ):
+        raise ValueError(
+            "Fitness reference refresh requires an entities list in the payload"
+        )
+
+    runs = db_session.query(PlayerFitnessRun).filter(
+        PlayerFitnessRun.game_id == game.id
+    ).all()
+    if not runs:
+        return 0
+
+    entities_by_sequence_id = {}
+    for entity in fitness_data["entities"]:
+        if not isinstance(entity, dict):
+            continue
+        sequence_id = entity.get("sequence_id")
+        if not sequence_id:
+            continue
+        if sequence_id in entities_by_sequence_id:
+            raise ValueError(
+                f"Fitness payload contains duplicate sequence_id {sequence_id!r}"
+            )
+        entities_by_sequence_id[sequence_id] = entity
+
+    updated_count = 0
+    for run in runs:
+        metadata = run.metadata_json or {}
+        if isinstance(metadata, str):
+            metadata = json.loads(metadata)
+        if not isinstance(metadata, dict):
+            raise ValueError(
+                f"Cannot refresh event references for fitness run {run.id}: "
+                "its metadata is invalid"
+            )
+        sequence_id = (metadata.get("api_ids") or {}).get("sequence_id")
+        if not sequence_id:
+            raise ValueError(
+                f"Cannot refresh event references for fitness run {run.id}: "
+                "its source sequence_id is missing"
+            )
+
+        entity = entities_by_sequence_id.get(sequence_id)
+        if entity is None:
+            logger.warning(
+                "Fitness run %s has no matching source entity; clearing only its "
+                "event references",
+                run.id,
+            )
+            references = {
+                "possession_id": None,
+                "phase_of_play_id": None,
+                "type_of_play_id": None,
+                "individual_possession_id": None,
+            }
+        else:
+            references = _resolve_fitness_context_references(
+                entity,
+                game.id,
+                db_session,
+            )
+
+        for column, value in references.items():
+            setattr(run, column, value)
+        updated_count += 1
+
+    logger.info(
+        "Refreshed event references on %s existing fitness runs for game %s",
+        updated_count,
+        game.id,
+    )
+    return updated_count
 
 
 def _build_fitness_metadata(entity: Dict[str, Any]) -> Dict[str, Any]:

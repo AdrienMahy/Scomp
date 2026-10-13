@@ -4,6 +4,104 @@
 
 Les VIEWs SQL fournissent des données de match et des analyses sportives:
 
+## Phases de jeu TacticalData : `phase_of_play`
+
+Les entités RGD `Attack vs Mid Block`, `Attack vs High Block` et
+`Attack vs Low Block` sont conservées dans `phase_of_play`. Le JSONB `entity`
+reste le payload source complet pour préserver la compatibilité ; les mêmes
+informations sont également réparties dans les JSONB spécialisés :
+
+| JSONB | Champs du payload RGD |
+|---|---|
+| `entity` | Payload source complet, dont `sequence_id`, `entity_id` et `gata_display_name` |
+| `time` | `start`, `end`, `duration`, `start_frame`, `end_frame`, `quarter` |
+| `spatial` | `start_x`, `start_y`, `end_x`, `end_y`, `start_channel`, `end_channel`, `start_third`, `end_third`, `functional_start_zone`, `functional_end_zone`, `tactical_space_start`, `tactical_space_end`, `tactical_subspace_start`, `tactical_subspace_end`, `defensive_block_area`, `defensive_block_depth`, `defensive_block_width`, `backline_height`, `frontline_height`, `goalkeeper_height`, `distance_gained`, `distance_gained_pct`, `dominant_corridor`, `dominant_progression_corridor`, `wide_balance` |
+| `actors` | `team`, `team_id`, `opponent_team`, `on_ball_players`, `team_players_on_pitch`, `opponent_players_on_pitch`, les champs `n_*` de comptage, `player_difference`, `from_goalkeeper`, `goalkeeper_involved`, `goalkeeper_involved_outside_box` |
+| `phase` | `structured_play`, `starting_individual_possession`, `game_week`, `best_stage`, `outcome`, `outcome_detail`, `restart_type`, `goal_in_sequence`, `shot_in_sequence`, `counter_attack_conceded`, `team_score`, `opponent_score`, `score_difference`, `peak_bypassed_players`, `peak_bypassed_backline_players` |
+
+`period_id`, `team_id` et `opponent_team_id` sont aussi extraits dans leurs
+colonnes relationnelles. Les références `structured_play` et
+`starting_individual_possession` sont résolues dans le même match vers
+`type_of_play.id` et `individual_possession.id`; leurs identifiants RGD sources
+restent disponibles dans `entity` et `phase`.
+
+Ce découpage est appliqué aux phases traitées après le déploiement du parseur.
+Il ne réécrit pas automatiquement les lignes déjà présentes en base.
+
+## Types de jeu TacticalData : `type_of_play`
+
+Les entités RGD `Structured play` et `Fast play` sont conservées dans
+`type_of_play`. Comme pour les phases, `entity` garde le payload source complet
+et les champs sont aussi distribués dans les JSONB spécialisés :
+
+| JSONB | Champs du payload RGD |
+|---|---|
+| `entity` | Payload source complet, dont `sequence_id`, `entity_id` et `gata_display_name` |
+| `time` | `start`, `end`, `duration`, `start_frame`, `end_frame`, `quarter`, `duration_category` |
+| `spatial` | `start_x`, `start_y`, `end_x`, `end_y`, `start_channel`, `end_channel`, `start_third`, `end_third`, `functional_start_zone`, `functional_end_zone`, `tactical_space_start`, `tactical_space_end`, `tactical_subspace_start`, `tactical_subspace_end`, `defensive_block_area`, `defensive_block_depth`, `defensive_block_width`, `backline_height`, `frontline_height`, `goalkeeper_height`, `distance_gained`, `distance_gained_pct`, `distance_to_goal`, `dominant_corridor`, `dominant_progression_corridor`, `wide_balance`, `direct_verticality`, `directness_category`, `directness_pct` |
+| `actors` | `team`, `opponent_team`, `ending_player`, les listes de joueurs, les champs `n_*`, `player_difference` et les indicateurs de gardien |
+| `type_of_play` | `possession`, `starting_individual_possession`, `game_week`, `best_stage`, `start_type`, `restart_type`, `outcome`, `outcome_detail`, indicateurs de but/tir/contre-attaque et de phase suivante, scores, `sequence_xg`, `pass_tempo`, nombre et catégorie de passes, et joueurs contournés |
+
+`period_id` est extrait dans sa colonne. La table n'a pas de colonnes
+relationnelles dédiées pour les équipes, la possession ou la possession
+individuelle ; ces références sources restent dans `actors` ou
+`type_of_play`, ainsi que dans `entity`. Dans le RGD utilisé pour le mapping,
+les 219 références `possession` et les 219 références
+`starting_individual_possession` trouvent une entité correspondante dans le
+même match.
+
+Ce découpage est appliqué aux types de jeu traités après le déploiement du
+parseur. Il ne rétro-remplit pas les lignes déjà présentes en base.
+
+## Possessions collectives TacticalData : `possession_collective`
+
+Les entités RGD `Possession` sont conservées dans `possession_collective`.
+`entity` garde le payload source complet et les champs sont aussi répartis
+dans les JSONB spécialisés :
+
+| JSONB | Champs du payload RGD |
+|---|---|
+| `entity` | Payload source complet, dont `sequence_id`, `entity_id` et `gata_display_name` |
+| `time` | `start`, `end`, `duration`, `start_frame`, `end_frame`, `quarter`, `duration_category` |
+| `spatial` | `start_x`, `start_y`, `end_x`, `end_y`, canaux, tiers, zones fonctionnelles et tactiques, dimensions et hauteurs de bloc, distances gagnées, corridors et indicateurs de directivité |
+| `actors` | `team`, `opponent_team`, `starting_player`, `ending_player`, `shooter`, listes et décomptes de joueurs, différence numérique et implication du gardien |
+| `phase` | `game_week`, `best_stage`, `start_type`, `restart_type`, issue, indicateurs de but/tir/contre-attaque et scores |
+| `possession` | Référence source `ball_in_play`, nombre/catégorie de passes, `pass_tempo` et joueurs dépassés |
+
+`period_id`, `team_id` et `opponent_team_id` sont aussi enregistrés dans leurs
+colonnes. `ball_in_play_id` est résolu vers l'entité `ball_in_play` du même
+match ; la référence RGD source est conservée dans `entity` et `possession`.
+Dans le RGD utilisé pour ce mapping, les 215 références trouvent une entité
+cible correspondante (99 séquences `ball_in_play` distinctes).
+
+Ce découpage est appliqué aux possessions traitées après le déploiement du
+parseur. Il ne rétro-remplit pas les lignes déjà présentes en base.
+
+## Possessions individuelles TacticalData : `individual_possession`
+
+Les entités RGD `Individual possession` sont conservées dans
+`individual_possession`. Le payload source complet reste dans `entity` et ses
+champs sont aussi répartis dans les JSONB spécialisés :
+
+| JSONB | Champs du payload RGD |
+|---|---|
+| `entity` | Payload source complet, dont `sequence_id`, `entity_id` et `gata_display_name` |
+| `time` | `start`, `end`, `duration`, `start_frame`, `end_frame`, `quarter` |
+| `spatial` | Distance et distance gagnée, coordonnées, canaux, tiers et zones fonctionnelles |
+| `actors` | Joueur en possession, équipes, indicateur gardien, listes de joueurs et décomptes |
+| `phase` | Référence et libellé de possession, références et libellés phase/type de jeu, références `pass`, `reception_pass` et `shot`, restart, progression et score |
+
+`period_id`, `player_id` et `team_id` sont aussi extraits dans leurs colonnes.
+Dans le RGD utilisé pour le mapping, les 1 261 références `possession`
+correspondent à une possession collective du même match. Les références
+`phase_of_play`, `play`, `pass`, `reception_pass` et `shot` restent des
+identifiants source dans le JSONB `phase`, accompagnés de leurs libellés quand
+le fournisseur les fournit.
+
+Ce découpage est appliqué aux possessions individuelles traitées après le
+déploiement du parseur. Il ne rétro-remplit pas les lignes déjà présentes en
+base.
+
 ## Buts : `v_goals`
 
 Cette vue retourne une ligne par but canonique. `team_id` et `team_name`
