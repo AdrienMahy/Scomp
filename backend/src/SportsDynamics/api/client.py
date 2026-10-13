@@ -1,6 +1,9 @@
 """SportsDynamics API Client"""
 import requests
 from typing import Dict, Any, Optional, List
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+import os
 
 from src.config.settings import settings
 
@@ -22,6 +25,19 @@ class SportsDynamicsClient:
             "x-sd-api-key": self.api_key,
             "Content-Type": "application/json"
         }
+        self.timeout = int(os.getenv("SPORTSDYNAMICS_API_TIMEOUT", "30"))
+        self.session = requests.Session()
+        retry_policy = Retry(
+            total=2,
+            connect=2,
+            read=2,
+            status=2,
+            backoff_factor=1,
+            status_forcelist=(429, 502, 503, 504),
+            allowed_methods=frozenset({"POST"}),
+            raise_on_status=False,
+        )
+        self.session.mount("https://", HTTPAdapter(max_retries=retry_policy))
     
     def query(self, query: str, variables: Dict[str, Any] = None) -> Dict[str, Any]:
         """
@@ -51,11 +67,11 @@ class SportsDynamicsClient:
         logger.debug("GraphQL variables: %s", json.dumps(variables or {}, indent=2))
         logger.info("Calling SportsDynamics API at %s", self.api_url)
         
-        response = requests.post(
+        response = self.session.post(
             self.api_url,
             json=payload,
             headers=self.headers,
-            timeout=30
+            timeout=self.timeout
         )
         
         if response.status_code == 200:

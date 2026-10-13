@@ -21,6 +21,9 @@ from ..SportsDynamics.orchestration.scrape_workflows import (
     scrape_autonomous,
     enrich_players,
 )
+from ..SportsDynamics.orchestration.task_retention import (
+    reconcile_stale_tasks as reconcile_stale_task_records,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +61,17 @@ def _run_workflow(workflow, task_id: str, *args, **workflow_kwargs):
             task.completed_at = datetime.utcnow()
             db.commit()
         raise
+    finally:
+        db.close()
+
+
+@app.task(name="scomp.reconcile_stale_tasks")
+def reconcile_stale_tasks_task():
+    """Mark tasks abandoned by a lost worker without relying on API traffic."""
+    db = SessionLocal()
+    try:
+        reconciled = reconcile_stale_task_records(db)
+        return {"status": "completed", "reconciled": reconciled}
     finally:
         db.close()
 

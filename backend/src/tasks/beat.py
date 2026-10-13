@@ -32,6 +32,13 @@ app.conf.beat_schedule["physical-statsport-automation"] = {
     "kwargs": {},
 }
 
+app.conf.beat_schedule["reconcile-stale-tasks"] = {
+    "task": "scomp.reconcile_stale_tasks",
+    "schedule": schedule(run_every=60),
+    "options": {"expires": 55},
+    "kwargs": {},
+}
+
 # Enable UTC timezone
 app.conf.timezone = 'UTC'
 app.conf.enable_utc = True

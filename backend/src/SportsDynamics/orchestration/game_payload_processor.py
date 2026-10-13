@@ -183,7 +183,7 @@ class GamePayloadProcessor:
                 metadata,
                 self.db_session,
                 update_game_score=False,
-                create_missing_entities=False,
+                create_missing_entities=True,
             )
         elif parser_name == "periods":
             parse_and_persist_periods(

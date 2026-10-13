@@ -115,10 +115,16 @@ def get_automation_status(db: Session = Depends(get_db)):
             ScrapingTask.workflow == "autonomous_scrape"
         ).order_by(ScrapingTask.created_at.desc()).first()
         
-        # Calculate next scrape (roughly)
+        beat_state = redis.Redis.from_url(
+            os.getenv("CELERY_BROKER_URL", "redis://localhost:6379/0"),
+            decode_responses=True,
+        ).hgetall(BEAT_CYCLE_STATE_KEY)
+        beat_started_at = beat_state.get("started_at")
         next_scrape = None
-        if AutomationConfig.AUTOMATION_ENABLED and last_scrape:
-            next_scrape = last_scrape.created_at + timedelta(minutes=AutomationConfig.SCRAPE_INTERVAL)
+        if AutomationConfig.AUTOMATION_ENABLED and beat_started_at:
+            next_scrape = datetime.fromisoformat(beat_started_at) + timedelta(
+                minutes=AutomationConfig.SCRAPE_INTERVAL
+            )
         
         # Get total games stats
         total_games = db.query(Game).count()
@@ -130,11 +136,13 @@ def get_automation_status(db: Session = Depends(get_db)):
         return {
             "status": "active" if AutomationConfig.AUTOMATION_ENABLED else "disabled",
             "is_enabled": AutomationConfig.AUTOMATION_ENABLED and len(active_comps) > 0,
+            "scheduler_enabled": AutomationConfig.AUTOMATION_ENABLED,
             "scrape_interval_minutes": AutomationConfig.SCRAPE_INTERVAL,
             "active_competitions": len(active_comps),
             "active_competition_names": [c["name"] for c in active_comps],
             "last_scrape_at": last_scrape.created_at if last_scrape else None,
             "next_scrape_at": next_scrape,
+            "last_scheduler_cycle_at": beat_started_at,
             "total_games_in_db": total_games,
             "look_ahead_days": look_ahead,
             "look_back_days": look_back,

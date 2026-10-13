@@ -314,9 +314,35 @@ async def scrape_autonomous(
     season_id: str,
     task_id: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Detect new or changed RGD-finished games, then process only those games."""
-    tracker = TaskTracker(db, "SportsDynamics", "autonomous_scrape", competition_id, season_id, task_id=task_id)
+    """Run autonomous scraping while finalizing its task on unexpected errors."""
+    tracker = TaskTracker(
+        db,
+        "SportsDynamics",
+        "autonomous_scrape",
+        competition_id,
+        season_id,
+        task_id=task_id,
+    )
     tracker.start()
+    try:
+        return await _scrape_autonomous(
+            db,
+            competition_id,
+            season_id,
+            tracker,
+        )
+    except Exception as exc:
+        tracker.fail(str(exc))
+        raise
+
+
+async def _scrape_autonomous(
+    db: Session,
+    competition_id: str,
+    season_id: str,
+    tracker: TaskTracker,
+) -> Dict[str, Any]:
+    """Detect new or changed RGD-finished games, then process only those games."""
     tracker.phase("change_detection", "Comparing SportsDynamics games with the database")
     coordinator = ScraperCoordinator(task_id=tracker.id)
     filters = {
