@@ -85,6 +85,7 @@ def build_dataset(payload: list[dict[str, Any]]) -> dict[str, Any]:
     squad_ids: dict[str, str] = {}
     player_ids: dict[str, str] = {}
     metadata_ids: dict[tuple[str, str], str] = {}
+    seen_drills: set[tuple[str, str, str]] = set()
     for activity in payload:
         activity_digest = response_hash(activity)
         details = activity.get("sessionDetails") or {}
@@ -116,6 +117,10 @@ def build_dataset(payload: list[dict[str, Any]]) -> dict[str, Any]:
                 metadata_id = metadata_ids.setdefault(metadata_key, stable_id(f"drill-metadata:{session_id}:{signature}"))
                 if not any(row["id"] == metadata_id for row in tables["drill_metadata"]):
                     tables["drill_metadata"].append({"id": metadata_id, "session_id": session_id, "signature": signature, "drill_name": drill.get("drillName"), "primary_label": drill.get("primaryLabel"), "secondary_label": drill.get("secondaryLabel"), "tertiary_label": drill.get("tertiaryLabel"), "session_type": drill.get("sessionType")})
+                drill_key = (session_id, player_id, metadata_id)
+                if drill_key in seen_drills:
+                    continue
+                seen_drills.add(drill_key)
                 grouped_metrics: dict[str, dict[str, Any]] = {}
                 for code, value in (drill.get("drillKpi") or {}).items():
                     grouped_metrics.setdefault(category(code), {})[code] = value

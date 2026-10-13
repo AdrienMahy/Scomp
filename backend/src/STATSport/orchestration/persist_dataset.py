@@ -124,7 +124,9 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
             text("""
                 INSERT INTO squads (id, external_id, name, raw_data)
                 VALUES (CAST(:id AS uuid), CAST(:external_id AS uuid), :name, CAST(:raw_data AS jsonb))
-                ON CONFLICT (external_id) DO UPDATE SET name = EXCLUDED.name, raw_data = EXCLUDED.raw_data
+                ON CONFLICT (external_id) DO UPDATE SET
+                    name = COALESCE(NULLIF(squads.name, ''), EXCLUDED.name),
+                    raw_data = EXCLUDED.raw_data
             """),
             {**squad, "raw_data": json_value(squad["raw_data"])},
         )

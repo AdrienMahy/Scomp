@@ -2,6 +2,22 @@
 
 All notable changes to Scomp are documented in this file.
 
+## [1.2.0] - 2026-10-13
+
+### Added
+
+- Grouped Round scraping parser selections into Lineups, Periods/score/phases, Distances, Events, and Fitness runs.
+- Expanded RGD persistence for phases of play, types of play, and collective and individual possessions.
+
+### Changed
+
+- Scoped parser processing and cleanup so each selected parser group handles only its own data.
+- Updated scraping workflow and database view documentation.
+
+### Fixed
+
+- Aligned Fitness entity ORM identifiers with the existing `VARCHAR(50)` database columns to prevent PostgreSQL UUID/VARCHAR comparison errors.
+
 ## [1.1.2] - 2026-10-05
 
 ### Changed
@@ -73,6 +89,7 @@ First production release prepared for deployment.
 - Added cooperative task cancellation support.
 - Merged the five existing Alembic heads into a single head: `20260921_003000`.
 
+[1.2.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.2.0
 [1.1.2]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.1.2
 [1.1.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.1.0
 [1.0.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.0.0
