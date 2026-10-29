@@ -23,7 +23,8 @@ function activityPlayerName(player) { return player.display_name || `${player.fi
 function squadDisplayName(squad) { return squad?.name?.trim() || (squad?.external_id ? `Équipe ${String(squad.external_id).slice(0, 8)}` : 'Équipe sans nom') }
 const DEFAULT_SQUAD_COLORS = ['#55d6c0', '#f2b84b', '#e86a92', '#8da7ff', '#c38cff', '#f28f5b', '#78d46d']
 function readSquadColors() { try { return JSON.parse(localStorage.getItem('physical-squad-colors') || '{}') } catch { return {} } }
-function colorForSquad(squad, index = 0, colors = {}) { return colors[squad?.id] || DEFAULT_SQUAD_COLORS[index % DEFAULT_SQUAD_COLORS.length] }
+function colorForSquad(squad, index = 0, colors = {}) { const paletteIndex = index < 0 ? 0 : index % DEFAULT_SQUAD_COLORS.length; return colors[squad?.id] || DEFAULT_SQUAD_COLORS[paletteIndex] }
+function sessionTeamKey(session) { const teamName = session.team_name?.trim() || session.activity_name?.split(' - ')[0]?.trim() || ''; return teamName.toLocaleLowerCase() }
 function groupPlayersByPosition(players = []) { return players.reduce((groups, player) => { const position = player.primary_position || player.secondary_position || 'Position non renseignée'; (groups[position] ||= []).push(player); return groups }, {}) }
 function sortDrillsByStartTime(drills = []) { return [...drills].sort((first, second) => { const firstTime = first.start_time ? Date.parse(first.start_time) : Number.POSITIVE_INFINITY; const secondTime = second.start_time ? Date.parse(second.start_time) : Number.POSITIVE_INFINITY; return (Number.isNaN(firstTime) ? Number.POSITIVE_INFINITY : firstTime) - (Number.isNaN(secondTime) ? Number.POSITIVE_INFINITY : secondTime) }) }
 
@@ -89,7 +90,7 @@ export function Overview({ catalog, onNavigate }) {
 
 export function Activity({ catalog: sourceCatalog, onNavigate }) {
   const [teams, setTeams] = useState([])
-  const [date, setDate] = useState(utcToday()); const [teamName, setTeamName] = useState(''); const [sessions, setSessions] = useState(sourceCatalog.sessions.map(session => ({ ...session, squad_id: session.team_name?.trim().toLocaleLowerCase() || '' }))); const [loading, setLoading] = useState(false); const [month, setMonth] = useState(dateKey(sourceCatalog.sessions[0]?.session_date).slice(0, 7) || utcToday().slice(0, 7)); const [selected, setSelected] = useState(null); const [detail, setDetail] = useState(null); const [detailLoading, setDetailLoading] = useState(false); const [reprocessState, setReprocessState] = useState(null); const [squadColors, setSquadColors] = useState(readSquadColors)
+  const [date, setDate] = useState(utcToday()); const [teamName, setTeamName] = useState(''); const [sessions, setSessions] = useState(sourceCatalog.sessions.map(session => ({ ...session, squad_id: sessionTeamKey(session) }))); const [loading, setLoading] = useState(false); const [month, setMonth] = useState(dateKey(sourceCatalog.sessions[0]?.session_date).slice(0, 7) || utcToday().slice(0, 7)); const [selected, setSelected] = useState(null); const [detail, setDetail] = useState(null); const [detailLoading, setDetailLoading] = useState(false); const [reprocessState, setReprocessState] = useState(null); const [squadColors, setSquadColors] = useState(readSquadColors)
   const squadId = teamName
   const setSquadId = setTeamName
   const catalog = { ...sourceCatalog, squads: teams.map(team => ({ id: team.name.trim().toLocaleLowerCase(), name: team.name, external_id: team.name })) }
@@ -99,7 +100,7 @@ export function Activity({ catalog: sourceCatalog, onNavigate }) {
       .catch(() => setTeams([]))
   }, [])
   useEffect(() => {
-    setSessions(sourceCatalog.sessions.map(session => ({ ...session, squad_id: session.team_name?.trim().toLocaleLowerCase() || '' })))
+    setSessions(sourceCatalog.sessions.map(session => ({ ...session, squad_id: sessionTeamKey(session) })))
     if (sourceCatalog.sessions[0]?.session_date) {
       const latestSessionDate = dateKey(sourceCatalog.sessions[0].session_date)
       setDate(currentDate => currentDate || latestSessionDate)
@@ -114,10 +115,10 @@ export function Activity({ catalog: sourceCatalog, onNavigate }) {
     if (teamName) params.set('team_name', teamName)
     setLoading(true)
     axios.get(`${API_BASE}/physical/sessions?${params}`)
-      .then(response => setSessions((response.data || []).map(session => ({ ...session, squad_id: session.team_name?.trim().toLocaleLowerCase() || '' }))))
+      .then(response => setSessions((response.data || []).map(session => ({ ...session, squad_id: sessionTeamKey(session) }))))
       .finally(() => setLoading(false))
   }, [month, teamName, sourceCatalog.sessions])
-  const filter = async event => { event.preventDefault(); setLoading(true); try { const params = new URLSearchParams({ limit: '100' }); if (date) params.set('session_date', date); if (teamName) params.set('team_name', teamName); const response = await axios.get(`${API_BASE}/physical/sessions?${params}`); const values = (response.data || []).map(session => ({ ...session, squad_id: session.team_name?.trim().toLocaleLowerCase() || '' })); setSessions(values); if (values[0]) setMonth(dateKey(values[0].session_date).slice(0, 7)) } finally { setLoading(false) } }
+  const filter = async event => { event.preventDefault(); setLoading(true); try { const params = new URLSearchParams({ limit: '100' }); if (date) params.set('session_date', date); if (teamName) params.set('team_name', teamName); const response = await axios.get(`${API_BASE}/physical/sessions?${params}`); const values = (response.data || []).map(session => ({ ...session, squad_id: sessionTeamKey(session) })); setSessions(values); if (values[0]) setMonth(dateKey(values[0].session_date).slice(0, 7)) } finally { setLoading(false) } }
   const openActivity = async session => { setSelected(session); setDetail(null); setDetailLoading(true); try { const response = await axios.get(`${API_BASE}/physical/activities/${session.activity_id}`); const drills = sortDrillsByStartTime(response.data.drills).map(drill => ({ ...drill, primary_label: `${formatTime(drill.start_time)} → ${formatTime(drill.end_time)}`, secondary_label: null, tertiary_label: null, session_type: null })); setDetail({ ...response.data, drills }) } catch { setDetail({ activity: session, players: [], drills: [] }) } finally { setDetailLoading(false) } }
   const reprocessActivity = async () => {
     if (!selected || reprocessState?.status === 'loading') return
@@ -150,7 +151,7 @@ export function Activity({ catalog: sourceCatalog, onNavigate }) {
       legendEntries.forEach((entry, index) => { entry.style.opacity = index === entryIndex ? '1' : '.4'; entry.style.fontWeight = index === entryIndex ? '800' : '' })
       sessionButtons.forEach(button => {
         const session = sessions.find(item => item.activity_name === button.title)
-        const isMatch = session?.team_name?.trim().toLocaleLowerCase() === selectedTeamName
+        const isMatch = session && sessionTeamKey(session) === selectedTeamName
         button.style.opacity = isMatch ? '1' : '.22'
         button.style.transform = isMatch ? 'scale(1.02)' : ''
       })
