@@ -282,44 +282,551 @@ export function Automation() {
 }
 
 export function Logs() {
-  const [runs, setRuns] = useState([]); const [selected, setSelected] = useState(null); const [loading, setLoading] = useState(true); const [detailLoading, setDetailLoading] = useState(false)
-  const load = () => axios.get(`${API_BASE}/physical/logs?limit=100`).then(response => { const values = response.data || []; setRuns(values); if (!selected && values[0]) select(values[0]) }).catch(() => setRuns([])).finally(() => setLoading(false))
-  const select = run => { setSelected({ run, logs: [] }); setDetailLoading(true); axios.get(`${API_BASE}/physical/logs/${run.id}`).then(response => setSelected(response.data)).catch(() => {}).finally(() => setDetailLoading(false)) }
-  useEffect(() => { load() }, [])
-  const visibleSteps = selected?.logs?.filter(log => ['run_started', 'api_response', 'activity_processing', 'run_finished', 'activity_failed'].includes(log.step)) || []
-  const activities = selected?.activities || selected?.logs?.filter(log => log.activity_id && ['activity_processing', 'persistence', 'data_presence', 'activity_failed'].includes(log.step)).reduce((items, log) => { const current = items.find(item => item.activity_id === log.activity_id); if (!current) items.push({ ...log, status: log.step === 'data_presence' ? 'skipped' : log.step === 'activity_failed' ? 'failed' : log.step === 'persistence' ? (log.details?.updated ? 'updated' : 'inserted') : 'processing', reason: log.message }); else if (['data_presence', 'persistence', 'activity_failed'].includes(log.step)) Object.assign(current, { status: log.step === 'data_presence' ? 'skipped' : log.step === 'activity_failed' ? 'failed' : log.details?.updated ? 'updated' : 'inserted', reason: log.message }); return items }, []) || []
-  const parameterEntries = selected?.run?.request_payload ? Object.entries(selected.run.request_payload) : []
+  const [runs, setRuns] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const load = () =>
+    axios
+      .get(`${API_BASE}/physical/logs?limit=100`)
+      .then((response) => {
+        const values = response.data || [];
+        setRuns(values);
+        if (!selected && values[0]) select(values[0]);
+      })
+      .catch(() => setRuns([]))
+      .finally(() => setLoading(false));
+  const select = (run) => {
+    setSelected({ run, logs: [] });
+    setDetailLoading(true);
+    axios
+      .get(`${API_BASE}/physical/logs/${run.id}`)
+      .then((response) => setSelected(response.data))
+      .catch(() => {})
+      .finally(() => setDetailLoading(false));
+  };
   useEffect(() => {
-    const rows = Array.from(document.querySelectorAll('.physical-activity-list .physical-activity-item'))
-    const activityList = document.querySelector('.physical-activity-list')
-    const stepList = document.querySelector('.physical-step-list')
-    if (activityList && stepList) stepList.parentElement.insertBefore(activityList, stepList)
+    load();
+  }, []);
+  const visibleSteps =
+    selected?.logs?.filter((log) =>
+      [
+        "run_started",
+        "api_response",
+        "activity_processing",
+        "run_finished",
+        "activity_failed",
+      ].includes(log.step),
+    ) || [];
+  const activities =
+    selected?.activities ||
+    selected?.logs
+      ?.filter(
+        (log) =>
+          log.activity_id &&
+          [
+            "activity_processing",
+            "persistence",
+            "data_presence",
+            "activity_failed",
+          ].includes(log.step),
+      )
+      .reduce((items, log) => {
+        const current = items.find(
+          (item) => item.activity_id === log.activity_id,
+        );
+        if (!current)
+          items.push({
+            ...log,
+            status:
+              log.step === "data_presence"
+                ? "skipped"
+                : log.step === "activity_failed"
+                  ? "failed"
+                  : log.step === "persistence"
+                    ? log.details?.updated
+                      ? "updated"
+                      : "inserted"
+                    : "processing",
+            reason: log.message,
+          });
+        else if (
+          ["data_presence", "persistence", "activity_failed"].includes(log.step)
+        )
+          Object.assign(current, {
+            status:
+              log.step === "data_presence"
+                ? "skipped"
+                : log.step === "activity_failed"
+                  ? "failed"
+                  : log.details?.updated
+                    ? "updated"
+                    : "inserted",
+            reason: log.message,
+          });
+        return items;
+      }, []) ||
+    [];
+  const parameterEntries = selected?.run?.request_payload
+    ? Object.entries(selected.run.request_payload)
+    : [];
+  useEffect(() => {
+    const rows = Array.from(
+      document.querySelectorAll(
+        ".physical-activity-list .physical-activity-item",
+      ),
+    );
+    const activityList = document.querySelector(".physical-activity-list");
+    const stepList = document.querySelector(".physical-step-list");
+    if (activityList && stepList)
+      stepList.parentElement.insertBefore(activityList, stepList);
     activities.forEach((activity, index) => {
-      const row = rows[index]
-      if (!row) return
-      const status = String(activity.status || 'processing').toUpperCase()
-      const reason = activity.reason || 'Aucune raison complémentaire enregistrée'
-      row.dataset.status = status.toLowerCase()
-      row.title = reason
-      const existingBadge = row.querySelector('.physical-log-status-badge')
-      if (existingBadge) existingBadge.remove()
-      const badge = document.createElement('span')
-      badge.className = 'physical-log-status-badge'
-      badge.textContent = status
-      row.prepend(badge)
-      const detail = row.querySelector('small')
-      if (detail) detail.textContent = `${status} · ${reason}`
-    })
-  }, [activities])
-  return (<div className="physical-page"><Header eyebrow="PHYSICALDATA / ACTIVITY LOGS" title="Journaux d’activité" detail="Suivez chaque collecte manuelle par type, paramètres, cycle de vie et activités traitées." /><div className="physical-log-layout"><Panel kicker="Historique des exécutions" title="Exécutions de collecte" count={`${runs.length} runs`}>{loading ? <Empty>Chargement des journaux d’activité...</Empty> : runs.length ? <div className="physical-run-list">{runs.map(run => <button className={`physical-run-row ${selected?.run?.id === run.id ? 'is-selected' : ''}`} key={run.id} onClick={() => select(run)}><div><strong>{run.display_name}</strong><small>{run.endpoint} · {formatDate(run.started_at)}</small></div><span className={`physical-run-status ${run.status}`}>{run.status}</span><em>{run.found} found · {run.inserted} new · {run.updated} updated</em></button>)}</div> : <Empty>Aucune exécution de collecte n’a encore été enregistrée.</Empty>}</Panel><div className="physical-log-detail-column"><Panel kicker="Paramètres de collecte" title={selected?.run?.display_name || 'Sélectionner une exécution'}>{!selected ? <Empty>Sélectionner une exécution to inspect its details.</Empty> : <div className="physical-parameter-list">{parameterEntries.map(([key, value]) => <div key={key}><b>{key}</b><strong>{String(value)}</strong></div>)}</div>}</Panel>{selected && <Panel kicker="Détail de l’exécution" title="Lifecycle and activité(s)"><div className="physical-run-detail"><div className="physical-run-facts"><span><b>Status</b>{selected.run.status}</span><span><b>Started</b>{formatDate(selected.run.started_at)}</span><span><b>Finished</b>{formatDate(selected.run.completed_at)}</span><span><b>Activities found</b>{selected.run.found}</span><span><b>Inserted / updated</b>{selected.run.inserted} / {selected.run.updated}</span><span><b>Skipped / failed</b>{selected.run.skipped} / {selected.run.failed}</span></div>{detailLoading ? <Empty>Chargement des étapes d’exécution...</Empty> : <><div className="physical-step-list">{visibleSteps.map(log => <div className={`physical-step ${log.level === 'ERROR' ? 'is-error' : ''}`} key={log.id}><i /> <div><strong>{log.step === 'api_response' ? 'activité(s)_checked' : log.step}</strong><p>{log.message}</p><time>{formatDate(log.timestamp)}</time></div></div>)}</div><div className="physical-activity-list"><div className="physical-activity-list-heading"><b>Activities treated</b><span>{activité(s).length}</span></div>{activité(s).length ? activité(s).map(activity => <div className="physical-activity-item" key={activity.activity_id}><strong>{activity.activity_name || 'Activité sans nom'}</strong><small>{activity.activity_id}</small></div>) : <Empty>No activity details recorded.</Empty>}</div></>}</div></Panel>}</div></div></div>)
+      const row = rows[index];
+      if (!row) return;
+      const status = String(activity.status || "processing").toUpperCase();
+      const reason =
+        activity.reason || "Aucune raison complémentaire enregistrée";
+      row.dataset.status = status.toLowerCase();
+      row.title = reason;
+      const existingBadge = row.querySelector(".physical-log-status-badge");
+      if (existingBadge) existingBadge.remove();
+      const badge = document.createElement("span");
+      badge.className = "physical-log-status-badge";
+      badge.textContent = status;
+      row.prepend(badge);
+      const detail = row.querySelector("small");
+      if (detail) detail.textContent = `${status} · ${reason}`;
+    });
+  }, [activities]);
+  return (
+    <div className="physical-page">
+      <Header
+        eyebrow="PHYSICALDATA / ACTIVITY LOGS"
+        title="Journaux d’activité"
+        detail="Suivez chaque collecte manuelle par type, paramètres, cycle de vie et activités traitées."
+      />
+      <div className="physical-log-layout">
+        <Panel
+          kicker="Historique des exécutions"
+          title="Exécutions de collecte"
+          count={`${runs.length} runs`}
+        >
+          {loading ? (
+            <Empty>Chargement des journaux d’activité...</Empty>
+          ) : runs.length ? (
+            <div className="physical-run-list">
+              {runs.map((run) => (
+                <button
+                  className={`physical-run-row ${selected?.run?.id === run.id ? "is-selected" : ""}`}
+                  key={run.id}
+                  onClick={() => select(run)}
+                >
+                  <div>
+                    <strong>{run.display_name}</strong>
+                    <small>
+                      {run.endpoint} · {formatDate(run.started_at)}
+                    </small>
+                  </div>
+                  <span className={`physical-run-status ${run.status}`}>
+                    {run.status}
+                  </span>
+                  <em>
+                    {run.found} found · {run.inserted} new · {run.updated}{" "}
+                    updated
+                  </em>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <Empty>
+              Aucune exécution de collecte n’a encore été enregistrée.
+            </Empty>
+          )}
+        </Panel>
+        <div className="physical-log-detail-column">
+          <Panel
+            kicker="Paramètres de collecte"
+            title={selected?.run?.display_name || "Sélectionner une exécution"}
+          >
+            {!selected ? (
+              <Empty>Sélectionner une exécution to inspect its details.</Empty>
+            ) : (
+              <div className="physical-parameter-list">
+                {parameterEntries.map(([key, value]) => (
+                  <div key={key}>
+                    <b>{key}</b>
+                    <strong>{String(value)}</strong>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Panel>
+          {selected && (
+            <Panel
+              kicker="Détail de l’exécution"
+              title="Lifecycle and activité(s)"
+            >
+              <div className="physical-run-detail">
+                <div className="physical-run-facts">
+                  <span>
+                    <b>Status</b>
+                    {selected.run.status}
+                  </span>
+                  <span>
+                    <b>Started</b>
+                    {formatDate(selected.run.started_at)}
+                  </span>
+                  <span>
+                    <b>Finished</b>
+                    {formatDate(selected.run.completed_at)}
+                  </span>
+                  <span>
+                    <b>Activities found</b>
+                    {selected.run.found}
+                  </span>
+                  <span>
+                    <b>Inserted / updated</b>
+                    {selected.run.inserted} / {selected.run.updated}
+                  </span>
+                  <span>
+                    <b>Skipped / failed</b>
+                    {selected.run.skipped} / {selected.run.failed}
+                  </span>
+                </div>
+                {detailLoading ? (
+                  <Empty>Chargement des étapes d’exécution...</Empty>
+                ) : (
+                  <>
+                    <div className="physical-step-list">
+                      {visibleSteps.map((log) => (
+                        <div
+                          className={`physical-step ${log.level === "ERROR" ? "is-error" : ""}`}
+                          key={log.id}
+                        >
+                          <i />{" "}
+                          <div>
+                            <strong>
+                              {log.step === "api_response"
+                                ? "activité(s)_checked"
+                                : log.step}
+                            </strong>
+                            <p>{log.message}</p>
+                            <time>{formatDate(log.timestamp)}</time>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="physical-activity-list">
+                      <div className="physical-activity-list-heading">
+                        <b>Activities treated</b>
+                        <span>{activities.length}</span>
+                      </div>
+                      {activities.length ? (
+                        activities.map((activity) => (
+                          <div
+                            className="physical-activity-item"
+                            key={activity.activity_id}
+                          >
+                            <strong>
+                              {activity.activity_name || "Activité sans nom"}
+                            </strong>
+                            <small>{activity.activity_id}</small>
+                          </div>
+                        ))
+                      ) : (
+                        <Empty>No activity details recorded.</Empty>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            </Panel>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 export function Settings({ catalog }) {
-  const [names, setNames] = useState({}); const [colors, setSquadColors] = useState(readSquadColors); const [saving, setSaving] = useState(null); const [message, setMessage] = useState(''); const [section, setSection] = useState('squads'); const [seasonForm, setSeasonForm] = useState({ name: '', start_date: '', end_date: '' }); const [editingSeason, setEditingSeason] = useState(null); const [seasonSaving, setSeasonSaving] = useState(false)
-  useEffect(() => setNames(Object.fromEntries(catalog.squads.map(squad => [squad.id, squad.name || '']))), [catalog.squads])
-  const save = async squad => { setSaving(squad.id); setMessage(''); try { await axios.put(`${API_BASE}/physical/squads/${squad.id}`, { name: names[squad.id].trim() }); localStorage.setItem('physical-squad-colors', JSON.stringify(colors)); setMessage(`${squad.name || squad.external_id} updated.`); await catalog.reload() } catch (requestError) { setMessage(requestError.response?.data?.detail || requestError.message) } finally { setSaving(null) } }
-  const changeColor = (squadId, color) => setSquadColors(current => { const next = { ...current, [squadId]: color }; localStorage.setItem('physical-squad-colors', JSON.stringify(next)); return next })
-  const saveSeason = async event => { event.preventDefault(); setSeasonSaving(true); setMessage(''); try { const method = editingSeason ? 'put' : 'post'; const url = editingSeason ? `${API_BASE}/physical/seasons/${editingSeason}` : `${API_BASE}/physical/seasons`; await axios[method](url, seasonForm); setSeasonForm({ name: '', start_date: '', end_date: '' }); setEditingSeason(null); setMessage('Saison enregistrée.'); await catalog.reload() } catch (requestError) { setMessage(requestError.response?.data?.detail || requestError.message) } finally { setSeasonSaving(false) } }
-  const editSeason = season => { setEditingSeason(season.id); setSeasonForm({ name: season.name, start_date: String(season.start_date).slice(0, 10), end_date: String(season.end_date).slice(0, 10) }) }
-  return <div className="physical-page"><Header eyebrow="PHYSICALDATA / SETTINGS" title="Paramètres" detail="Gérez les équipes, les couleurs du calendrier et les bornes de saison du 15 juin." /><div className="physical-settings-sections"><section className={`physical-settings-section ${section === 'squads' ? 'is-open' : ''}`}><button type="button" className="physical-settings-toggle" onClick={() => setSection(section === 'squads' ? '' : 'squads')}><span><b>01</b><strong>Équipes</strong><small>Noms, identifiants et couleurs du calendrier</small></span><em>{section === 'squads' ? '−' : '+'}</em></button>{section === 'squads' && <Panel kicker="Catalogue des équipes" title="Nommer et colorer les équipes" count={`${catalog.squads.length} squads`}>{catalog.squads.length ? <div className="physical-squad-settings">{catalog.squads.map((squad, index) => <div className="physical-squad-setting" key={squad.id}><div className="physical-squad-identity"><span className="physical-squad-color-dot" style={{ backgroundColor: colorForSquad(squad, index, colors) }} /><div><strong>{squad.name || 'Équipe sans nom'}</strong><small><b>STATSports ID</b> {squad.external_id}</small><small><b>Identifiant base de données</b> {squad.id}</small></div></div><input value={names[squad.id] ?? ''} onChange={event => setNames(current => ({ ...current, [squad.id]: event.target.value }))} placeholder="Nom affiché de l’équipe" maxLength="255" /><label className="physical-color-control">Couleur<input type="color" value={colorForSquad(squad, index, colors)} onChange={event => changeColor(squad.id, event.target.value)} /></label><button className="physical-save-icon" aria-label={`Enregistrer le nom de ${squad.name || squad.external_id}`} title="Enregistrer le nom de l’équipe" disabled={saving === squad.id || !names[squad.id]?.trim()} onClick={() => save(squad)}><Save size={16} strokeWidth={2.5} aria-hidden="true" /></button></div>)}</div> : <Empty>Aucune équipe importée.</Empty>}</Panel>}</section><section className={`physical-settings-section ${section === 'seasons' ? 'is-open' : ''}`}><button type="button" className="physical-settings-toggle" onClick={() => setSection(section === 'seasons' ? '' : 'seasons')}><span><b>02</b><strong>Saisons</strong><small>Periods change every year on 15 June</small></span><em>{section === 'seasons' ? '−' : '+'}</em></button>{section === 'seasons' && <Panel kicker="Season catalog" title="Manage seasons" count={`${catalog.seasons.length} seasons`}><form className="physical-season-form" onSubmit={saveSeason}><label>Name<input required value={seasonForm.name} onChange={event => setSeasonForm({ ...seasonForm, name: event.target.value })} placeholder="2027-2028" /></label><label>Date de début<input required type="date" value={seasonForm.start_date} onChange={event => setSeasonForm({ ...seasonForm, start_date: event.target.value })} /></label><label>Date de fin<input required type="date" value={seasonForm.end_date} onChange={event => setSeasonForm({ ...seasonForm, end_date: event.target.value })} /></label><button className="physical-primary-button" disabled={seasonSaving}>{seasonSaving ? 'Saving...' : editingSeason ? 'Update season' : 'Create season'}</button></form>{editingSeason && <button className="physical-season-cancel" type="button" onClick={() => { setEditingSeason(null); setSeasonForm({ name: '', start_date: '', end_date: '' }) }}>Cancel editing</button>}<div className="physical-season-list">{catalog.seasons.map(season => <div className="physical-season-row" key={season.id}><div><strong>{season.name}</strong><small>{formatCalendarDate(season.start_date)} → {formatCalendarDate(season.end_date)} · {season.activity_count} activité(s)</small></div><button className="physical-save-icon" type="button" title={`Edit ${season.name}`} aria-label={`Edit ${season.name}`} onClick={() => editSeason(season)}>✎</button></div>)}</div></Panel>}</section></div>{message && <p className="physical-form-message">{message}</p>}</div>
+  const [names, setNames] = useState({});
+  const [colors, setSquadColors] = useState(readSquadColors);
+  const [saving, setSaving] = useState(null);
+  const [message, setMessage] = useState("");
+  const [section, setSection] = useState("squads");
+  const [seasonForm, setSeasonForm] = useState({
+    name: "",
+    start_date: "",
+    end_date: "",
+  });
+  const [editingSeason, setEditingSeason] = useState(null);
+  const [seasonSaving, setSeasonSaving] = useState(false);
+  useEffect(
+    () =>
+      setNames(
+        Object.fromEntries(
+          catalog.squads.map((squad) => [squad.id, squad.name || ""]),
+        ),
+      ),
+    [catalog.squads],
+  );
+  const save = async (squad) => {
+    setSaving(squad.id);
+    setMessage("");
+    try {
+      await axios.put(`${API_BASE}/physical/squads/${squad.id}`, {
+        name: names[squad.id].trim(),
+      });
+      localStorage.setItem("physical-squad-colors", JSON.stringify(colors));
+      setMessage(`${squad.name || squad.external_id} updated.`);
+      await catalog.reload();
+    } catch (requestError) {
+      setMessage(requestError.response?.data?.detail || requestError.message);
+    } finally {
+      setSaving(null);
+    }
+  };
+  const changeColor = (squadId, color) =>
+    setSquadColors((current) => {
+      const next = { ...current, [squadId]: color };
+      localStorage.setItem("physical-squad-colors", JSON.stringify(next));
+      return next;
+    });
+  const saveSeason = async (event) => {
+    event.preventDefault();
+    setSeasonSaving(true);
+    setMessage("");
+    try {
+      const method = editingSeason ? "put" : "post";
+      const url = editingSeason
+        ? `${API_BASE}/physical/seasons/${editingSeason}`
+        : `${API_BASE}/physical/seasons`;
+      await axios[method](url, seasonForm);
+      setSeasonForm({ name: "", start_date: "", end_date: "" });
+      setEditingSeason(null);
+      setMessage("Saison enregistrée.");
+      await catalog.reload();
+    } catch (requestError) {
+      setMessage(requestError.response?.data?.detail || requestError.message);
+    } finally {
+      setSeasonSaving(false);
+    }
+  };
+  const editSeason = (season) => {
+    setEditingSeason(season.id);
+    setSeasonForm({
+      name: season.name,
+      start_date: String(season.start_date).slice(0, 10),
+      end_date: String(season.end_date).slice(0, 10),
+    });
+  };
+  return (
+    <div className="physical-page">
+      <Header
+        eyebrow="PHYSICALDATA / SETTINGS"
+        title="Paramètres"
+        detail="Gérez les équipes, les couleurs du calendrier et les bornes de saison du 15 juin."
+      />
+      <div className="physical-settings-sections">
+        <section
+          className={`physical-settings-section ${section === "squads" ? "is-open" : ""}`}
+        >
+          <button
+            type="button"
+            className="physical-settings-toggle"
+            onClick={() => setSection(section === "squads" ? "" : "squads")}
+          >
+            <span>
+              <b>01</b>
+              <strong>Équipes</strong>
+              <small>Noms, identifiants et couleurs du calendrier</small>
+            </span>
+            <em>{section === "squads" ? "−" : "+"}</em>
+          </button>
+          {section === "squads" && (
+            <Panel
+              kicker="Catalogue des équipes"
+              title="Nommer et colorer les équipes"
+              count={`${catalog.squads.length} squads`}
+            >
+              {catalog.squads.length ? (
+                <div className="physical-squad-settings">
+                  {catalog.squads.map((squad, index) => (
+                    <div className="physical-squad-setting" key={squad.id}>
+                      <div className="physical-squad-identity">
+                        <span
+                          className="physical-squad-color-dot"
+                          style={{
+                            backgroundColor: colorForSquad(
+                              squad,
+                              index,
+                              colors,
+                            ),
+                          }}
+                        />
+                        <div>
+                          <strong>{squad.name || "Équipe sans nom"}</strong>
+                          <small>
+                            <b>STATSports ID</b> {squad.external_id}
+                          </small>
+                          <small>
+                            <b>Identifiant base de données</b> {squad.id}
+                          </small>
+                        </div>
+                      </div>
+                      <input
+                        value={names[squad.id] ?? ""}
+                        onChange={(event) =>
+                          setNames((current) => ({
+                            ...current,
+                            [squad.id]: event.target.value,
+                          }))
+                        }
+                        placeholder="Nom affiché de l’équipe"
+                        maxLength="255"
+                      />
+                      <label className="physical-color-control">
+                        Couleur
+                        <input
+                          type="color"
+                          value={colorForSquad(squad, index, colors)}
+                          onChange={(event) =>
+                            changeColor(squad.id, event.target.value)
+                          }
+                        />
+                      </label>
+                      <button
+                        className="physical-save-icon"
+                        aria-label={`Enregistrer le nom de ${squad.name || squad.external_id}`}
+                        title="Enregistrer le nom de l’équipe"
+                        disabled={
+                          saving === squad.id || !names[squad.id]?.trim()
+                        }
+                        onClick={() => save(squad)}
+                      >
+                        <Save size={16} strokeWidth={2.5} aria-hidden="true" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <Empty>Aucune équipe importée.</Empty>
+              )}
+            </Panel>
+          )}
+        </section>
+        <section
+          className={`physical-settings-section ${section === "seasons" ? "is-open" : ""}`}
+        >
+          <button
+            type="button"
+            className="physical-settings-toggle"
+            onClick={() => setSection(section === "seasons" ? "" : "seasons")}
+          >
+            <span>
+              <b>02</b>
+              <strong>Saisons</strong>
+              <small>Periods change every year on 15 June</small>
+            </span>
+            <em>{section === "seasons" ? "−" : "+"}</em>
+          </button>
+          {section === "seasons" && (
+            <Panel
+              kicker="Season catalog"
+              title="Manage seasons"
+              count={`${catalog.seasons.length} seasons`}
+            >
+              <form className="physical-season-form" onSubmit={saveSeason}>
+                <label>
+                  Name
+                  <input
+                    required
+                    value={seasonForm.name}
+                    onChange={(event) =>
+                      setSeasonForm({ ...seasonForm, name: event.target.value })
+                    }
+                    placeholder="2027-2028"
+                  />
+                </label>
+                <label>
+                  Date de début
+                  <input
+                    required
+                    type="date"
+                    value={seasonForm.start_date}
+                    onChange={(event) =>
+                      setSeasonForm({
+                        ...seasonForm,
+                        start_date: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Date de fin
+                  <input
+                    required
+                    type="date"
+                    value={seasonForm.end_date}
+                    onChange={(event) =>
+                      setSeasonForm({
+                        ...seasonForm,
+                        end_date: event.target.value,
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  className="physical-primary-button"
+                  disabled={seasonSaving}
+                >
+                  {seasonSaving
+                    ? "Saving..."
+                    : editingSeason
+                      ? "Update season"
+                      : "Create season"}
+                </button>
+              </form>
+              {editingSeason && (
+                <button
+                  className="physical-season-cancel"
+                  type="button"
+                  onClick={() => {
+                    setEditingSeason(null);
+                    setSeasonForm({ name: "", start_date: "", end_date: "" });
+                  }}
+                >
+                  Cancel editing
+                </button>
+              )}
+              <div className="physical-season-list">
+                {catalog.seasons.map((season) => (
+                  <div className="physical-season-row" key={season.id}>
+                    <div>
+                      <strong>{season.name}</strong>
+                      <small>
+                        {formatCalendarDate(season.start_date)} →{" "}
+                        {formatCalendarDate(season.end_date)} ·{" "}
+                        {season.activity_count} activité(s)
+                      </small>
+                    </div>
+                    <button
+                      className="physical-save-icon"
+                      type="button"
+                      title={`Edit ${season.name}`}
+                      aria-label={`Edit ${season.name}`}
+                      onClick={() => editSeason(season)}
+                    >
+                      ✎
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </Panel>
+          )}
+        </section>
+      </div>
+      {message && <p className="physical-form-message">{message}</p>}
+    </div>
+  );
 }
 
