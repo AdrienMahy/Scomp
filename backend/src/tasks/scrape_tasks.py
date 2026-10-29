@@ -1,9 +1,10 @@
 """Celery scraping tasks"""
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import asyncio
 import logging
 import os
 from typing import List, Optional
+from zoneinfo import ZoneInfo
 
 import redis
 from sqlalchemy import text
@@ -202,12 +203,14 @@ def physical_statsport_automation_task(self):
 def statsport_automation_task(
     share_date: str | None = None,
     squad_external_id: str | None = None,
+    team_name: str | None = None,
 ):
     """Run a manual STATSports share-date scrape on the dedicated worker."""
     return asyncio.run(
         scrape_by_share_date(
             share_date,
             squad_external_id=squad_external_id,
+            team_name=team_name,
         )
     )
 
@@ -217,6 +220,7 @@ def statsport_date_range_task(
     start_date: str,
     end_date: str,
     squad_external_id: str | None = None,
+    team_name: str | None = None,
 ):
     """Run a manual STATSports date-range scrape on the dedicated worker."""
     from ..STATSport.orchestration.orchestration import scrape_by_date_range
@@ -226,6 +230,7 @@ def statsport_date_range_task(
             start_date,
             end_date,
             squad_external_id=squad_external_id,
+            team_name=team_name,
         )
     )
 
@@ -236,3 +241,17 @@ def statsport_activity_task(session_date: str, activity_id: str):
     from ..STATSport.orchestration.orchestration import scrape_activity
 
     return asyncio.run(scrape_activity(session_date, activity_id))
+
+
+@app.task(name="scomp.statsport_yesterday_share_date")
+def statsport_yesterday_share_date_task():
+    """Scrape STATSports activities whose ShareDate was yesterday."""
+    local_now = datetime.now(ZoneInfo(os.getenv("SCOMP_TIMEZONE", "Europe/Paris")))
+    yesterday = (local_now - timedelta(days=1)).date().isoformat()
+    return asyncio.run(
+        scrape_by_share_date(
+            yesterday,
+            scrape_type="statsport_yesterday_share_date",
+            display_name="Yesterday ShareDate scrape",
+        )
+    )

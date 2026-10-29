@@ -8,7 +8,7 @@ from sqlalchemy import create_engine, text
 
 from ..api.client import StatsportAPIClient
 from ..api.config import StatsportSettings
-from ..etl.export_dataset import build_dataset
+from ..etl.export_dataset import build_dataset, team_name_from_session
 from .persist_dataset import import_dataset, physical_database_url
 from .scrape_logs import create_run, finish_run, write_log
 
@@ -41,6 +41,15 @@ def _filter_squad(activities: list[dict[str, Any]], squad_external_id: str | Non
         return activities
     return [activity for activity in activities
             if str((activity.get("sessionDetails") or {}).get("squadId")) == str(squad_external_id)]
+
+
+def _filter_team_name(activities: list[dict[str, Any]], team_name: str | None) -> list[dict[str, Any]]:
+    if not team_name:
+        return activities
+    requested_team = team_name.strip().casefold()
+    return [activity for activity in activities
+            if (activity_team := team_name_from_session(activity.get("sessionName")))
+            and activity_team.casefold() == requested_team]
 
 
 async def process_activities(
@@ -102,16 +111,21 @@ def _reconcile_missing_sessions(
     try:
         with engine.begin() as connection:
             squad_clause = ""
+            team_clause = ""
             params: dict[str, Any] = {"scope_start": scope_start, "scope_end": scope_end}
             if request_payload.get("squadId"):
                 squad_clause = " AND sq.external_id = CAST(:squad_id AS uuid)"
                 params["squad_id"] = request_payload["squadId"]
+            if request_payload.get("teamName"):
+                team_clause = " AND lower(BTRIM(s.team_name)) = lower(:team_name)"
+                params["team_name"] = request_payload["teamName"].strip()
             rows = connection.execute(text(f"""
                 SELECT s.id, s.activity_id, s.missing_count
                 FROM sessions s
                 JOIN squads sq ON sq.id = s.squad_id
                 WHERE {scope_column} BETWEEN CAST(:scope_start AS date) AND CAST(:scope_end AS date)
                   {squad_clause}
+                                    {team_clause}
             """), params).mappings().all()
             for row in rows:
                 if str(row["activity_id"]) in received_ids:
@@ -176,6 +190,7 @@ async def scrape_by_share_date(
     settings: StatsportSettings | None = None,
     database_url: str | None = None,
     squad_external_id: str | None = None,
+    team_name: str | None = None,
     scrape_type: str = "share_date",
     display_name: str = "Share date scrape",
 ) -> dict[str, Any]:
@@ -184,10 +199,12 @@ async def scrape_by_share_date(
     request_payload = {"shareDate": _api_date(share_date_value)}
     if squad_external_id:
         request_payload["squadId"] = squad_external_id
+    if team_name:
+        request_payload["teamName"] = team_name.strip()
     async def fetch():
         async with StatsportAPIClient(settings) as client:
             payload = await client.get_full_session_by_share_date(_third_party_api_id(settings), _api_date(share_date_value))
-        return _filter_squad(_activities(payload), squad_external_id)
+        return _filter_team_name(_filter_squad(_activities(payload), squad_external_id), team_name)
     return await _execute_scrape(scrape_type=scrape_type, display_name=display_name,
                                  endpoint="getFullSessionByShareDate", request_payload=request_payload,
                                  fetch=fetch, database_url=database_url)
@@ -200,12 +217,15 @@ async def scrape_by_date_range(
     settings: StatsportSettings | None = None,
     database_url: str | None = None,
     squad_external_id: str | None = None,
+    team_name: str | None = None,
 ) -> dict[str, Any]:
     settings = settings or StatsportSettings.from_env()
     start_value, end_value = _api_date(start_date), _api_date(end_date)
     request_payload = {"sessionStartDate": start_value, "sessionEndDate": end_value}
     if squad_external_id:
         request_payload["squadId"] = squad_external_id
+    if team_name:
+        request_payload["teamName"] = team_name.strip()
     async def fetch():
         async with StatsportAPIClient(settings) as client:
             current = date.fromisoformat(start_value)
@@ -218,7 +238,7 @@ async def scrape_by_date_range(
                 current += timedelta(days=1)
         activities = [activity for activity in activities
                   if start_value <= str((activity.get("sessionDetails") or {}).get("sessionDate", ""))[:10] <= end_value]
-        return _filter_squad(activities, squad_external_id)
+        return _filter_team_name(_filter_squad(activities, squad_external_id), team_name)
     return await _execute_scrape(scrape_type="date_range", display_name="Date range scrape",
                                  endpoint="getFullSessionsByDateRange", request_payload=request_payload,
                                  fetch=fetch, database_url=database_url)

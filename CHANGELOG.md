@@ -2,6 +2,30 @@
 
 All notable changes to Scomp are documented in this file.
 
+## [1.4.0] - 2026-10-29
+
+### Changed
+
+- Harmonized the TacticalData and PhysicalData dashboard headings, KPI cards, and responsive layout.
+- Replaced the TacticalData competition list with recent scrape activity showing competition names and timestamps; removed decorative KPI circles.
+
+## [1.3.0] - 2026-10-28
+
+### Added
+
+- User authentication with username and password sessions.
+- Separate TacticalData and STATSport permissions, with full access for administrators.
+- Administrator user management for account creation and access assignment.
+- One-time account activation and password modification links.
+- Scomp ETL login screen aligned with the shared interface rules and Kapture reference proportions.
+- Initial administrator configuration through environment variables.
+
+### Security
+
+- Passwords are stored using `scrypt` hashes.
+- Protected TacticalData and STATSport API routes now reject unauthenticated or unauthorized requests.
+- Authentication sessions and one-time password tokens are stored as hashes.
+
 ## [1.2.0] - 2026-10-13
 
 ### Added
@@ -89,6 +113,8 @@ First production release prepared for deployment.
 - Added cooperative task cancellation support.
 - Merged the five existing Alembic heads into a single head: `20260921_003000`.
 
+[1.4.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.4.0
+[1.3.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.3.0
 [1.2.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.2.0
 [1.1.2]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.1.2
 [1.1.0]: https://github.com/AdrienMahy/Scomp/releases/tag/v1.1.0

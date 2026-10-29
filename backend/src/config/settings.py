@@ -61,6 +61,11 @@ class Settings(BaseSettings):
     # Environment
     environment: str = "development"
     debug: bool = True
+    auth_session_days: int = Field(default=7, validation_alias="SCOMP_AUTH_SESSION_DAYS")
+    auth_token_hours: int = Field(default=48, validation_alias="SCOMP_AUTH_TOKEN_HOURS")
+    frontend_url: str = Field(default="http://localhost:3002", validation_alias="SCOMP_FRONTEND_URL")
+    admin_username: str = Field(default="admin", validation_alias="SCOMP_ADMIN_USERNAME")
+    admin_password: Optional[str] = Field(default=None, validation_alias="SCOMP_ADMIN_PASSWORD")
     cors_origins: str = Field(
         default="http://localhost:3002,http://localhost:3000",
         validation_alias="SCOMP_CORS_ORIGINS",

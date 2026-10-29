@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { ArrowRight, Play, Sparkles } from 'lucide-react'
 import { Card, Badge, ErrorAlert, SuccessAlert } from '../../components'
 import { API_BASE } from '../api'
 
 const PARSER_OPTIONS = [
-  { id: 'lineups', label: 'LineUps', description: 'Teams and players must already exist.' },
-  { id: 'periods_phase', label: 'Periods, score evolution, Phase', description: 'Refreshes periods, score timeline and RGD phase context; linked event and Fitness references are updated without replacing those rows.' },
-  { id: 'distances', label: 'Distances (Teams & players)', description: 'Refreshes team and player distance metrics and intervals.' },
-  { id: 'events', label: 'Events', description: 'Refreshes RGD events, goals and substitutions.' },
-  { id: 'fitness', label: 'Fitness runs', description: 'Fitness runs and their summaries.' },
+  { id: 'lineups', label: 'Compositions', description: 'Les équipes et les joueurs doivent déjà exister.' },
+  { id: 'periods_phase', label: 'Périodes et évolution du score', description: 'Actualise les périodes, la chronologie du score et le contexte RGD.' },
+  { id: 'distances', label: 'Distances des équipes et joueurs', description: 'Actualise les distances et les intervalles d’intensité.' },
+  { id: 'events', label: 'Événements', description: 'Actualise les événements RGD, buts et remplacements.' },
+  { id: 'fitness', label: 'Données physiques', description: 'Actualise les courses et leurs synthèses.' },
 ]
 
 const STANDARD_PARSER_IDS = PARSER_OPTIONS.map(parser => parser.id)
@@ -37,7 +38,7 @@ export default function ScrapingPage({ scope }) {
       })
       setRounds(res.data.rounds)
     } catch (err) {
-      setError('Failed to load rounds')
+      setError('Impossible de charger les journées.')
     }
   }
 
@@ -59,11 +60,11 @@ export default function ScrapingPage({ scope }) {
 
   const handleScrape = async (type) => {
     if (!scope) {
-      setError('Select a competition and season in Active Season first.')
+      setError('Sélectionnez d’abord une compétition et une saison dans la saison active.')
       return
     }
     if (type === 'rounds' && selectedParsers.length === 0) {
-      setError('Select at least one parser.')
+      setError('Sélectionnez au moins un groupe de données.')
       return
     }
     setLoading(true)
@@ -82,18 +83,18 @@ export default function ScrapingPage({ scope }) {
         })))
         setQueuedTasks(responses.map(response => response.data))
         setSuccess(
-          `${roundsToScrape.length} round(s) queued with ${selectedParsers.length} parser(s).`
+          `${roundsToScrape.length} journée(s) mise(s) en file avec ${selectedParsers.length} groupe(s) de données.`
         )
       } else if (type === 'players') {
         const response = await axios.post(`${API_BASE}/players/scrape-players`, null, {
           params: { competition_id: scope.competitionId, season_id: scope.seasonId },
         })
         setQueuedTasks([response.data])
-        setSuccess('Player enrichment queued.')
+        setSuccess('Enrichissement des joueurs mis en file.')
       }
       setSelectedRounds([])
     } catch (err) {
-      setError(`Error: ${err.response?.data?.detail || err.message}`)
+      setError(`Erreur : ${err.response?.data?.detail || err.message}`)
     } finally {
       setLoading(false)
     }
@@ -102,8 +103,8 @@ export default function ScrapingPage({ scope }) {
   return (
     <div className="scraping-page">
       <div className="scraping-hero">
-        <div><p className="eyebrow">WORKSPACE / SCRAPING</p><h1>Pipeline control</h1><p>Run a workflow against the active competition and season.</p></div>
-        <div className="scraping-context"><span className="status-dot" /><strong>{scope?.competitionName || 'No competition'}</strong><span>{scope?.seasonName || 'Select a season in the sidebar'}</span></div>
+        <div><p className="eyebrow">ESPACE DE TRAVAIL / COLLECTE</p><h1>Contrôle du pipeline</h1><p>Lancez un workflow sur la compétition et la saison actives.</p></div>
+        <div className="scraping-context"><span className="status-dot" /><strong>{scope?.competitionName || 'Aucune compétition'}</strong><span>{scope?.seasonName || 'Sélectionnez une saison dans la navigation'}</span></div>
       </div>
 
       {/* Alerts */}
@@ -115,8 +116,8 @@ export default function ScrapingPage({ scope }) {
       {/* Control Panel */}
       <div className="scraping-workspaces">
         <Card
-          title="Scrape rounds"
-          subtitle={`${selectedRounds.length} round(s), ${selectedParsers.length} parser(s) selected`}
+          title="Collecter des journées"
+          subtitle={`${selectedRounds.length} journée(s), ${selectedParsers.length} groupe(s) sélectionné(s)`}
         >
           <div className="round-grid">
           {rounds.map(round => (
@@ -136,8 +137,8 @@ export default function ScrapingPage({ scope }) {
           <section className="parser-selection" aria-labelledby="parser-selection-title">
             <div className="parser-selection-heading">
               <div>
-                <h2 id="parser-selection-title">Parsers to run</h2>
-                <p>Only selected data groups and their required files will be processed. Each group replaces only its own data.</p>
+                <h2 id="parser-selection-title">Groupes de données à traiter</h2>
+                <p>Seuls les groupes sélectionnés et leurs fichiers nécessaires seront traités.</p>
               </div>
               <div className="parser-selection-actions">
                 <button
@@ -145,14 +146,14 @@ export default function ScrapingPage({ scope }) {
                   onClick={() => setSelectedParsers(STANDARD_PARSER_IDS)}
                   disabled={loading}
                 >
-                  Select all standard parsers
+                  Sélectionner les groupes standards
                 </button>
                 <button
                   type="button"
                   onClick={() => setSelectedParsers([])}
                   disabled={loading}
                 >
-                  Clear
+                  Effacer
                 </button>
               </div>
             </div>
@@ -179,20 +180,20 @@ export default function ScrapingPage({ scope }) {
             </div>
           </section>
           <button className="workspace-action primary" onClick={() => selectedRounds.length > 0 ? handleScrape('rounds') : null} disabled={loading || selectedRounds.length === 0 || selectedParsers.length === 0 || !scope}>
-            <span>↯</span><div><strong>Process selected rounds</strong><small>{scope ? 'Download required files and run selected parsers' : 'Select a competition and season first'}</small></div><b>→</b>
+            <span><Play size={17} aria-hidden="true" /></span><div><strong>Traiter les journées sélectionnées</strong><small>{scope ? 'Télécharger les fichiers requis et traiter les groupes choisis' : 'Sélectionnez d’abord une compétition et une saison'}</small></div><ArrowRight size={17} aria-hidden="true" />
           </button>
         </Card>
 
-        <Card title="Player enrichment" subtitle="Complete player profiles for the active season">
-          <div className="enrichment-workspace"><span className="workspace-symbol">✦</span><p>Enrich only the players linked to games in the active competition and season.</p></div>
+        <Card title="Enrichissement des joueurs" subtitle="Compléter les profils de la saison active">
+          <div className="enrichment-workspace"><span className="workspace-symbol"><Sparkles size={18} aria-hidden="true" /></span><p>Enrichissez uniquement les joueurs liés aux matchs de la compétition et de la saison actives.</p></div>
           <button className="workspace-action" onClick={() => handleScrape('players')} disabled={loading || !scope}>
-            <span>✦</span><div><strong>Enrich players</strong><small>{scope ? 'Queue the player enrichment task' : 'Select a competition and season first'}</small></div><b>→</b>
+            <span><Sparkles size={17} aria-hidden="true" /></span><div><strong>Enrichir les joueurs</strong><small>{scope ? 'Mettre en file la tâche d’enrichissement' : 'Sélectionnez d’abord une compétition et une saison'}</small></div><ArrowRight size={17} aria-hidden="true" />
           </button>
         </Card>
       </div>
 
-      {queuedTasks.length > 0 && <Card title="Queued executions" subtitle="Follow progress in Activity logs">
-        <div className="queued-task-list">{queuedTasks.map(task => <div className="queued-task" key={task.task_id}><span className="status-dot" /><div><strong>{task.workflow}</strong>{Array.isArray(task.parsers) && <small>Parsers: {task.parsers.join(', ')}</small>}<small>{task.task_id}</small></div><Badge variant="warning">Queued</Badge></div>)}</div>
+      {queuedTasks.length > 0 && <Card title="Exécutions en file" subtitle="Suivez la progression dans les journaux d’activité">
+        <div className="queued-task-list">{queuedTasks.map(task => <div className="queued-task" key={task.task_id}><span className="status-dot" /><div><strong>{task.workflow}</strong>{Array.isArray(task.parsers) && <small>Groupes : {task.parsers.join(', ')}</small>}<small>{task.task_id}</small></div><Badge variant="warning">En file</Badge></div>)}</div>
       </Card>}
 
     </div>

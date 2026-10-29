@@ -111,6 +111,31 @@ class SportsDynamicsProvider:
         except Exception as e:
             logger.error(f"API call failed: {e}")
             raise
+
+    def fetch_games_for_change_detection(
+        self,
+        filters: Dict[str, Any],
+        limit: int = 100,
+        page: int = 1,
+    ) -> List[Dict[str, Any]]:
+        """Fetch the lightweight game payload used by autonomous comparison."""
+        try:
+            limit = int(limit)
+            page = int(page)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"Pagination values must be integers: limit={limit!r}, page={page!r}") from exc
+        if limit < 1 or page < 1:
+            raise ValueError(f"Pagination values must be positive: limit={limit}, page={page}")
+
+        self.filter_config.validate_required_filters("get_games", filters)
+        competition_id = filters.get("competition_id")
+        return self.client.get_games_for_change_detection(
+            competition_id=competition_id,
+            season_id=filters.get("season_id"),
+            limit=limit,
+            page=page,
+            rgd_status=filters.get("rgd_status"),
+        )
     
     def get_game_output_files(self, game_id: str, limit: int = 30) -> Dict[str, Any]:
         """

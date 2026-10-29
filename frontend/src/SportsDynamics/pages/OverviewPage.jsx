@@ -1,7 +1,23 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Card, Loading, ErrorAlert, Badge } from '../../components'
+import { CalendarClock, ChevronRight, Play, Sparkles } from 'lucide-react'
+import { Card, Loading, ErrorAlert } from '../../components'
 import { API_BASE } from '../api'
+
+function formatTaskDate(task) {
+  const timestamp = task.started_at || task.created_at
+  if (!timestamp) return 'Date indisponible'
+  const normalizedTimestamp = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(timestamp) ? timestamp : `${timestamp}Z`
+  const date = new Date(normalizedTimestamp)
+  if (Number.isNaN(date.getTime())) return 'Date indisponible'
+  return date.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
+}
+
+function formatProcessedCount(value) {
+  const count = Number(value) || 0
+  const plural = count === 1 ? '' : 's'
+  return `${count} élément${plural} traité${plural}`
+}
 
 function Metric({ label, value, detail, accent = 'lime' }) {
   return (
@@ -17,6 +33,7 @@ export default function OverviewPage({ onNavigate }) {
   const [competitions, setCompetitions] = useState([])
   const [tasks, setTasks] = useState([])
   const [automation, setAutomation] = useState(null)
+  const [automationConfigurations, setAutomationConfigurations] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -25,15 +42,17 @@ export default function OverviewPage({ onNavigate }) {
 
     async function loadOverview() {
       try {
-        const [competitionsResponse, tasksResponse, automationResponse] = await Promise.all([
+        const [competitionsResponse, tasksResponse, automationResponse, configurationsResponse] = await Promise.all([
           axios.get(`${API_BASE}/competitions`),
           axios.get(`${API_BASE}/games/tasks/list?limit=10`),
           axios.get(`${API_BASE}/automation/status`),
+          axios.get(`${API_BASE}/automation/configurations`).catch(() => ({ data: [] })),
         ])
         if (!active) return
         setCompetitions(competitionsResponse.data || [])
         setTasks(tasksResponse.data?.tasks || [])
         setAutomation(automationResponse.data || null)
+        setAutomationConfigurations(configurationsResponse.data || [])
       } catch (requestError) {
         if (active) setError(requestError.response?.data?.detail || requestError.message)
       } finally {
@@ -46,62 +65,56 @@ export default function OverviewPage({ onNavigate }) {
   }, [])
 
   if (loading) return <Loading />
+  const competitionNames = new Map(competitions
+    .filter(competition => competition.name !== `Competition ${competition.id}`)
+    .map(competition => [String(competition.id), competition.name]))
+  const configuredCompetitionNames = new Map(automationConfigurations
+    .map(configuration => [String(configuration.competition_id), configuration.competition_name]))
 
   return (
     <div className="overview-page">
-      <div className="overview-hero">
+      <div className="overview-hero dashboard-hero">
         <div>
-          <p className="eyebrow">CONTROL ROOM / OVERVIEW</p>
-          <h1>Good morning, operator.</h1>
-          <p>Keep the competition data pipeline moving from one quiet workspace.</p>
+          <p className="eyebrow">TACTICALDATA / SPORTSDYNAMICS</p>
+          <h1>Tableau de bord SportsDynamics</h1>
+          <p>Pilotez le pipeline de données de la compétition depuis un espace unique.</p>
         </div>
-        <div className="hero-signal"><span className="status-dot" /> All systems nominal</div>
       </div>
 
-      {error && <ErrorAlert message={`Overview data unavailable: ${error}`} />}
+      {error && <ErrorAlert message={`Données de synthèse indisponibles : ${error}`} />}
 
-      <div className="overview-metrics">
-        <Metric label="Competitions" value={competitions.length} detail="configured in database" />
-        <Metric label="Active tasks" value={tasks.filter(task => task.status === 'running').length} detail="currently processing" accent="blue" />
-        <Metric label="Tracked games" value={automation?.total_games_in_db ?? '—'} detail="across all seasons" accent="gold" />
-        <Metric label="Automation" value={automation?.is_enabled ? 'ON' : 'OFF'} detail={automation?.scrape_interval_minutes ? `every ${automation.scrape_interval_minutes} min` : 'manual mode'} accent={automation?.is_enabled ? 'lime' : 'red'} />
+      <div className="overview-metrics dashboard-metrics">
+        <Metric label="Compétitions" value={competitions.length} detail="configurées en base" />
+        <Metric label="Tâches actives" value={tasks.filter(task => task.status === 'running').length} detail="en cours de traitement" accent="blue" />
+        <Metric label="Matchs suivis" value={automation?.total_games_in_db ?? '—'} detail="toutes saisons confondues" accent="gold" />
+        <Metric label="Automatisation" value={automation?.is_enabled ? 'ACTIVE' : 'INACTIVE'} detail={automation?.scrape_interval_minutes ? `toutes les ${automation.scrape_interval_minutes} min` : 'mode manuel'} accent={automation?.is_enabled ? 'lime' : 'red'} />
       </div>
 
-      <div className="overview-grid">
-        <Card title="Quick actions" subtitle="Start a workflow without leaving the overview">
+      <div className="overview-grid dashboard-overview-grid">
+        <Card title="Actions rapides" subtitle="Lancez un workflow depuis la vue d’ensemble">
           <div className="quick-actions">
-            <button onClick={() => onNavigate('scraping')}><span>↯</span><div><strong>Run a scrape</strong><small>Initialize a season or process a round</small></div><b>→</b></button>
-            <button onClick={() => onNavigate('enrichment')}><span>✦</span><div><strong>Enrich players</strong><small>Complete profiles from processed lineups</small></div><b>→</b></button>
-            <button onClick={() => onNavigate('automation')}><span>◌</span><div><strong>Review automation</strong><small>Inspect autonomous task configuration</small></div><b>→</b></button>
+            <button onClick={() => onNavigate('scraping')}><span><Play size={18} aria-hidden="true" /></span><div><strong>Lancer une collecte</strong><small>Initialiser une saison ou traiter une journée</small></div><ChevronRight size={17} aria-hidden="true" /></button>
+            <button onClick={() => onNavigate('enrichment')}><span><Sparkles size={18} aria-hidden="true" /></span><div><strong>Enrichir les joueurs</strong><small>Compléter les profils depuis les compositions</small></div><ChevronRight size={17} aria-hidden="true" /></button>
+            <button onClick={() => onNavigate('automation')}><span><CalendarClock size={18} aria-hidden="true" /></span><div><strong>Vérifier l’automatisation</strong><small>Contrôler la configuration des tâches autonomes</small></div><ChevronRight size={17} aria-hidden="true" /></button>
           </div>
         </Card>
 
-        <Card title="Competitions" subtitle="Current database scope">
-          <div className="competition-list">
-            {competitions.length === 0 && <p className="empty-state">No competitions registered.</p>}
-            {competitions.map(competition => (
-              <div className="competition-row" key={competition.id}>
-                <span className="competition-badge">{competition.name?.slice(0, 1) || 'C'}</span>
-                <div><strong>{competition.name}</strong><small>{competition.provider || 'SportsDynamics'}</small></div>
-                <Badge variant="success">Ready</Badge>
+        <Card title="Activité récente" subtitle="Dernières tâches d’orchestration">
+          <div className="activity-list">
+            {tasks.length === 0 && <p className="empty-state">Aucune tâche enregistrée pour le moment.</p>}
+            {tasks.slice(0, 5).map(task => (
+              <div className="activity-row" key={task.id}>
+                <span className={`activity-dot activity-${task.status}`} />
+                <div>
+                  <strong>{task.provider || 'SportsDynamics'} scrape</strong>
+                  <small>{configuredCompetitionNames.get(String(task.competition_id)) || competitionNames.get(String(task.competition_id)) || 'Compétition inconnue'} · {formatTaskDate(task)} · {formatProcessedCount(task.processed_items)}</small>
+                </div>
+                <span className="activity-status">{task.status}</span>
               </div>
             ))}
           </div>
         </Card>
       </div>
-
-      <Card title="Recent activity" subtitle="Latest orchestration tasks">
-        <div className="activity-list">
-          {tasks.length === 0 && <p className="empty-state">No tasks have been recorded yet.</p>}
-          {tasks.slice(0, 5).map(task => (
-            <div className="activity-row" key={task.id}>
-              <span className={`activity-dot activity-${task.status}`} />
-              <div><strong>{task.provider || 'SportsDynamics'} scrape</strong><small>{task.competition_id || 'No competition'} · {task.processed_items || 0} processed</small></div>
-              <span className="activity-status">{task.status}</span>
-            </div>
-          ))}
-        </div>
-      </Card>
     </div>
   )
 }

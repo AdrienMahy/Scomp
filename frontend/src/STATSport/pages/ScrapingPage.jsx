@@ -1,6 +1,5 @@
-import { Scraping, usePhysicalCatalog } from '../components/PhysicalDataViews'
+import { Scraping } from '../components/PhysicalDataViews'
 
 export default function ScrapingPage() {
-  const catalog = usePhysicalCatalog()
-  return <Scraping catalog={catalog} onImported={catalog.reload} />
+  return <Scraping />
 }

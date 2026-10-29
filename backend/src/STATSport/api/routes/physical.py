@@ -2,6 +2,7 @@
 
 from datetime import date, time
 import json
+import os
 from typing import Any
 from uuid import uuid4
 
@@ -18,6 +19,35 @@ from src.tasks.scrape_tasks import (
 
 
 router = APIRouter(prefix="/statsport/physical", tags=["statsport"])
+
+
+@router.get("/overview")
+def get_physical_overview() -> dict[str, Any]:
+    with get_physical_engine().connect() as connection:
+        counts = connection.execute(text("""
+            SELECT COUNT(*) FILTER (WHERE source_status = 'active') AS activity_total,
+                   COUNT(*) FILTER (
+                       WHERE source_status = 'active' AND session_date::date = CURRENT_DATE
+                   ) AS activity_today
+            FROM sessions
+        """)).mappings().one()
+        player_total = connection.execute(text("SELECT COUNT(*) FROM players")).scalar_one()
+        activities = connection.execute(text("""
+            SELECT s.activity_id, s.activity_name, s.session_date,
+                   s.updated_at AS processed_at, sq.name AS squad_name,
+                   sq.external_id AS squad_external_id
+            FROM sessions s
+            LEFT JOIN squads sq ON sq.id = s.squad_id
+            WHERE s.source_status = 'active'
+            ORDER BY s.updated_at DESC NULLS LAST, s.session_date DESC
+            LIMIT 10
+        """)).mappings()
+        return {
+            "activity_total": counts["activity_total"],
+            "activity_today": counts["activity_today"],
+            "player_total": player_total,
+            "recent_activities": [dict(activity) for activity in activities],
+        }
 
 
 def _activity_statuses(logs: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -68,11 +98,24 @@ class SeasonUpdate(BaseModel):
 EDITOR_METRICS = {
     "distanceTotal": "distance",
     "distancePerMin": "distance",
-    "sprintDistance": "distance",
-    "accelerationsAbs": "acceleration",
-    "accelerationsRel": "acceleration",
-    "maxAcceleration": "acceleration",
-    "totalAccelLoading": "acceleration",
+    "distanceZ5Rel": "distance",
+    "distanceZ6Rel": "distance",
+    "distanceZ5Abs": "distance",
+    "distanceZ6Abs": "distance",
+    "entriesZ5Abs": "sport_specific",
+    "entriesZ6Abs": "sport_specific",
+    "accelerations": "acceleration",
+    "decelerations": "deceleration",
+    "totalTime": "sport_specific",
+    "maxSpeed": "speed",
+    "distanceZ1R": "distance",
+    "distanceZ1A": "distance",
+    "distanceZ2R": "distance",
+    "distanceZ2A": "distance",
+    "distanceZ3R": "distance",
+    "distanceZ3A": "distance",
+    "distanceZ4R": "distance",
+    "distanceZ4A": "distance",
 }
 EXCLUDED_EDITOR_DRILLS = {"entire session", "entire session - live"}
 
@@ -108,10 +151,12 @@ class ManualBulkUpdate(BaseModel):
 def run_automation(
     share_date: date | None = Query(default=None),
     squad_external_id: str | None = Query(default=None),
+    team_name: str | None = Query(default=None, min_length=1),
 ) -> dict[str, Any]:
     task = statsport_automation_task.delay(
         share_date.isoformat() if share_date else None,
         squad_external_id,
+        team_name,
     )
     return {"status": "queued", "task_id": task.id}
 
@@ -121,6 +166,7 @@ def run_date_range(
     start_date: date,
     end_date: date,
     squad_external_id: str | None = Query(default=None),
+    team_name: str | None = Query(default=None, min_length=1),
 ) -> dict[str, Any]:
     if end_date < start_date:
         raise HTTPException(status_code=422, detail="end_date must be on or after start_date")
@@ -128,6 +174,7 @@ def run_date_range(
         start_date.isoformat(),
         end_date.isoformat(),
         squad_external_id,
+        team_name,
     )
     return {"status": "queued", "task_id": task.id}
 
@@ -153,7 +200,32 @@ def get_automation_configuration() -> list[dict[str, Any]]:
                    created_at, updated_at
             FROM automation_configurations ORDER BY name
         """)).mappings()
-        return [dict(item) for item in row]
+        rules = [dict(item) for item in row]
+        rules.append({
+            "id": "statsport-yesterday-share-date",
+            "name": "Yesterday ShareDate scrape",
+            "enabled": True,
+            "interval_minutes": 1440,
+            "window_start_utc": time(8, 30),
+            "window_end_utc": time(8, 30),
+            "weekdays": list(range(7)),
+            "system_schedule": True,
+        })
+        return rules
+
+
+@router.get("/scraping/automation/system-schedules")
+def get_system_schedules() -> list[dict[str, Any]]:
+    """List fixed Celery schedules that are outside database rules."""
+    return [{
+        "id": "statsport-yesterday-share-date",
+        "name": "Yesterday ShareDate scrape",
+        "description": "Scrape STATSports activities from the previous day.",
+        "schedule": "Every day at 08:30",
+        "timezone": os.getenv("SCOMP_TIMEZONE", "Europe/Paris"),
+        "target": "PhysicalData",
+        "enabled": True,
+    }]
 
 
 @router.put("/scraping/automation/config")
@@ -208,9 +280,29 @@ def automation_overview(limit: int = Query(default=12, ge=1, le=100)) -> dict[st
 def list_squads() -> list[dict[str, Any]]:
     with get_physical_engine().connect() as connection:
         rows = connection.execute(text("""
-            SELECT id, external_id, name
-            FROM squads
-            ORDER BY name NULLS LAST, external_id
+            SELECT sq.id, sq.external_id, sq.name,
+                   COUNT(DISTINCT sp.player_id) FILTER (WHERE s.source_status = 'active') AS player_count
+            FROM squads sq
+            LEFT JOIN sessions s ON s.squad_id = sq.id
+            LEFT JOIN session_players sp ON sp.session_id = s.id
+            GROUP BY sq.id, sq.external_id, sq.name
+            ORDER BY sq.name NULLS LAST, sq.external_id
+        """)).mappings()
+        return [dict(row) for row in rows]
+
+
+@router.get("/teams")
+def list_teams() -> list[dict[str, Any]]:
+    with get_physical_engine().connect() as connection:
+        rows = connection.execute(text("""
+            SELECT min(s.team_name COLLATE "C") AS name,
+                   COUNT(DISTINCT sp.player_id) AS player_count
+            FROM sessions s
+            LEFT JOIN session_players sp ON sp.session_id = s.id
+            WHERE s.source_status = 'active'
+              AND NULLIF(BTRIM(s.team_name), '') IS NOT NULL
+            GROUP BY lower(s.team_name)
+            ORDER BY lower(min(s.team_name COLLATE "C"))
         """)).mappings()
         return [dict(row) for row in rows]
 
@@ -287,6 +379,7 @@ def update_season(season_id: str, season: SeasonUpdate) -> dict[str, Any]:
 @router.get("/sessions")
 def list_sessions(
     squad_id: str | None = Query(default=None),
+    team_name: str | None = Query(default=None, min_length=1),
     activity_name: str | None = Query(default=None),
     session_date: date | None = Query(default=None),
     start_date: date | None = Query(default=None),
@@ -300,6 +393,9 @@ def list_sessions(
     if squad_id:
         filters.append("s.squad_id = CAST(:squad_id AS uuid)")
         params["squad_id"] = squad_id
+    if team_name:
+        filters.append("lower(s.team_name) = lower(:team_name)")
+        params["team_name"] = team_name.strip()
     if activity_name:
         filters.append("s.activity_name = :activity_name")
         params["activity_name"] = activity_name
@@ -316,7 +412,7 @@ def list_sessions(
 
     with get_physical_engine().connect() as connection:
         rows = connection.execute(text(f"""
-                 SELECT s.id, s.activity_id, s.activity_name, s.share_date,
+                 SELECT s.id, s.activity_id, s.activity_name, s.team_name, s.share_date,
                    s.session_date, s.start_time, s.end_time, s.session_type,
                      s.squad_id, sq.external_id AS squad_external_id, sq.name AS squad_name,
                      s.season_id, se.name AS season_name
@@ -334,7 +430,7 @@ def list_sessions(
 def list_deleted_sessions(limit: int = Query(default=100, ge=1, le=500)) -> list[dict[str, Any]]:
     with get_physical_engine().connect() as connection:
         rows = connection.execute(text("""
-            SELECT s.id, s.activity_id, s.activity_name, s.share_date,
+            SELECT s.id, s.activity_id, s.activity_name, s.team_name, s.share_date,
                    s.session_date, s.start_time, s.end_time, s.session_type,
                    s.squad_id, sq.external_id AS squad_external_id, sq.name AS squad_name,
                    s.deleted_at, s.missing_count, s.last_seen_at
@@ -351,6 +447,7 @@ def list_deleted_sessions(limit: int = Query(default=100, ge=1, le=500)) -> list
 def list_players(
     search: str | None = Query(default=None, min_length=1),
     squad_id: str | None = Query(default=None),
+    team_name: str | None = Query(default=None, min_length=1),
     limit: int = Query(default=100, ge=1, le=500),
 ) -> list[dict[str, Any]]:
     params: dict[str, Any] = {"limit": limit}
@@ -359,8 +456,11 @@ def list_players(
         clauses.append("p.display_name ILIKE :search")
         params["search"] = f"%{search}%"
     if squad_id:
-        clauses.append("EXISTS (SELECT 1 FROM session_players sp JOIN sessions s ON s.id = sp.session_id WHERE sp.player_id = p.id AND s.squad_id = CAST(:squad_id AS uuid))")
+        clauses.append("EXISTS (SELECT 1 FROM session_players sp JOIN sessions s ON s.id = sp.session_id WHERE sp.player_id = p.id AND s.squad_id = CAST(:squad_id AS uuid) AND s.source_status = 'active')")
         params["squad_id"] = squad_id
+    if team_name:
+        clauses.append("EXISTS (SELECT 1 FROM session_players sp JOIN sessions s ON s.id = sp.session_id WHERE sp.player_id = p.id AND s.source_status = 'active' AND lower(s.team_name) = lower(:team_name))")
+        params["team_name"] = team_name.strip()
     where_clause = "WHERE " + " AND ".join(clauses) if clauses else ""
 
     with get_physical_engine().connect() as connection:
@@ -434,7 +534,7 @@ def get_player_activity(activity_id: str, player_id: str) -> dict[str, Any]:
             WHERE id = CAST(:player_id AS uuid)
         """), {"player_id": player_id}).mappings().first()
         activity = connection.execute(text("""
-            SELECT s.id, s.activity_id, s.activity_name, s.share_date,
+            SELECT s.id, s.activity_id, s.activity_name, s.team_name, s.share_date,
                    s.session_date, s.start_time, s.end_time, s.session_type,
                    s.squad_id, s.raw_data
             FROM sessions s

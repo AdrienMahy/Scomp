@@ -159,7 +159,8 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
         connection.execute(text("DELETE FROM drill_metadata WHERE session_id = CAST(:id AS uuid)"), {"id": existing["id"]})
         connection.execute(
             text("""
-                UPDATE sessions SET activity_name = :activity_name, share_date = CAST(:share_date AS timestamptz),
+                UPDATE sessions SET activity_name = :activity_name, team_name = :team_name,
+                    share_date = CAST(:share_date AS timestamptz),
                     squad_id = CAST(:squad_id AS uuid), season_id = (
                         SELECT id FROM seasons
                         WHERE CAST(:session_date AS timestamptz)::date >= start_date
@@ -179,11 +180,11 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
         connection.execute(
             text("""
                 INSERT INTO sessions (
-                    id, activity_id, activity_name, share_date, squad_id, season_id, session_date,
+                    id, activity_id, activity_name, team_name, share_date, squad_id, season_id, session_date,
                     start_time, end_time, session_type, raw_data, response_hash, version,
                     source_status, missing_count, last_seen_at
                 ) VALUES (
-                    CAST(:id AS uuid), CAST(:activity_id AS uuid), :activity_name,
+                    CAST(:id AS uuid), CAST(:activity_id AS uuid), :activity_name, :team_name,
                                         CAST(:share_date AS timestamptz), CAST(:squad_id AS uuid), (
                                                 SELECT id FROM seasons
                                                 WHERE CAST(:session_date AS timestamptz)::date >= start_date

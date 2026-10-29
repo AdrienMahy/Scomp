@@ -1,3 +1,5 @@
+import { AlertCircle, CheckCircle2 } from 'lucide-react'
+
 export function Card({ children, title, subtitle }) {
   return (
     <div className="card">
@@ -57,7 +59,7 @@ export function Loading() {
   return (
     <div className="flex items-center justify-center py-8">
       <div className="animate-spin rounded-full h-8 w-8 border-4 border-primary-500 border-t-accent-red"></div>
-      <span className="ml-3">Loading...</span>
+      <span className="ml-3">Chargement...</span>
     </div>
   )
 }
@@ -65,7 +67,7 @@ export function Loading() {
 export function ErrorAlert({ message }) {
   return (
     <div className="bg-accent-red/20 border border-accent-red text-accent-red-700 dark:text-accent-red px-4 py-3 rounded">
-      ❌ {message}
+      <><AlertCircle size={16} aria-hidden="true" /> {message}</>
     </div>
   )
 }
@@ -73,7 +75,7 @@ export function ErrorAlert({ message }) {
 export function SuccessAlert({ message }) {
   return (
     <div className="bg-primary-500/20 border border-primary-500 text-primary-700 dark:text-primary-400 px-4 py-3 rounded">
-      ✅ {message}
+      <><CheckCircle2 size={16} aria-hidden="true" /> {message}</>
     </div>
   )
 }

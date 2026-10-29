@@ -1,6 +1,6 @@
 """FastAPI main application"""
 import logging
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config.database import init_db
@@ -9,6 +9,8 @@ from .config.settings import settings
 from .SportsDynamics.orchestration.task_retention import purge_task_history
 from .SportsDynamics.api.routes import competitions, games, teams, players, automation
 from .STATSport.api.routes import physical
+from .auth import User, _hash_password, ensure_auth_tables, require_statsport_access, require_tactical_access
+from .web.auth_routes import admin_router, router as auth_router
 
 # Logging
 logging.basicConfig(level=logging.INFO)
@@ -31,12 +33,14 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(competitions.router)
-app.include_router(games.router)
-app.include_router(teams.router)
-app.include_router(players.router)
-app.include_router(automation.router)
-app.include_router(physical.router)
+app.include_router(auth_router)
+app.include_router(admin_router)
+app.include_router(competitions.router, dependencies=[Depends(require_tactical_access)])
+app.include_router(games.router, dependencies=[Depends(require_tactical_access)])
+app.include_router(teams.router, dependencies=[Depends(require_tactical_access)])
+app.include_router(players.router, dependencies=[Depends(require_tactical_access)])
+app.include_router(automation.router, dependencies=[Depends(require_tactical_access)])
+app.include_router(physical.router, dependencies=[Depends(require_statsport_access)])
 
 
 @app.on_event("startup")
@@ -44,8 +48,21 @@ def startup():
     """Initialize database on startup"""
     try:
         init_db()
+        ensure_auth_tables()
         db = SessionLocal()
         try:
+            if settings.admin_password:
+                admin = db.query(User).filter(User.username == settings.admin_username).first()
+                if not admin:
+                    db.add(User(
+                        id=__import__('secrets').token_hex(16),
+                        username=settings.admin_username,
+                        password_hash=_hash_password(settings.admin_password),
+                        is_admin=True,
+                        tactical_access=True,
+                        statsport_access=True,
+                    ))
+                    db.commit()
             retention_result = purge_task_history(db)
             logger.info("Task history retention completed: %s", retention_result)
         finally:

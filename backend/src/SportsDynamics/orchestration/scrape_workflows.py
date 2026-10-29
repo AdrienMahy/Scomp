@@ -350,7 +350,7 @@ async def _scrape_autonomous(
         "competition_id": competition_id,
         "season_id": season_id,
     }
-    raw_games = coordinator.provider.fetch_games(filters, limit=380, page=1)
+    raw_games = coordinator.provider.fetch_games_for_change_detection(filters, limit=380, page=1)
     changed_ids = _find_changed_game_ids(db, coordinator, raw_games)
     changed_games = [
         raw_game for raw_game in raw_games if raw_game.get("id") in changed_ids
@@ -450,7 +450,7 @@ def autonomous_dry_run(
     """Inspect an autonomous run without deleting or persisting any data."""
     coordinator = ScraperCoordinator()
     try:
-        raw_games = coordinator.provider.fetch_games(
+        raw_games = coordinator.provider.fetch_games_for_change_detection(
             {
                 "rgd_status": "FINISHED",
                 "competition_id": competition_id,

@@ -182,6 +182,74 @@ class SportsDynamicsClient:
 
         start = limit * (page - 1)
         return matching_games[start:target_count]
+
+    def get_games_for_change_detection(
+        self,
+        competition_id: str,
+        season_id: str | None = None,
+        limit: int = 100,
+        page: int = 1,
+        rgd_status: Optional[str] = None,
+    ) -> List[Dict[str, Any]]:
+        """Fetch only the fields needed to detect changed games."""
+        query = """
+        query getGamesForChangeDetection(
+            $filters: [GameFilter!]
+            $pagination: PaginationInput
+        ) {
+            getGames(filters: $filters, pagination: $pagination) {
+                items {
+                    id
+                    name
+                    startsAt
+                    available
+                    isUGDAvailable
+                    rgdStatus
+                    ugdStatus
+                    round { name }
+                    outputFiles(pagination: { limit: 30 }) {
+                        items {
+                            id
+                            fileName
+                            fileType
+                            version
+                            isOutdated
+                        }
+                    }
+                }
+            }
+        }
+        """
+        filters = [{"competition": {"id": {"equals": competition_id}}}]
+        if season_id:
+            season_years = [int(season_id), int(season_id) + 1]
+            filters[0]["season"] = {"season": {"equals": season_years}}
+
+        variables = {"filters": filters, "pagination": {"limit": limit, "page": page}}
+        if rgd_status is None:
+            result = self.query(query, variables)
+            return result.get("getGames", {}).get("items", [])
+
+        matching_games = []
+        target_count = limit * page
+        source_page = 1
+        while len(matching_games) < target_count:
+            page_variables = {
+                **variables,
+                "pagination": {"limit": limit, "page": source_page},
+            }
+            result = self.query(query, page_variables)
+            page_games = result.get("getGames", {}).get("items", [])
+            matching_games.extend(
+                game for game in page_games
+                if game.get("rgdStatus") == rgd_status
+            )
+            if len(page_games) < limit:
+                break
+            source_page += 1
+
+        start = limit * (page - 1)
+        return matching_games[start:target_count]
     
     def get_game_output_files(self, game_id: str, limit: int = 30) -> Dict[str, Any]:
         """

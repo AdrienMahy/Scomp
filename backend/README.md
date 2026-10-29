@@ -93,6 +93,22 @@ Key variables:
 - `SPORTSDYNAMICS_API_KEY` - API credentials
 - `CELERY_BROKER_URL` - Redis connection
 
+### PhysicalData schema migrations
+
+PhysicalData has an independent migration chain so its schema changes are applied to `PHYSICAL_DATABASE_URL`, not TacticalData. From `backend/`, apply pending PhysicalData migrations with:
+
+```bash
+../venv/bin/alembic -c alembic-physical.ini upgrade head
+```
+
+Create later PhysicalData migrations with:
+
+```bash
+../venv/bin/alembic -c alembic-physical.ini revision -m "describe the schema change"
+```
+
+This chain uses `physical_alembic_version` and assumes the existing PhysicalData base schema is already provisioned.
+
 ## Development
 
 ### Run tests

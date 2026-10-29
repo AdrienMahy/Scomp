@@ -12,7 +12,7 @@ NAMESPACE = UUID("f2f4afc7-7f53-4d6a-9e0a-5e8bc4b765d2")
 SCHEMA = {
     "squads": {"columns": {"id": "uuid", "external_id": "uuid", "name": "text|null", "raw_data": "jsonb"}, "primary_key": ["id"], "unique": [["external_id"]]},
     "players": {"columns": {"id": "uuid", "identity_key": "text", "display_name": "text|null", "first_name": "text|null", "last_name": "text|null", "primary_position": "text|null", "secondary_position": "text|null", "active_squad_name": "text|null", "player_details": "jsonb", "created_at": "timestamptz", "updated_at": "timestamptz"}, "primary_key": ["id"], "unique": [["identity_key"]]},
-    "sessions": {"columns": {"id": "uuid", "activity_id": "uuid", "activity_name": "text|null", "share_date": "timestamptz", "squad_id": "uuid", "session_date": "timestamptz", "start_time": "timestamptz|null", "end_time": "timestamptz|null", "session_type": "text|null", "raw_data": "jsonb", "response_hash": "text", "version": "integer", "created_at": "timestamptz", "updated_at": "timestamptz"}, "primary_key": ["id"], "unique": [["activity_id"]], "foreign_keys": {"squad_id": "squads.id"}},
+    "sessions": {"columns": {"id": "uuid", "activity_id": "uuid", "activity_name": "text|null", "team_name": "text|null", "share_date": "timestamptz", "squad_id": "uuid", "session_date": "timestamptz", "start_time": "timestamptz|null", "end_time": "timestamptz|null", "session_type": "text|null", "raw_data": "jsonb", "response_hash": "text", "version": "integer", "created_at": "timestamptz", "updated_at": "timestamptz"}, "primary_key": ["id"], "unique": [["activity_id"]], "foreign_keys": {"squad_id": "squads.id"}},
     "session_players": {"columns": {"id": "uuid", "session_id": "uuid", "player_id": "uuid", "source_id": "uuid", "raw_data_id": "uuid|null", "player_details": "jsonb", "created_at": "timestamptz"}, "primary_key": ["id"], "unique": [["session_id", "player_id"], ["session_id", "source_id"]], "foreign_keys": {"session_id": "sessions.id", "player_id": "players.id"}},
     "drill_metadata": {"columns": {"id": "uuid", "session_id": "uuid", "signature": "text", "drill_name": "text|null", "primary_label": "text|null", "secondary_label": "text|null", "tertiary_label": "text|null", "session_type": "text|null"}, "primary_key": ["id"], "unique": [["session_id", "signature"]], "foreign_keys": {"session_id": "sessions.id"}},
     "drills": {"columns": {"id": "uuid", "session_player_id": "uuid", "drill_metadata_id": "uuid", "source_id": "uuid", "session_player_data_id": "uuid|null", "start_time": "timestamptz|null", "end_time": "timestamptz|null", "free_text": "text|null", "metrics": "jsonb", "raw_data": "jsonb"}, "primary_key": ["id"], "unique": [["session_player_id", "source_id"]], "foreign_keys": {"session_player_id": "session_players.id", "drill_metadata_id": "drill_metadata.id"}},
@@ -79,6 +79,14 @@ def player_identity(details: dict[str, Any]) -> str:
     return json.dumps(fields, sort_keys=True, ensure_ascii=True)
 
 
+def team_name_from_session(activity_name: Any) -> str | None:
+    if not isinstance(activity_name, str):
+        return None
+    team_name, separator, data_type = activity_name.partition(" - ")
+    team_name = team_name.strip()
+    return team_name if separator and team_name and data_type.strip() else None
+
+
 def build_dataset(payload: list[dict[str, Any]]) -> dict[str, Any]:
     now = datetime.now(timezone.utc).isoformat()
     tables = {name: [] for name in SCHEMA}
@@ -100,7 +108,8 @@ def build_dataset(payload: list[dict[str, Any]]) -> dict[str, Any]:
 
         activity_id = activity.get("id")
         session_id = stable_id(f"activity:{activity_id}")
-        tables["sessions"].append({"id": session_id, "activity_id": activity_id, "activity_name": activity.get("sessionName"), "share_date": iso(activity.get("shareDate")), "squad_id": squad_id, "session_date": iso(details.get("sessionDate")), "start_time": iso(details.get("startTime")), "end_time": iso(details.get("endTime")), "session_type": details.get("sessionType"), "raw_data": activity, "response_hash": activity_digest, "version": 1, "created_at": now, "updated_at": now})
+        activity_name = activity.get("sessionName")
+        tables["sessions"].append({"id": session_id, "activity_id": activity_id, "activity_name": activity_name, "team_name": team_name_from_session(activity_name), "share_date": iso(activity.get("shareDate")), "squad_id": squad_id, "session_date": iso(details.get("sessionDate")), "start_time": iso(details.get("startTime")), "end_time": iso(details.get("endTime")), "session_type": details.get("sessionType"), "raw_data": activity, "response_hash": activity_digest, "version": 1, "created_at": now, "updated_at": now})
 
         for session_player in activity.get("sessionPlayers") or []:
             details_player = session_player.get("playerDetails") or {}

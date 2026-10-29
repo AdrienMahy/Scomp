@@ -18,6 +18,7 @@ sys.path.insert(0, src_dir)
 
 # Import the provider-owned model metadata.
 from SportsDynamics.models.base import Base
+from src.auth import User, AuthSession  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

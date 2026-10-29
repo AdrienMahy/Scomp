@@ -4,7 +4,7 @@ import { CalendarClock, Pencil, Play, Plus, Trash2, X } from 'lucide-react';
 import { API_BASE } from '../api';
 import './AutomationPage.css';
 
-const WEEKDAYS = [['M', 0], ['T', 1], ['W', 2], ['T', 3], ['F', 4], ['S', 5], ['S', 6]];
+const WEEKDAYS = [['L', 0], ['M', 1], ['M', 2], ['J', 3], ['V', 4], ['S', 5], ['D', 6]];
 const DEFAULT_FORM = {
   name: '', description: '', competition_id: '', competition_name: '', season_id: '', season_name: '',
   provider: 'sportsdynamics', scrape_interval_minutes: 20, enabled: true,
@@ -51,7 +51,7 @@ export default function AutomationPage() {
       setCompetitions(competitionsResponse.data || []);
       setError('');
     } catch (requestError) {
-      setError(`Unable to load automation: ${errorMessage(requestError)}`);
+      setError(`Impossible de charger l’automatisation : ${errorMessage(requestError)}`);
     } finally {
       setLoading(false);
     }
@@ -70,7 +70,7 @@ export default function AutomationPage() {
       setSeasons(response.data || []);
     } catch (requestError) {
       setSeasons([]);
-      setError(`Unable to load seasons: ${errorMessage(requestError)}`);
+      setError(`Impossible de charger les saisons : ${errorMessage(requestError)}`);
     }
   };
 
@@ -122,8 +122,8 @@ export default function AutomationPage() {
 
   const save = async event => {
     event.preventDefault();
-    if (!form.weekdays.length) { setMessage('Select at least one weekday.'); return; }
-    if (form.window_end_utc < form.window_start_utc) { setMessage('The end time must be after the start time.'); return; }
+    if (!form.weekdays.length) { setMessage('Sélectionnez au moins un jour.'); return; }
+    if (form.window_end_utc < form.window_start_utc) { setMessage('L’heure de fin doit être postérieure à l’heure de début.'); return; }
     setSaving(true);
     setMessage('');
     try {
@@ -131,10 +131,10 @@ export default function AutomationPage() {
       if (editingId) await axios.put(`${API_BASE}/automation/configurations/${editingId}`, payload);
       else await axios.post(`${API_BASE}/automation/configurations`, payload);
       setEditorOpen(false);
-      setMessage(editingId ? 'Configuration updated.' : 'Configuration created.');
+      setMessage(editingId ? 'Configuration mise à jour.' : 'Configuration créée.');
       await load();
     } catch (requestError) {
-      setMessage(`Unable to save configuration: ${errorMessage(requestError)}`);
+      setMessage(`Impossible d’enregistrer la configuration : ${errorMessage(requestError)}`);
     } finally {
       setSaving(false);
     }
@@ -146,20 +146,20 @@ export default function AutomationPage() {
       await axios.put(`${API_BASE}/automation/configurations/${configuration.id}`, { enabled: !configuration.enabled });
       await load();
     } catch (requestError) {
-      setError(`Unable to update configuration: ${errorMessage(requestError)}`);
+      setError(`Impossible de mettre à jour la configuration : ${errorMessage(requestError)}`);
     } finally {
       setTogglingId(null);
     }
   };
 
   const remove = async configuration => {
-    if (!window.confirm(`Delete ${configuration.name}?`)) return;
+    if (!window.confirm(`Supprimer ${configuration.name} ?`)) return;
     try {
       await axios.delete(`${API_BASE}/automation/configurations/${configuration.id}`);
-      setMessage('Configuration deleted.');
+      setMessage('Configuration supprimée.');
       await load();
     } catch (requestError) {
-      setError(`Unable to delete configuration: ${errorMessage(requestError)}`);
+      setError(`Impossible de supprimer la configuration : ${errorMessage(requestError)}`);
     }
   };
 
@@ -167,65 +167,65 @@ export default function AutomationPage() {
     setRunningId(configuration.id);
     try {
       await axios.post(`${API_BASE}/games/scrape-autonome`, { competition_id: configuration.competition_id, season_id: configuration.season_id });
-      setMessage(`${configuration.name} launched.`);
+      setMessage(`${configuration.name} lancée.`);
       await load();
     } catch (requestError) {
-      setError(`Unable to launch configuration: ${errorMessage(requestError)}`);
+      setError(`Impossible de lancer la configuration : ${errorMessage(requestError)}`);
     } finally {
       setRunningId(null);
     }
   };
 
-  if (loading) return <div className="physical-page physical-loading">Loading automation...</div>;
+  if (loading) return <div className="physical-page physical-loading">Chargement de l’automatisation...</div>;
 
   return (
     <div className="physical-page">
       <header className="physical-hero">
-        <div><p className="eyebrow physical-eyebrow">SPORTSDYNAMICS / AUTOMATION</p><h1>Automation</h1><p>Manage smart scraping rules, schedule windows, and recent execution signals.</p></div>
-        <button className="physical-primary-button physical-automation-add" type="button" onClick={openNew}><Plus size={15} aria-hidden="true" /> New configuration</button>
+        <div><p className="eyebrow physical-eyebrow">ESPACE DE TRAVAIL / AUTOMATISATION</p><h1>Automatisation</h1><p>Gérez les règles de collecte, les plages horaires et les dernières exécutions.</p></div>
+        <button className="physical-primary-button physical-automation-add" type="button" onClick={openNew}><Plus size={15} aria-hidden="true" /> Nouvelle configuration</button>
       </header>
       {error && <div className="physical-alert">{error}</div>}
       {message && <div className="physical-result"><span>{message}</span><button type="button" onClick={() => setMessage('')} aria-label="Dismiss message"><X size={15} /></button></div>}
 
       <div className="physical-automation-summary">
-        <div><CalendarClock size={18} aria-hidden="true" /><span><strong>{status?.is_enabled ? 'Active' : 'Inactive'}</strong><small>automation status</small></span></div>
+        <div><CalendarClock size={18} aria-hidden="true" /><span><strong>{status?.is_enabled ? 'Active' : 'Inactive'}</strong><small>état de l’automatisation</small></span></div>
         <div><span><strong>{configs.length}</strong><small>configurations</small></span></div>
-        <div><span><strong>{configs.filter(item => item.enabled).length}</strong><small>active configurations</small></span></div>
+        <div><span><strong>{configs.filter(item => item.enabled).length}</strong><small>configurations actives</small></span></div>
       </div>
 
       <div className="physical-overview-grid">
         <section className="physical-panel">
-          <div className="physical-panel-heading"><div><span className="physical-kicker">Rules</span><h2>Scheduled scraping</h2></div><span className="physical-count">{configs.length} configurations</span></div>
+          <div className="physical-panel-heading"><div><span className="physical-kicker">Règles</span><h2>Collectes planifiées</h2></div><span className="physical-count">{configs.length} configurations</span></div>
           <div className="physical-automation-rules">
             {configs.length ? configs.map(configuration => (
               <article className={`physical-automation-rule ${configuration.enabled ? 'is-enabled' : ''}`} key={configuration.id}>
-                <div className="physical-automation-rule-top"><span className="physical-automation-rule-status" /><div><strong>{configuration.name}</strong><small>{configuration.enabled ? 'Active' : 'Paused'} · {configuration.competition_name} · {configuration.season_name || configuration.season_id}</small></div><button type="button" onClick={() => toggle(configuration)} disabled={togglingId === configuration.id} aria-label={`${configuration.enabled ? 'Disable' : 'Enable'} ${configuration.name}`} title={configuration.enabled ? 'Disable configuration' : 'Enable configuration'}><span className="physical-toggle-label">{configuration.enabled ? 'On' : 'Off'}</span></button><button type="button" onClick={() => openEdit(configuration)} aria-label={`Edit ${configuration.name}`} title="Edit configuration"><Pencil size={14} /></button><button type="button" onClick={() => remove(configuration)} aria-label={`Delete ${configuration.name}`} title="Delete configuration"><Trash2 size={14} /></button></div>
-                <div className="physical-automation-rule-meta"><span>{normalizeTime(configuration.window_start_utc, '00:00')}–{normalizeTime(configuration.window_end_utc, '23:59')} UTC</span><span>Every {configuration.scrape_interval_minutes} min</span><span>{configuration.last_execution_at ? formatDate(configuration.last_execution_at) : 'Not run'}</span></div>
+                <div className="physical-automation-rule-top"><span className="physical-automation-rule-status" /><div><strong>{configuration.name}</strong><small>{configuration.enabled ? 'Active' : 'En pause'} · {configuration.competition_name} · {configuration.season_name || configuration.season_id}</small></div><button type="button" onClick={() => toggle(configuration)} disabled={togglingId === configuration.id} aria-label={`${configuration.enabled ? 'Désactiver' : 'Activer'} ${configuration.name}`} title={configuration.enabled ? 'Désactiver la configuration' : 'Activer la configuration'}><span className="physical-toggle-label">{configuration.enabled ? 'Actif' : 'Inactif'}</span></button><button type="button" onClick={() => openEdit(configuration)} aria-label={`Modifier ${configuration.name}`} title="Modifier la configuration"><Pencil size={14} /></button><button type="button" onClick={() => remove(configuration)} aria-label={`Supprimer ${configuration.name}`} title="Supprimer la configuration"><Trash2 size={14} /></button></div>
+                <div className="physical-automation-rule-meta"><span>{normalizeTime(configuration.window_start_utc, '00:00')}–{normalizeTime(configuration.window_end_utc, '23:59')} UTC</span><span>Toutes les {configuration.scrape_interval_minutes} min</span><span>{configuration.last_execution_at ? formatDate(configuration.last_execution_at) : 'Jamais exécutée'}</span></div>
                 <div className="physical-automation-days">{WEEKDAYS.map(([label, day]) => <i className={(configuration.weekdays || []).includes(day) ? 'is-selected' : ''} key={day}>{label}</i>)}</div>
-                <div className="physical-automation-rule-actions"><button type="button" onClick={() => run(configuration)} disabled={!configuration.enabled || runningId === configuration.id}><Play size={12} /> {runningId === configuration.id ? 'Running' : 'Run now'}</button><span>{configuration.enabled ? configuration.next_refresh_at ? `Next ${formatDate(configuration.next_refresh_at)}` : 'Waiting for Beat' : 'Disabled'}</span></div>
+                <div className="physical-automation-rule-actions"><button type="button" onClick={() => run(configuration)} disabled={!configuration.enabled || runningId === configuration.id}><Play size={12} /> {runningId === configuration.id ? 'En cours' : 'Lancer maintenant'}</button><span>{configuration.enabled ? configuration.next_refresh_at ? `Prochaine : ${formatDate(configuration.next_refresh_at)}` : 'En attente du planificateur' : 'Désactivée'}</span></div>
               </article>
-            )) : <div className="physical-empty">No automation configurations yet.</div>}
+            )) : <div className="physical-empty">Aucune configuration d’automatisation.</div>}
           </div>
         </section>
 
         <section className="physical-panel">
-          <div className="physical-panel-heading"><div><span className="physical-kicker">Execution history</span><h2>Latest automation logs</h2></div><span className="physical-count">10 latest</span></div>
-          <div className="physical-automation-runs">{logs.length ? logs.map(log => <div className="physical-automation-run" key={log.id}><span className={`physical-run-status ${log.status}`}>{log.status}</span><div><strong>{log.configuration_name || log.competition_name}</strong><small>{formatDate(log.executed_at)}</small></div><em>{log.games_count || 0} games</em>{log.error_message && <p>{log.error_message}</p>}</div>) : <div className="physical-empty">No automation logs recorded yet.</div>}</div>
+          <div className="physical-panel-heading"><div><span className="physical-kicker">Historique des exécutions</span><h2>Derniers journaux d’automatisation</h2></div><span className="physical-count">10 derniers</span></div>
+          <div className="physical-automation-runs">{logs.length ? logs.map(log => <div className="physical-automation-run" key={log.id}><span className={`physical-run-status ${log.status}`}>{log.status}</span><div><strong>{log.configuration_name || log.competition_name}</strong><small>{formatDate(log.executed_at)}</small></div><em>{log.games_count || 0} matchs</em>{log.error_message && <p>{log.error_message}</p>}</div>) : <div className="physical-empty">Aucun journal d’automatisation.</div>}</div>
         </section>
       </div>
 
-      {editorOpen && <div className="physical-offcanvas-backdrop" onClick={() => !saving && setEditorOpen(false)}><aside className="physical-automation-offcanvas" onClick={event => event.stopPropagation()}><div className="physical-panel-heading"><div><span className="physical-kicker">Configuration editor</span><h2>{editingId ? 'Edit configuration' : 'New configuration'}</h2></div><button type="button" className="physical-offcanvas-close" onClick={() => !saving && setEditorOpen(false)} aria-label="Close editor"><X size={18} /></button></div><form className="physical-config-form" onSubmit={save}>
-+        <label>Name<input name="name" value={form.name} onChange={updateForm} required maxLength="255" /></label>
-+        <label>Description<input name="description" value={form.description || ''} onChange={updateForm} /></label>
-        <div className="physical-field-row"><label>Competition<select name="competition_id" value={form.competition_id} onChange={selectCompetition} required><option value="">Select a competition</option>{competitions.map(item => <option value={item.id} key={item.id}>{item.name}</option>)}</select></label><label>Season<select name="season_id" value={form.season_id} onChange={selectSeason} required disabled={!form.competition_id}><option value="">Select a season</option>{seasons.map(item => <option value={item.id} key={item.id}>{item.name}</option>)}</select></label></div>
-        <div className="physical-field-row"><label>Start (UTC)<input type="time" name="window_start_utc" value={form.window_start_utc} onChange={updateForm} required /></label><label>End (UTC)<input type="time" name="window_end_utc" value={form.window_end_utc} onChange={updateForm} required /></label></div>
-        <fieldset><legend>Weekdays (UTC)</legend><div className="physical-weekday-picker">{WEEKDAYS.map(([label, day]) => <button type="button" className={form.weekdays.includes(day) ? 'is-selected' : ''} onClick={() => toggleWeekday(day)} key={day}>{label}</button>)}</div></fieldset>
-        <div className="physical-field-row"><label>Interval (minutes)<input type="number" min="1" name="scrape_interval_minutes" value={form.scrape_interval_minutes} onChange={updateForm} required /></label><label>Provider<select name="provider" value={form.provider} onChange={updateForm}><option value="sportsdynamics">SportsDynamics</option><option value="perform">Perform</option><option value="secondspectrum">SecondSpectrum</option></select></label></div>
-        <div className="physical-field-row"><label>Look ahead (days)<input type="number" min="1" name="look_ahead_days" value={form.look_ahead_days} onChange={updateForm} required /></label><label>Look back (days)<input type="number" min="0" name="look_back_days" value={form.look_back_days} onChange={updateForm} required /></label></div>
-        <div className="physical-field-row"><label>Live window (minutes)<input type="number" min="1" name="live_game_window_minutes" value={form.live_game_window_minutes} onChange={updateForm} required /></label><label>Timeout (seconds)<input type="number" min="60" name="task_timeout_seconds" value={form.task_timeout_seconds} onChange={updateForm} required /></label></div>
-        <label className="physical-toggle"><input type="checkbox" name="enabled" checked={form.enabled} onChange={updateForm} /><span><strong>Configuration enabled</strong><small>Include this rule in the automation cycle.</small></span><i /></label>
+      {editorOpen && <div className="physical-offcanvas-backdrop" onClick={() => !saving && setEditorOpen(false)}><aside className="physical-automation-offcanvas" onClick={event => event.stopPropagation()}><div className="physical-panel-heading"><div><span className="physical-kicker">ÉDITEUR DE CONFIGURATION</span><h2>{editingId ? 'Modifier la configuration' : 'Nouvelle configuration'}</h2></div><button type="button" className="physical-offcanvas-close" onClick={() => !saving && setEditorOpen(false)} aria-label="Fermer l’éditeur"><X size={18} /></button></div><form className="physical-config-form" onSubmit={save}>
+        <label>Nom<input name="name" value={form.name} onChange={updateForm} required maxLength="255" /></label>
+        <label>Description<input name="description" value={form.description || ''} onChange={updateForm} /></label>
+        <div className="physical-field-row"><label>Compétition<select name="competition_id" value={form.competition_id} onChange={selectCompetition} required><option value="">Sélectionner une compétition</option>{competitions.map(item => <option value={item.id} key={item.id}>{item.name}</option>)}</select></label><label>Saison<select name="season_id" value={form.season_id} onChange={selectSeason} required disabled={!form.competition_id}><option value="">Sélectionner une saison</option>{seasons.map(item => <option value={item.id} key={item.id}>{item.name}</option>)}</select></label></div>
+        <div className="physical-field-row"><label>Début (UTC)<input type="time" name="window_start_utc" value={form.window_start_utc} onChange={updateForm} required /></label><label>Fin (UTC)<input type="time" name="window_end_utc" value={form.window_end_utc} onChange={updateForm} required /></label></div>
+        <fieldset><legend>Jours actifs (UTC)</legend><div className="physical-weekday-picker">{WEEKDAYS.map(([label, day]) => <button type="button" className={form.weekdays.includes(day) ? 'is-selected' : ''} onClick={() => toggleWeekday(day)} key={day}>{label}</button>)}</div></fieldset>
+        <div className="physical-field-row"><label>Intervalle (minutes)<input type="number" min="1" name="scrape_interval_minutes" value={form.scrape_interval_minutes} onChange={updateForm} required /></label><label>Fournisseur<select name="provider" value={form.provider} onChange={updateForm}><option value="sportsdynamics">SportsDynamics</option><option value="perform">Perform</option><option value="secondspectrum">SecondSpectrum</option></select></label></div>
+        <div className="physical-field-row"><label>Anticipation (jours)<input type="number" min="1" name="look_ahead_days" value={form.look_ahead_days} onChange={updateForm} required /></label><label>Historique (jours)<input type="number" min="0" name="look_back_days" value={form.look_back_days} onChange={updateForm} required /></label></div>
+        <div className="physical-field-row"><label>Fenêtre live (minutes)<input type="number" min="1" name="live_game_window_minutes" value={form.live_game_window_minutes} onChange={updateForm} required /></label><label>Délai maximal (secondes)<input type="number" min="60" name="task_timeout_seconds" value={form.task_timeout_seconds} onChange={updateForm} required /></label></div>
+        <label className="physical-toggle"><input type="checkbox" name="enabled" checked={form.enabled} onChange={updateForm} /><span><strong>Configuration active</strong><small>Inclure cette règle dans le cycle d’automatisation.</small></span><i /></label>
         {message && <p className="physical-form-message">{message}</p>}
-        <div className="physical-offcanvas-actions"><button className="physical-primary-button" type="submit" disabled={saving}>{saving ? 'Saving...' : editingId ? 'Save changes' : 'Create configuration'}</button><button type="button" onClick={() => !saving && setEditorOpen(false)}>Cancel</button></div>
+        <div className="physical-offcanvas-actions"><button className="physical-primary-button" type="submit" disabled={saving}>{saving ? 'Enregistrement...' : editingId ? 'Enregistrer' : 'Créer la configuration'}</button><button type="button" onClick={() => !saving && setEditorOpen(false)}>Annuler</button></div>
       </form></aside></div>}
     </div>
   );

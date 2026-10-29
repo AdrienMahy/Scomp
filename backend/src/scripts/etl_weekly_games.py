@@ -155,6 +155,10 @@ class WeeklyETLProcessor:
                 # Game already processed before
                 if status.output_files_hash == current_hash:
                     logger.info(f"  ✅ No changes detected (hash match)")
+                    if not game.data_processed:
+                        game.data_processed = True
+                        self.db_session.commit()
+                        logger.info("  ✅ Repaired data_processed=True")
                     self.stats['skipped'] += 1
                     return
                 else:

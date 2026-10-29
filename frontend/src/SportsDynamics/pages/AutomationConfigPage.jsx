@@ -38,7 +38,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       setConfigs(response.data);
       setError(null);
     } catch (err) {
-      setError(`Failed to load configurations: ${err.message}`);
+      setError(`Impossible de charger les configurations : ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       const response = await axios.get(`${API_BASE}/competitions`);
       setCompetitions(response.data);
     } catch (err) {
-      setError(`Failed to load competitions: ${err.message}`);
+      setError(`Impossible de charger les compétitions : ${err.message}`);
     }
   };
 
@@ -64,7 +64,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       setSeasons(response.data);
     } catch (err) {
       setSeasons([]);
-      setError(`Failed to load seasons: ${err.message}`);
+      setError(`Impossible de charger les saisons : ${err.message}`);
     }
   };
 
@@ -134,7 +134,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       });
       await fetchConfigs();
     } catch (err) {
-      setError(`Failed to save configuration: ${err.message}`);
+      setError(`Impossible d’enregistrer la configuration : ${err.message}`);
     }
   };
 
@@ -160,13 +160,13 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
 
   // Delete configuration
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this configuration?')) return;
+    if (!window.confirm('Voulez-vous vraiment supprimer cette configuration ?')) return;
     
     try {
       await axios.delete(`${API_BASE}/automation/configurations/${id}`);
       await fetchConfigs();
     } catch (err) {
-      setError(`Failed to delete configuration: ${err.message}`);
+      setError(`Impossible de supprimer la configuration : ${err.message}`);
     }
   };
 
@@ -181,7 +181,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       )));
       setError(null);
     } catch (err) {
-      setError(`Failed to update configuration: ${err.response?.data?.detail || err.message}`);
+      setError(`Impossible de mettre à jour la configuration : ${err.response?.data?.detail || err.message}`);
     } finally {
       setTogglingConfigId(null);
     }
@@ -197,7 +197,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       });
       setRunResult({
         status: 'success',
-        message: `${configuration.name} launched (task ${response.data.task_id?.slice(0, 8) || 'queued'})`,
+        message: `${configuration.name} lancée (tâche ${response.data.task_id?.slice(0, 8) || 'en file'})`,
       });
     } catch (err) {
       setRunResult({
@@ -235,7 +235,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="spinner mb-4"></div>
-          <p>Loading configurations...</p>
+          <p>Chargement des configurations...</p>
         </div>
       </div>
     );
@@ -246,15 +246,15 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       {/* Header */}
       <div className="mb-8 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold mb-2">⚙️ Automation Configurations</h1>
-          <p className="text-gray-400">Manage your scraping schedules and parameters</p>
+          <h1 className="text-3xl font-bold mb-2">Configurations d’automatisation</h1>
+          <p className="text-gray-400">Gérez vos calendriers et paramètres de collecte.</p>
         </div>
         {panel && (
           <button
             type="button"
             onClick={onClose}
             className="text-gray-400 hover:text-white text-2xl leading-none"
-            aria-label="Close configuration panel"
+            aria-label="Fermer le panneau de configuration"
           >
             ×
           </button>
@@ -264,7 +264,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       {/* Error Alert */}
       {error && (
         <div className="bg-red-900 border border-red-700 text-red-100 px-4 py-3 rounded mb-6">
-          ⚠️ {error}
+          {error}
         </div>
       )}
 
@@ -272,7 +272,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
         <div className={`px-4 py-3 rounded mb-6 ${runResult.status === 'success'
           ? 'bg-accent-red/20 border border-accent-red text-white'
           : 'bg-red-900 border border-red-700 text-red-100'}`}>
-          {runResult.status === 'success' ? '✅' : '⚠️'} {runResult.message}
+          {runResult.message}
         </div>
       )}
 
@@ -280,7 +280,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       {showForm && (
         <div className="bg-dark-800 border border-dark-700 rounded-lg p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">
-            {editingId ? '✏️ Edit Configuration' : '➕ New Configuration'}
+            {editingId ? 'Modifier la configuration' : 'Nouvelle configuration'}
           </h2>
           
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -288,7 +288,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Configuration Name *
+                  Nom de la configuration *
                 </label>
                 <input
                   type="text"
@@ -319,7 +319,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Competition *
+                  Compétition *
                 </label>
                 <select
                   name="competition_id"
@@ -328,7 +328,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
                   required
                   className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded text-white focus:outline-none focus:border-accent-red"
                 >
-                  <option value="" disabled>Select a competition</option>
+                  <option value="" disabled>Sélectionnez une compétition</option>
                   {competitions.map(competition => (
                     <option key={competition.id} value={competition.id}>
                       {competition.name}
@@ -338,7 +338,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Season *
+                  Saison *
                 </label>
                 <select
                   name="season_id"
@@ -350,10 +350,10 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
                 >
                   <option value="" disabled>
                     {!formData.competition_id
-                      ? 'Select a competition first'
+                      ? 'Sélectionnez d’abord une compétition'
                       : seasons.length === 0
-                        ? 'No seasons available'
-                        : 'Select a season'}
+                        ? 'Aucune saison disponible'
+                        : 'Sélectionnez une saison'}
                   </option>
                   {seasons.map(season => (
                     <option key={season.id} value={season.id}>
@@ -364,7 +364,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
               </div>
               <div className="flex items-end">
                 <p className="text-gray-500 text-xs mb-2">
-                  {seasons.length} season{seasons.length === 1 ? '' : 's'} available
+                  {seasons.length} saison{seasons.length === 1 ? '' : 's'} disponible{seasons.length === 1 ? '' : 's'}
                 </p>
               </div>
             </div>
@@ -373,7 +373,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Scrape Interval (minutes) *
+                  Intervalle de collecte (minutes) *
                 </label>
                 <input
                   type="number"
@@ -387,7 +387,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Provider *
+                  Fournisseur *
                 </label>
                 <select
                   name="provider"
@@ -406,7 +406,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Look-Ahead Days *
+                  Jours à venir *
                 </label>
                 <input
                   type="number"
@@ -420,7 +420,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Look-Back Days *
+                  Jours précédents *
                 </label>
                 <input
                   type="number"
@@ -434,7 +434,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Live Game Window (min) *
+                  Fenêtre de match en direct (min) *
                 </label>
                 <input
                   type="number"
@@ -452,7 +452,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  Task Timeout (seconds) *
+                  Délai maximal de la tâche (secondes) *
                 </label>
                 <input
                   type="number"
@@ -473,7 +473,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
                     onChange={handleInputChange}
                     className="w-4 h-4 accent-accent-red"
                   />
-                  <span className="text-sm font-semibold text-gray-300">Enable this configuration</span>
+                  <span className="text-sm font-semibold text-gray-300">Activer cette configuration</span>
                 </label>
               </div>
             </div>
@@ -484,14 +484,14 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
                 type="submit"
                 className="px-6 py-2 bg-accent-red text-white rounded font-semibold hover:bg-primary-600 transition-colors"
               >
-                {editingId ? '💾 Update' : '✅ Create'}
+                {editingId ? 'Enregistrer' : 'Créer'}
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
                 className="px-6 py-2 bg-gray-700 text-gray-300 rounded font-semibold hover:bg-gray-600 transition-colors"
               >
-                ❌ Cancel
+                Annuler
               </button>
             </div>
           </form>
@@ -504,7 +504,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
           onClick={() => setShowForm(true)}
           className="mb-6 px-4 py-2 bg-accent-red text-white rounded font-semibold hover:bg-primary-600 transition-colors"
         >
-          ➕ New Configuration
+          Nouvelle configuration
         </button>
       )}
 
@@ -512,8 +512,8 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
       <div className="space-y-4">
         {configs.length === 0 ? (
           <div className="bg-dark-800 border border-dark-700 rounded-lg p-8 text-center">
-            <p className="text-gray-400 text-lg">No configurations yet.</p>
-            <p className="text-gray-500 text-sm mt-2">Create your first automation configuration to get started.</p>
+            <p className="text-gray-400 text-lg">Aucune configuration.</p>
+            <p className="text-gray-500 text-sm mt-2">Créez votre première configuration d’automatisation.</p>
           </div>
         ) : (
           configs.map(config => (
@@ -531,7 +531,7 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
                         ? 'bg-accent-red/20 text-accent-red'
                         : 'bg-gray-700 text-gray-400'
                     }`}>
-                      {config.enabled ? '✅ Enabled' : '❌ Disabled'}
+                      {config.enabled ? 'Activée' : 'Désactivée'}
                     </span>
                   </div>
                   {config.description && (
@@ -550,8 +550,8 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
                     title={config.enabled ? 'Disable this configuration' : 'Enable this configuration'}
                   >
                     {togglingConfigId === config.id
-                      ? '⏳ Updating'
-                      : config.enabled ? 'Disable' : 'Enable'}
+                      ? 'Mise à jour...'
+                      : config.enabled ? 'Désactiver' : 'Activer'}
                   </button>
                   <button
                     onClick={() => handleRunConfiguration(config)}
@@ -559,19 +559,19 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
                     className="px-3 py-1 bg-primary-500 text-white rounded text-sm hover:bg-primary-600 transition-colors disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed"
                     title={config.enabled ? 'Launch this scraping configuration' : 'Enable this configuration first'}
                   >
-                    {runningConfigId === config.id ? '⏳ Running' : '▶ Run'}
+                    {runningConfigId === config.id ? 'En cours...' : 'Lancer'}
                   </button>
                   <button
                     onClick={() => handleEdit(config)}
                     className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors"
                   >
-                    ✏️ Edit
+                    Modifier
                   </button>
                   <button
                     onClick={() => handleDelete(config.id)}
                     className="px-3 py-1 bg-red-700 text-white rounded text-sm hover:bg-red-800 transition-colors"
                   >
-                    🗑️ Delete
+                    Supprimer
                   </button>
                 </div>
               </div>
@@ -579,19 +579,19 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
               {/* Config Details Grid */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                 <div>
-                  <p className="text-gray-500 text-xs">Competition</p>
+                  <p className="text-gray-500 text-xs">Compétition</p>
                   <p className="text-white font-semibold text-sm">{config.competition_name}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs">Season</p>
+                  <p className="text-gray-500 text-xs">Saison</p>
                   <p className="text-white font-semibold text-sm">{config.season_name || config.season_id}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs">Scrape Interval</p>
+                  <p className="text-gray-500 text-xs">Intervalle de collecte</p>
                   <p className="text-white font-semibold text-sm">{config.scrape_interval_minutes} min</p>
                 </div>
                 <div>
-                  <p className="text-gray-500 text-xs">Provider</p>
+                  <p className="text-gray-500 text-xs">Fournisseur</p>
                   <p className="text-white font-semibold text-sm">{config.provider}</p>
                 </div>
               </div>
@@ -599,19 +599,19 @@ export default function AutomationConfigPage({ panel = false, onClose }) {
               {/* Advanced Parameters */}
               <div className="bg-dark-700 rounded p-3 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                 <div>
-                  <p className="text-gray-500">Look-Ahead</p>
-                  <p className="text-white font-semibold">{config.look_ahead_days} days</p>
+                  <p className="text-gray-500">Jours à venir</p>
+                  <p className="text-white font-semibold">{config.look_ahead_days} jours</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Look-Back</p>
-                  <p className="text-white font-semibold">{config.look_back_days} days</p>
+                  <p className="text-gray-500">Jours précédents</p>
+                  <p className="text-white font-semibold">{config.look_back_days} jours</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Live Window</p>
+                  <p className="text-gray-500">Fenêtre en direct</p>
                   <p className="text-white font-semibold">{config.live_game_window_minutes} min</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Timeout</p>
+                  <p className="text-gray-500">Délai maximal</p>
                   <p className="text-white font-semibold">{config.task_timeout_seconds / 60} min</p>
                 </div>
               </div>

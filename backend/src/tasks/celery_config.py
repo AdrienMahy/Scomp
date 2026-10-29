@@ -14,7 +14,7 @@ app.conf.update(
     task_serializer="json",
     accept_content=["json"],
     result_serializer="json",
-    timezone="UTC",
+    timezone=os.getenv("SCOMP_TIMEZONE", "Europe/Paris"),
     enable_utc=True,
     task_track_started=True,
     task_acks_late=True,
@@ -36,4 +36,5 @@ app.conf.task_routes = {
     "scomp.statsport_automation": {"queue": "statsport"},
     "scomp.statsport_date_range": {"queue": "statsport"},
     "scomp.statsport_activity": {"queue": "statsport"},
+    "scomp.statsport_yesterday_share_date": {"queue": "statsport"},
 }
