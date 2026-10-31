@@ -158,8 +158,7 @@ def _notify_physical_run(
     activities: list[dict[str, Any]] | None = None,
 ) -> None:
     counts = {key: int(result.get(key) or 0) for key in ("found", "inserted", "updated", "skipped", "failed")}
-    activity_count = max(counts["found"], len(activities or []))
-    if activity_count == 0:
+    if not any(counts[key] for key in ("inserted", "updated", "failed")):
         return
 
     status = "Collecte en échec" if error else "Collecte partielle" if counts["failed"] else "Collecte terminée"
