@@ -9,6 +9,7 @@ from sqlalchemy import create_engine, text
 from ..api.client import StatsportAPIClient
 from ..api.config import StatsportSettings
 from ..etl.export_dataset import build_dataset, team_name_from_session
+from src.teams_notifications import send_teams_adaptive_card
 from .persist_dataset import import_dataset, physical_database_url
 from .scrape_logs import create_run, finish_run, write_log
 
@@ -149,6 +150,168 @@ def _project_env_path():
     return Path(__file__).resolve().parents[4] / "config" / ".env"
 
 
+def _notify_physical_run(
+    request_payload: dict[str, Any],
+    result: dict[str, Any],
+    run_id: str,
+    error: Exception | None = None,
+    activities: list[dict[str, Any]] | None = None,
+) -> None:
+    counts = {key: int(result.get(key) or 0) for key in ("found", "inserted", "updated", "skipped", "failed")}
+    activity_count = max(counts["found"], len(activities or []))
+    if activity_count == 0:
+        return
+
+    status = "Collecte en échec" if error else "Collecte partielle" if counts["failed"] else "Collecte terminée"
+    status_color = "Attention" if error else "Warning" if counts["failed"] else "Good"
+    failure_count = max(counts["failed"], 1 if error else 0)
+    facts = [{"title": "Heure de fin", "value": datetime.now(timezone.utc).strftime("%H:%M UTC")}]
+    if request_payload.get("teamName"):
+        facts.append({"title": "Équipe", "value": str(request_payload["teamName"])})
+    if error:
+        facts.append({"title": "Erreur", "value": type(error).__name__})
+    if counts["skipped"]:
+        facts.append({"title": "Ignorées", "value": str(counts["skipped"])})
+    facts.append({"title": "Run", "value": run_id})
+    found_label = "activité trouvée" if counts["found"] == 1 else "activités trouvées"
+    activity_names = []
+    for activity in activities or []:
+        name = str(activity.get("sessionName") or "").replace("\r", " ").replace("\n", " ").strip()
+        activity_names.append(name or "Activité sans nom")
+    activity_lines = [f"• {name}" for name in activity_names[:8]]
+    if len(activity_names) > 8:
+        activity_lines.append(f"+ {len(activity_names) - 8} autres")
+    activity_blocks = []
+    if activity_names:
+        label = "Activité traitée" if len(activity_names) == 1 else "Activités traitées"
+        activity_blocks = [
+            {
+                "type": "TextBlock",
+                "text": f"{label} ({len(activity_names)})",
+                "weight": "Bolder",
+                "spacing": "Medium",
+                "wrap": True,
+            },
+            {
+                "type": "TextBlock",
+                "text": "\n".join(activity_lines),
+                "spacing": "Small",
+                "wrap": True,
+            },
+        ]
+    card = {
+        "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+        "type": "AdaptiveCard",
+        "version": "1.4",
+        "body": [
+            {
+                "type": "TextBlock",
+                "text": "Scomp · PhysicalData",
+                "weight": "Bolder",
+                "size": "Small",
+                "color": "Accent",
+                "wrap": True,
+            },
+            {
+                "type": "TextBlock",
+                "text": status,
+                "weight": "Bolder",
+                "size": "Large",
+                "color": status_color,
+                "wrap": True,
+            },
+            {
+                "type": "TextBlock",
+                "text": f"{counts['found']} {found_label}",
+                "isSubtle": True,
+                "spacing": "Small",
+                "wrap": True,
+            },
+            {
+                "type": "ColumnSet",
+                "spacing": "Medium",
+                "columns": [
+                    {
+                        "type": "Column",
+                        "width": "stretch",
+                        "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": str(counts["inserted"]),
+                                "size": "Large",
+                                "weight": "Bolder",
+                                "color": "Accent",
+                                "horizontalAlignment": "Center",
+                                "wrap": True,
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Nouvelles",
+                                "size": "Small",
+                                "isSubtle": True,
+                                "horizontalAlignment": "Center",
+                                "wrap": True,
+                                "spacing": "None",
+                            },
+                        ],
+                    },
+                    {
+                        "type": "Column",
+                        "width": "stretch",
+                        "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": str(counts["updated"]),
+                                "size": "Large",
+                                "weight": "Bolder",
+                                "color": "Good",
+                                "horizontalAlignment": "Center",
+                                "wrap": True,
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Mises à jour",
+                                "size": "Small",
+                                "isSubtle": True,
+                                "horizontalAlignment": "Center",
+                                "wrap": True,
+                                "spacing": "None",
+                            },
+                        ],
+                    },
+                    {
+                        "type": "Column",
+                        "width": "stretch",
+                        "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": str(failure_count),
+                                "size": "Large",
+                                "weight": "Bolder",
+                                "color": "Attention" if failure_count else "Default",
+                                "horizontalAlignment": "Center",
+                                "wrap": True,
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": "Échecs",
+                                "size": "Small",
+                                "isSubtle": True,
+                                "horizontalAlignment": "Center",
+                                "wrap": True,
+                                "spacing": "None",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {"type": "FactSet", "facts": facts},
+            *activity_blocks,
+        ],
+    }
+    send_teams_adaptive_card("physical", card)
+
+
 async def _execute_scrape(
     *,
     scrape_type: str,
@@ -160,6 +323,7 @@ async def _execute_scrape(
 ) -> dict[str, Any]:
     resolved_database_url = database_url or physical_database_url(_project_env_path())
     run_id = create_run(resolved_database_url, scrape_type, display_name, endpoint, request_payload)
+    activities: list[dict[str, Any]] = []
     try:
         from sqlalchemy import create_engine
         engine = create_engine(resolved_database_url, pool_pre_ping=True)
@@ -175,12 +339,16 @@ async def _execute_scrape(
                 write_log(connection, run_id, "INFO", "api_response", "STATSports response received")
         finally:
             engine.dispose()
-        return await process_activities(_activities(payload), endpoint=endpoint,
-                                        request_payload=request_payload, run_id=run_id,
-                                        database_url=resolved_database_url)
+        activities = _activities(payload)
+        result = await process_activities(activities, endpoint=endpoint,
+                                          request_payload=request_payload, run_id=run_id,
+                                          database_url=resolved_database_url)
+        _notify_physical_run(request_payload, result, run_id, activities=activities)
+        return result
     except Exception as error:
         error_message = str(error) or error.__class__.__name__
         finish_run(resolved_database_url, run_id, {}, status="failed", error_message=error_message)
+        _notify_physical_run(request_payload, {}, run_id, error, activities)
         raise
 
 

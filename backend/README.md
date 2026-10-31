@@ -93,6 +93,15 @@ Key variables:
 - `SPORTSDYNAMICS_API_KEY` - API credentials
 - `CELERY_BROKER_URL` - Redis connection
 
+Optional Teams Workflow webhook URLs are read by the Celery workers from `config/.env`:
+
+```env
+TEAMS_PHYSICAL_WEBHOOK_URL=
+TEAMS_TACTICAL_WEBHOOK_URL=
+```
+
+Keep these URLs in the ignored `config/.env`; never commit or log them. PhysicalData sends an Adaptive Card JSON object at the request root; pass the trigger body to the Workflow's **Post card** action. It reports new, updated, or failed activity imports. TacticalData sends text summaries for terminal workflows and automatic-cycle changes or failures. A Teams delivery error does not fail the scrape.
+
 ### PhysicalData schema migrations
 
 PhysicalData has an independent migration chain so its schema changes are applied to `PHYSICAL_DATABASE_URL`, not TacticalData. From `backend/`, apply pending PhysicalData migrations with:

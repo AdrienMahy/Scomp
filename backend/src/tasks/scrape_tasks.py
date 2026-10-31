@@ -11,7 +11,7 @@ from sqlalchemy import text
 
 from .celery_config import app
 from ..config.database import SessionLocal
-from ..SportsDynamics.models import ScrapingTask, TaskStatus
+from ..SportsDynamics.models import Game, ScrapingLog, ScrapingTask, TaskStatus
 from ..SportsDynamics.automation import SmartScraper
 from ..STATSport.models.database import get_physical_engine
 from ..STATSport.orchestration.orchestration import scrape_by_share_date
@@ -25,6 +25,7 @@ from ..SportsDynamics.orchestration.scrape_workflows import (
 from ..SportsDynamics.orchestration.task_retention import (
     reconcile_stale_tasks as reconcile_stale_task_records,
 )
+from ..teams_notifications import send_teams_adaptive_card
 
 logger = logging.getLogger(__name__)
 
@@ -51,9 +52,16 @@ def _run_workflow(workflow, task_id: str, *args, **workflow_kwargs):
 
     db = SessionLocal()
     try:
-        return asyncio.run(
+        result = asyncio.run(
             workflow(db, *args, task_id=task_id, **workflow_kwargs)
         )
+        try:
+            task = db.query(ScrapingTask).filter(ScrapingTask.id == task_id).first()
+            if task and _tactical_match_available(task, result=result, db=db):
+                _notify_tactical_task(task, db=db)
+        except Exception as notification_error:
+            logger.warning("Could not prepare TacticalData notification (%s)", type(notification_error).__name__)
+        return result
     except Exception as exc:
         task = db.query(ScrapingTask).filter(ScrapingTask.id == task_id).first()
         if task:
@@ -61,9 +69,209 @@ def _run_workflow(workflow, task_id: str, *args, **workflow_kwargs):
             task.error_message = str(exc)[:4900]
             task.completed_at = datetime.utcnow()
             db.commit()
+        try:
+            if task and _tactical_match_available(task, db=db):
+                _notify_tactical_task(task, workflow_name=workflow.__name__, error=exc, db=db)
+        except Exception as notification_error:
+            logger.warning("Could not prepare TacticalData failure notification (%s)", type(notification_error).__name__)
         raise
     finally:
         db.close()
+
+
+def _send_tactical_card(
+    status: str,
+    status_color: str,
+    metrics: list[tuple[str, int]],
+    facts: list[tuple[str, str]],
+) -> None:
+    card = {
+        "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
+        "type": "AdaptiveCard",
+        "version": "1.4",
+        "body": [
+            {
+                "type": "TextBlock",
+                "text": "Scomp · TacticalData",
+                "weight": "Bolder",
+                "size": "Small",
+                "color": "Accent",
+                "wrap": True,
+            },
+            {
+                "type": "TextBlock",
+                "text": status,
+                "weight": "Bolder",
+                "size": "Large",
+                "color": status_color,
+                "wrap": True,
+            },
+            {
+                "type": "ColumnSet",
+                "spacing": "Medium",
+                "columns": [
+                    {
+                        "type": "Column",
+                        "width": "stretch",
+                        "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": str(value),
+                                "size": "Large",
+                                "weight": "Bolder",
+                                "horizontalAlignment": "Center",
+                                "wrap": True,
+                            },
+                            {
+                                "type": "TextBlock",
+                                "text": label,
+                                "size": "Small",
+                                "isSubtle": True,
+                                "horizontalAlignment": "Center",
+                                "wrap": True,
+                                "spacing": "None",
+                            },
+                        ],
+                    }
+                    for label, value in metrics
+                ],
+            },
+            {"type": "FactSet", "facts": [{"title": title, "value": value} for title, value in facts]},
+        ],
+    }
+    send_teams_adaptive_card("tactical", card)
+
+
+def _utc_time(value: datetime | None) -> str:
+    timestamp = value or datetime.now(timezone.utc)
+    if timestamp.tzinfo is None:
+        timestamp = timestamp.replace(tzinfo=timezone.utc)
+    else:
+        timestamp = timestamp.astimezone(timezone.utc)
+    return timestamp.strftime("%H:%M UTC")
+
+
+def _tactical_match_available(task, result: dict | None = None, db=None) -> bool:
+    result = result or {}
+    workflow = task.workflow
+    metadata = task.extra_metadata or {}
+
+    if workflow == "game_scrape":
+        if result:
+            return bool(result.get("scraped"))
+        return bool(
+            db
+            and db.query(ScrapingLog.id)
+            .filter(
+                ScrapingLog.task_id == task.id,
+                ScrapingLog.context == "game_cleaning",
+                ScrapingLog.item_id.isnot(None),
+            )
+            .first()
+        )
+    if workflow == "round_scrape":
+        scrape_result = result.get("scrape") or {}
+        return bool(
+            result.get("game_ids")
+            or task.total_items
+            or task.processed_items
+            or scrape_result.get("processed_count")
+            or scrape_result.get("error_count")
+            or scrape_result.get("skipped_count")
+        )
+    if workflow == "season_initialization":
+        return bool(result.get("games_count") or task.processed_items)
+    if workflow == "autonomous_scrape":
+        detection = metadata.get("change_detection") or {}
+        return bool(
+            result.get("detected_count")
+            or result.get("processed_game_ids")
+            or detection.get("affected_games_count")
+        )
+    if workflow == "player_enrichment" and db:
+        return bool(
+            db.query(Game.id)
+            .filter(
+                Game.competition_id == task.competition_id,
+                Game.season_id == task.season_id,
+            )
+            .first()
+        )
+    return False
+
+
+def _notify_tactical_task(
+    task,
+    workflow_name: str | None = None,
+    error: Exception | None = None,
+    db=None,
+) -> None:
+    status = "failed" if error else getattr(task.status, "value", task.status) if task else "failed"
+    status_labels = {
+        "completed": "Scrape terminé",
+        "partial": "Scrape partiel",
+        "failed": "Scrape en échec",
+        "skipped": "Scrape ignoré",
+        "pending": "Scrape en attente",
+        "running": "Scrape en cours",
+    }
+    status_colors = {
+        "completed": "Good",
+        "partial": "Warning",
+        "failed": "Attention",
+        "skipped": "Accent",
+        "pending": "Default",
+        "running": "Default",
+    }
+    workflow_labels = {
+        "game_scrape": "Collecte d’un match",
+        "player_enrichment": "Enrichissement des joueurs",
+        "round_scrape": "Collecte d’un round",
+        "season_initialization": "Initialisation de saison",
+    }
+    workflow = task.workflow if task else workflow_name or "workflow inconnu"
+    workflow_label = workflow_labels.get(workflow, workflow.replace("_", " ").capitalize())
+    metrics = [
+        ("Traités", int(getattr(task, "processed_items", 0) or 0)),
+        ("Total", int(getattr(task, "total_items", 0) or 0)),
+        ("Échecs", int(getattr(task, "failed_items", 0) or 0)),
+    ]
+    if error and metrics[2][1] == 0:
+        metrics[2] = ("Échecs", 1)
+    facts = [("Heure de fin", _utc_time(getattr(task, "completed_at", None)))]
+    if task and task.provider:
+        facts.append(("Fournisseur", str(task.provider)))
+    facts.append(("Workflow", workflow_label))
+    if task and task.round_name:
+        facts.append(("Round", str(task.round_name)))
+    if task and workflow == "game_scrape" and task.current_item_id:
+        game = db.query(Game).filter(Game.id == task.current_item_id).first() if db else None
+        if game:
+            facts.append(("Match", str(game.name)))
+        cleanup_log = (
+            db.query(ScrapingLog)
+            .filter(
+                ScrapingLog.task_id == task.id,
+                ScrapingLog.context == "game_cleaning",
+                ScrapingLog.item_id == task.current_item_id,
+                ScrapingLog.message.contains("Cleaned "),
+            )
+            .first()
+            if db
+            else None
+        )
+        if cleanup_log:
+            facts.append(("Type", "Mise à jour"))
+    if task and task.id:
+        facts.append(("Tâche", str(task.id)))
+    if error:
+        facts.append(("Erreur", type(error).__name__))
+    _send_tactical_card(
+        status_labels.get(status, f"Scrape · {status}"),
+        status_colors.get(status, "Default"),
+        metrics,
+        facts,
+    )
 
 
 @app.task(name="scomp.reconcile_stale_tasks")
@@ -138,6 +346,33 @@ def smart_scrape_cycle(self):
         logger.info(f"✓ Smart scrape cycle completed: {result['status']}")
         logger.info(f"  Competitions: {result['competitions_scraped']}")
         logger.info(f"  Games updated: {result['games_updated']}")
+
+        status = str(result.get("status", "completed")).lower()
+        games_updated = int(result.get("games_updated") or 0)
+        games_checked = int(result.get("games_checked") or 0)
+        if (games_updated or games_checked) and (
+            games_updated or status in {"failed", "partial", "error"}
+        ):
+            failed = int(result.get("failed_items") or result.get("failed") or 0)
+            if status in {"failed", "error"} and not failed:
+                failed = 1
+            status_label = {
+                "completed": "Cycle automatique terminé",
+                "partial": "Cycle automatique partiel",
+                "failed": "Cycle automatique en échec",
+                "error": "Cycle automatique en échec",
+            }.get(status, f"Cycle automatique · {status}")
+            status_color = "Attention" if status in {"failed", "error"} else "Warning" if status == "partial" else "Good"
+            _send_tactical_card(
+                status_label,
+                status_color,
+                [
+                    ("Compétitions", int(result.get("competitions_scraped") or 0)),
+                    ("Matchs actualisés", games_updated),
+                    ("Échecs", failed),
+                ],
+                [("Heure de fin", _utc_time(datetime.now(timezone.utc)))],
+            )
         
         return result
     
