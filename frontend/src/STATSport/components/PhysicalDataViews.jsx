@@ -27,6 +27,35 @@ function colorForSquad(squad, index = 0, colors = {}) { const paletteIndex = ind
 function sessionTeamKey(session) { const teamName = session.team_name?.trim() || session.activity_name?.split(' - ')[0]?.trim() || ''; return teamName.toLocaleLowerCase() }
 function groupPlayersByPosition(players = []) { return players.reduce((groups, player) => { const position = player.primary_position || player.secondary_position || 'Position non renseignée'; (groups[position] ||= []).push(player); return groups }, {}) }
 function sortDrillsByStartTime(drills = []) { return [...drills].sort((first, second) => { const firstTime = first.start_time ? Date.parse(first.start_time) : Number.POSITIVE_INFINITY; const secondTime = second.start_time ? Date.parse(second.start_time) : Number.POSITIVE_INFINITY; return (Number.isNaN(firstTime) ? Number.POSITIVE_INFINITY : firstTime) - (Number.isNaN(secondTime) ? Number.POSITIVE_INFINITY : secondTime) }) }
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+async function waitForScrapingTask(taskId, onState) {
+  const deadline = Date.now() + 30 * 60 * 1000
+  while (Date.now() < deadline) {
+    const response = await axios.get(`${API_BASE}/physical/scraping/tasks/${taskId}`)
+    const task = response.data
+    onState(task.state)
+    if (task.state === 'success') return task.result || {}
+    if (task.state === 'failure' || task.state === 'revoked') throw new Error(task.error || 'La collecte a échoué.')
+    await new Promise(resolve => setTimeout(resolve, 1500))
+  }
+  throw new Error('Le délai de suivi est dépassé. Consultez les journaux PhysicalData.')
+}
+function scrapingStatusLabel(status) {
+  if (status === 'submitting') return 'Envoi de la demande'
+  if (status === 'queued') return 'Collecte mise en file'
+  if (status === 'running') return 'Collecte en cours'
+  if (status === 'partial') return 'Collecte partielle'
+  if (status === 'success') return 'Collecte terminée'
+  return 'Échec de la collecte'
+}
+function scrapingStatusDetail(result) {
+  if (result.status === 'submitting') return 'Envoi de la demande au worker…'
+  if (result.status === 'queued') return `Tâche ${result.taskId.slice(0, 8)} · en attente du worker.`
+  if (result.status === 'running') return `Tâche ${result.taskId.slice(0, 8)} · traitement en cours.`
+  if (result.status === 'error') return result.message
+  const data = result.data || {}
+  return `${data.found ?? 0} trouvée(s) · ${data.inserted ?? 0} nouvelle(s) · ${data.updated ?? 0} mise(s) à jour · ${data.failed ?? 0} échec(s)`
+}
 
 function Header({ eyebrow, title, detail, children, className = '' }) {
   return <header className={`physical-hero ${className}`}><div><p className="eyebrow physical-eyebrow">{eyebrow}</p><h1>{title}</h1><p>{detail}</p></div>{children}</header>
@@ -176,7 +205,29 @@ export function Activity({ catalog: sourceCatalog, onNavigate }) {
 export function Scraping({ onImported = () => {} }) {
   const [mode, setMode] = useState('daily'); const [shareDate, setShareDate] = useState(utcToday()); const [startDate, setStartDate] = useState(shiftDate(-7)); const [endDate, setEndDate] = useState(utcToday()); const [sessionDate, setSessionDate] = useState(utcToday()); const [activityId, setActivityId] = useState(''); const [teamName, setTeamName] = useState(''); const [teams, setTeams] = useState([]); const [running, setRunning] = useState(false); const [result, setResult] = useState(null)
   useEffect(() => { axios.get(`${API_BASE}/physical/teams`).then(response => setTeams(response.data || [])).catch(() => setTeams([])) }, [])
-  const run = async event => { event.preventDefault(); setRunning(true); setResult(null); try { let response; if (mode === 'daily') response = await axios.post(`${API_BASE}/physical/scraping/automation/run`, null, { params: { share_date: shareDate, team_name: teamName || undefined } }); else if (mode === 'range') response = await axios.post(`${API_BASE}/physical/scraping/range-date`, null, { params: { start_date: startDate, end_date: endDate, team_name: teamName || undefined } }); else response = await axios.post(`${API_BASE}/physical/scraping/activity`, null, { params: { session_date: sessionDate, activity_id: activityId } }); setResult({ status: 'success', data: response.data }); onImported() } catch (requestError) { setResult({ status: 'error', message: requestError.response?.data?.detail || requestError.message }) } finally { setRunning(false) } }
+  const run = async event => {
+    event.preventDefault()
+    setRunning(true)
+    setResult({ status: 'submitting' })
+    try {
+      let response
+      if (mode === 'daily') response = await axios.post(`${API_BASE}/physical/scraping/automation/run`, null, { params: { share_date: shareDate, team_name: teamName || undefined } })
+      else if (mode === 'range') response = await axios.post(`${API_BASE}/physical/scraping/range-date`, null, { params: { start_date: startDate, end_date: endDate, team_name: teamName || undefined } })
+      else response = await axios.post(`${API_BASE}/physical/scraping/activity`, null, { params: { session_date: sessionDate, activity_id: activityId.trim() } })
+      const taskId = response.data?.task_id
+      if (!taskId) throw new Error('L’API n’a pas renvoyé l’identifiant de la tâche.')
+      setResult({ status: 'queued', taskId })
+      const data = await waitForScrapingTask(taskId, state => setResult(current => current ? { ...current, status: state === 'pending' ? 'queued' : 'running' } : current))
+      const status = Number(data.failed || 0) > 0 ? 'partial' : 'success'
+      setResult({ status, taskId, data })
+      onImported()
+    } catch (requestError) {
+      setResult({ status: 'error', message: requestError.response?.data?.detail || requestError.response?.data?.error || requestError.message })
+    } finally {
+      setRunning(false)
+    }
+  }
+  const activityIdInvalid = activityId.trim() !== '' && !UUID_PATTERN.test(activityId.trim())
   const setRange = (days) => { setStartDate(shiftDate(-days + 1)); setEndDate(utcToday()) }
   const modes = [
     { key: 'daily', label: 'Date de partage', detail: 'Récupérer le flux publié ce jour', Icon: CalendarDays },
@@ -187,7 +238,7 @@ export function Scraping({ onImported = () => {} }) {
     <Header eyebrow="PHYSICALDATA / COLLECTE" title="Collecte des activités" detail="Choisissez une date, une période ou une activité à importer." />
     <section className="physical-collection-workspace">
       <div className="physical-tabs physical-scrape-tabs" role="group" aria-label="Mode de collecte">
-        {modes.map(({ key, label, detail, Icon }) => <button key={key} className={mode === key ? 'is-active' : ''} type="button" aria-pressed={mode === key} onClick={() => setMode(key)}>
+        {modes.map(({ key, label, detail, Icon }) => <button key={key} className={mode === key ? 'is-active' : ''} type="button" aria-pressed={mode === key} disabled={running} onClick={() => setMode(key)}>
           <Icon size={17} strokeWidth={1.9} aria-hidden="true" />
           <span><strong>{label}</strong><small>{detail}</small></span>
         </button>)}
@@ -202,12 +253,12 @@ export function Scraping({ onImported = () => {} }) {
           <div className="physical-date-shortcuts"><button type="button" onClick={() => setRange(1)}>Aujourd’hui</button><button type="button" onClick={() => setRange(2)}>2 jours</button><button type="button" onClick={() => setRange(7)}>7 jours</button><button type="button" onClick={() => setRange(30)}>30 jours</button></div>
         </div>}
         {mode !== 'activity' && <label className="physical-squad-filter"><span>Équipe à collecter</span><span className="physical-team-select"><select value={teamName} onChange={event => setTeamName(event.target.value)}><option value="">Toutes les équipes</option>{teams.map(team => <option key={team.name} value={team.name}>{team.name}</option>)}</select><ChevronDown size={16} aria-hidden="true" /></span><small>La collecte sera limitée à l’équipe choisie.</small></label>}
-        {mode === 'activity' && <div className="physical-field-row physical-scrape-activity-fields"><label>Date de session<input type="date" value={sessionDate} onChange={event => setSessionDate(event.target.value)} required /></label><label>Identifiant d’activité STATSports<input value={activityId} onChange={event => setActivityId(event.target.value)} placeholder="UUID de l’activité" required /></label></div>}
+        {mode === 'activity' && <div className="physical-field-row physical-scrape-activity-fields"><label>Date de session<input type="date" value={sessionDate} onChange={event => setSessionDate(event.target.value)} required /></label><label>Identifiant d’activité STATSports<input value={activityId} onChange={event => setActivityId(event.target.value)} placeholder="UUID de l’activité" pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" maxLength={36} title="Saisissez un UUID valide." required />{activityIdInvalid && <small className="physical-scrape-id-error" role="status">L’identifiant doit être un UUID valide.</small>}</label></div>}
         <div className="physical-form-footer"><span>Chaque activité est traitée et enregistrée individuellement.</span><button className="physical-primary-button" disabled={running}><ActivityIcon size={16} aria-hidden="true" />{running ? 'Collecte en cours…' : 'Lancer la collecte'}<b>→</b></button></div>
       </form>
     </section>
-    {result && <div className={`physical-result ${result.status}`} role={result.status === 'error' ? 'alert' : 'status'}>
-      <div><strong>{result.status === 'success' ? 'Collecte terminée' : 'Échec de la collecte'}</strong><span>{result.status === 'success' ? `${result.data.found ?? 0} trouvée(s) · ${result.data.inserted ?? 0} nouvelle(s) · ${result.data.updated ?? 0} mise(s) à jour · ${result.data.failed ?? 0} échec(s)` : result.message}</span></div>
+    {result && <div className={`physical-result ${result.status === 'error' ? 'error' : result.status === 'partial' ? 'partial' : ''}`} role={result.status === 'error' || result.status === 'partial' ? 'alert' : 'status'}>
+      <div><strong>{scrapingStatusLabel(result.status)}</strong><span>{scrapingStatusDetail(result)}</span></div>
     </div>}
   </div>
 }

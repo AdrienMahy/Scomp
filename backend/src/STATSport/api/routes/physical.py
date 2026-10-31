@@ -4,7 +4,7 @@ from datetime import date, time
 import json
 import os
 from typing import Any
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -16,6 +16,7 @@ from src.tasks.scrape_tasks import (
     statsport_automation_task,
     statsport_date_range_task,
 )
+from src.tasks.celery_config import app as celery_app
 
 
 router = APIRouter(prefix="/statsport/physical", tags=["statsport"])
@@ -147,12 +148,22 @@ class ManualBulkUpdate(BaseModel):
     persist: bool = False
 
 
+def _require_statsport_worker() -> None:
+    try:
+        active_queues = celery_app.control.inspect(timeout=1).active_queues() or {}
+    except Exception as error:
+        raise HTTPException(status_code=503, detail="Aucun worker STATSports disponible sur la file de collecte.") from error
+    if not any(queue.get("name") == "statsport" for queues in active_queues.values() for queue in queues):
+        raise HTTPException(status_code=503, detail="Aucun worker STATSports disponible sur la file de collecte.")
+
+
 @router.post("/scraping/automation/run", status_code=202)
 def run_automation(
     share_date: date | None = Query(default=None),
     squad_external_id: str | None = Query(default=None),
     team_name: str | None = Query(default=None, min_length=1),
 ) -> dict[str, Any]:
+    _require_statsport_worker()
     task = statsport_automation_task.delay(
         share_date.isoformat() if share_date else None,
         squad_external_id,
@@ -170,6 +181,7 @@ def run_date_range(
 ) -> dict[str, Any]:
     if end_date < start_date:
         raise HTTPException(status_code=422, detail="end_date must be on or after start_date")
+    _require_statsport_worker()
     task = statsport_date_range_task.delay(
         start_date.isoformat(),
         end_date.isoformat(),
@@ -180,9 +192,21 @@ def run_date_range(
 
 
 @router.post("/scraping/activity", status_code=202)
-def run_activity(session_date: date, activity_id: str) -> dict[str, Any]:
-    task = statsport_activity_task.delay(session_date.isoformat(), activity_id)
+def run_activity(session_date: date, activity_id: UUID) -> dict[str, Any]:
+    _require_statsport_worker()
+    task = statsport_activity_task.delay(session_date.isoformat(), str(activity_id))
     return {"status": "queued", "task_id": task.id}
+
+
+@router.get("/scraping/tasks/{task_id}")
+def get_scraping_task_status(task_id: UUID) -> dict[str, Any]:
+    task = celery_app.AsyncResult(str(task_id))
+    response: dict[str, Any] = {"task_id": str(task_id), "state": task.state.lower()}
+    if task.state == "SUCCESS":
+        response["result"] = task.result
+    elif task.state == "FAILURE":
+        response["error"] = str(task.result)
+    return response
 
 
 def _validate_automation_rule(configuration: AutomationConfigurationUpdate) -> None:
