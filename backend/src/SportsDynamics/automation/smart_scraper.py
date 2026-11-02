@@ -73,6 +73,8 @@ class SmartScraper:
             "competitions_scraped": 0,
             "games_checked": 0,
             "games_updated": 0,
+            "processed_matches": [],
+            "affected_matches": [],
             "errors": [],
             "duration_seconds": 0
         }
@@ -118,6 +120,8 @@ class SmartScraper:
                     result["competitions_scraped"] += 1
                     result["games_checked"] += scrape_result.get("detected_count", 0)
                     result["games_updated"] += scrape_result.get("processed_count", 0)
+                    result["processed_matches"].extend(scrape_result.get("processed_matches", []))
+                    result["affected_matches"].extend(scrape_result.get("affected_matches", []))
                     
                     logger.info(f"✓ Competition {comp_id} scraped successfully")
                     logger.info(f"  Games processed: {len(scrape_result) if scrape_result else 0}")

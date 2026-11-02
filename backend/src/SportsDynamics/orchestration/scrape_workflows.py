@@ -38,17 +38,18 @@ async def enrich_players(
     tracker.start()
     try:
         tracker.phase("player_enrichment", "Enriching players from season lineups")
+        game_ids = [game.id for game in db.query(Game).filter(
+            Game.competition_id == competition_id,
+            Game.season_id == season_id,
+        ).all()]
         result = await _enrich_players(
             db,
             competition_id,
             season_id,
-            [game.id for game in db.query(Game).filter(
-                Game.competition_id == competition_id,
-                Game.season_id == season_id,
-            ).all()],
+            game_ids,
         )
         tracker.finish("completed" if result.get("status") != "error" else "partial", result.get("message"))
-        return {"task_id": tracker.id, "enrichment": result}
+        return {"task_id": tracker.id, "enrichment": result, "processed_game_ids": game_ids}
     except Exception as exc:
         tracker.fail(str(exc))
         raise
@@ -99,6 +100,7 @@ async def initialize_season(
         "competition_id": competition_id,
         "season_id": season_id,
         "games_count": len(games),
+        "processed_game_ids": [game["id"] for game in games if game.get("id")],
         "teams": teams_result,
     }
 
@@ -181,6 +183,7 @@ async def scrape_round(
                     "round": round_name,
                     "parsers": selected_parsers,
                     "scrape": result,
+                    "processed_game_ids": result.get("processed_game_ids", []),
                 }
             tracker.progress(
                 processed=processed + failed + skipped,
@@ -200,6 +203,7 @@ async def scrape_round(
                 "round": round_name,
                 "parsers": selected_parsers,
                 "scrape": result,
+                "processed_game_ids": result.get("processed_game_ids", []),
             }
 
         tracker.phase("api_fetch", f"Fetching RGD-finished games for round {round_name}")
@@ -239,6 +243,7 @@ async def scrape_round(
                 "round": round_name,
                 "game_ids": game_ids,
                 "scrape": result,
+                "processed_game_ids": result.get("processed_game_ids", []),
             }
         tracker.phase("player_enrichment", "Enriching players from processed lineups")
         enrichment = await _enrich_players(db, competition_id, season_id, game_ids) if processed else {"status": "skipped"}
@@ -255,6 +260,7 @@ async def scrape_round(
         "round": round_name,
         "game_ids": game_ids,
         "scrape": result,
+        "processed_game_ids": result.get("processed_game_ids", []),
         "enrichment": enrichment,
     }
 
@@ -304,6 +310,7 @@ async def scrape_game(db: Session, game_id: str, task_id: Optional[str] = None) 
         "task_id": tracker.id,
         "game_id": game_id,
         "scraped": bool(scraped),
+        "processed_game_ids": [game_id] if scraped else [],
         "enrichment": enrichment,
     }
 
@@ -421,6 +428,7 @@ async def _scrape_autonomous(
         "detected_count": len(changed_ids),
         "processed_count": len(processed),
         "processed_game_ids": processed,
+        "processed_matches": [match for match in affected_matches if match["id"] in set(processed)],
         "enrichment": enrichment,
     }
 

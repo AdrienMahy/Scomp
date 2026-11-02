@@ -172,21 +172,19 @@ def _notify_physical_run(
     if counts["skipped"]:
         facts.append({"title": "Ignorées", "value": str(counts["skipped"])})
     facts.append({"title": "Run", "value": run_id})
-    found_label = "activité trouvée" if counts["found"] == 1 else "activités trouvées"
-    activity_names = []
-    for activity in activities or []:
-        name = str(activity.get("sessionName") or "").replace("\r", " ").replace("\n", " ").strip()
-        activity_names.append(name or "Activité sans nom")
-    activity_lines = [f"• {name}" for name in activity_names[:8]]
-    if len(activity_names) > 8:
-        activity_lines.append(f"+ {len(activity_names) - 8} autres")
+    activity_results = result.get("activity_results") or []
+    activity_lines = []
+    for activity in activity_results:
+        name = str(activity.get("activity_name") or "Activité sans nom").replace("\r", " ").replace("\n", " ").strip()
+        session_date = str(activity.get("session_date") or "Date inconnue")[:10]
+        status = str(activity.get("status") or "ERROR")
+        activity_lines.append(f"[{status}] {session_date} · {name}")
     activity_blocks = []
-    if activity_names:
-        label = "Activité traitée" if len(activity_names) == 1 else "Activités traitées"
+    if activity_results:
         activity_blocks = [
             {
                 "type": "TextBlock",
-                "text": f"{label} ({len(activity_names)})",
+                "text": f"Sessions traitées ({len(activity_results)})",
                 "weight": "Bolder",
                 "spacing": "Medium",
                 "wrap": True,
@@ -221,7 +219,7 @@ def _notify_physical_run(
             },
             {
                 "type": "TextBlock",
-                "text": f"{counts['found']} {found_label}",
+                "text": f"{len(activity_results)} session(s) traitée(s)",
                 "isSubtle": True,
                 "spacing": "Small",
                 "wrap": True,

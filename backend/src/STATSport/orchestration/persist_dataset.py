@@ -271,7 +271,14 @@ def import_activity(connection: Any, tables: dict[str, list[dict[str, Any]]], se
 def import_dataset(dataset: dict[str, Any], database_url: str, run_id: str | None = None) -> dict[str, Any]:
     """Import each activity independently and continue after activity failures."""
     tables = dataset["tables"]
-    counts: dict[str, Any] = {"inserted": 0, "updated": 0, "skipped": 0, "failed": 0, "errors": []}
+    counts: dict[str, Any] = {
+        "inserted": 0,
+        "updated": 0,
+        "skipped": 0,
+        "failed": 0,
+        "errors": [],
+        "activity_results": [],
+    }
     engine = create_engine(database_url, pool_pre_ping=True)
 
     try:
@@ -298,9 +305,20 @@ def import_dataset(dataset: dict[str, Any], database_url: str, run_id: str | Non
                                       activity_id=activity_id, activity_name=activity_name, details=activity_counts)
                 for key in activity_counts:
                     counts[key] += activity_counts[key]
+                if activity_counts["inserted"] or activity_counts["updated"]:
+                    counts["activity_results"].append({
+                        "activity_name": activity_name,
+                        "session_date": str(session.get("session_date") or "")[:10],
+                        "status": "NEW" if activity_counts["inserted"] else "UPDATE",
+                    })
             except Exception as error:
                 counts["failed"] += 1
                 counts["errors"].append({"activity_id": activity_id, "error": str(error)})
+                counts["activity_results"].append({
+                    "activity_name": activity_name,
+                    "session_date": str(session.get("session_date") or "")[:10],
+                    "status": "ERROR",
+                })
                 if run_id:
                     with engine.begin() as connection:
                         from .scrape_logs import write_log

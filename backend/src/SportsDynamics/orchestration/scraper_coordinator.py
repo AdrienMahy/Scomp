@@ -288,6 +288,9 @@ class ScraperCoordinator:
             processed_count = 0
             error_count = 0
             skipped_count = 0
+            processed_game_ids = []
+            failed_game_ids = []
+            skipped_game_ids = []
             
             for idx, (orm_game, raw_game) in enumerate(zip(orm_games, raw_games)):
                 if cancellation_callback and cancellation_callback():
@@ -298,6 +301,9 @@ class ScraperCoordinator:
                         "processed_count": processed_count,
                         "skipped_count": skipped_count,
                         "error_count": error_count,
+                        "processed_game_ids": processed_game_ids,
+                        "failed_game_ids": failed_game_ids,
+                        "skipped_game_ids": skipped_game_ids,
                         "cancelled": True,
                         "message": "Scrape cancelled",
                     }
@@ -311,6 +317,7 @@ class ScraperCoordinator:
                     if not output_files_data.get("items"):
                         logger.warning(f"     ⏭️  Skip (no output files)")
                         skipped_count += 1
+                        skipped_game_ids.append(orm_game.id)
                         if progress_callback:
                             progress_callback(processed_count, error_count, skipped_count, orm_game.id)
                         continue
@@ -384,6 +391,7 @@ class ScraperCoordinator:
                     self.db_session.commit()
                     self._log_game_insert_stats(game_to_process)
                     processed_count += 1
+                    processed_game_ids.append(game_to_process.id)
                     if progress_callback:
                         progress_callback(processed_count, error_count, skipped_count, game_to_process.id)
                     game_time = time.time() - game_start
@@ -391,6 +399,7 @@ class ScraperCoordinator:
                     
                 except Exception as e:
                     error_count += 1
+                    failed_game_ids.append(orm_game.id)
                     game_time = time.time() - game_start
                     logger.error(f"     ❌ Error ({game_time:.1f}s): {e}")
                     self.db_session.rollback()
@@ -416,6 +425,9 @@ class ScraperCoordinator:
                 "processed_count": processed_count,
                 "skipped_count": skipped_count,
                 "error_count": error_count,
+                "processed_game_ids": processed_game_ids,
+                "failed_game_ids": failed_game_ids,
+                "skipped_game_ids": skipped_game_ids,
                 "message": f"Processed {processed_count} games ({error_count} errors, {skipped_count} skipped)",
                 "export_file": f"request_{self.request_timestamp.strftime('%Y%m%d_%H%M%S')}.json" if self.request_timestamp else None,
                 "total_time_seconds": total_time
@@ -442,6 +454,9 @@ class ScraperCoordinator:
         processed_count = 0
         error_count = 0
         skipped_count = 0
+        processed_game_ids = []
+        failed_game_ids = []
+        skipped_game_ids = []
         required_types = required_file_types(parser_names)
         try:
             raw_games = self.provider.fetch_games(filters, limit, page)
@@ -453,12 +468,16 @@ class ScraperCoordinator:
                         "processed_count": processed_count,
                         "skipped_count": skipped_count,
                         "error_count": error_count,
+                        "processed_game_ids": processed_game_ids,
+                        "failed_game_ids": failed_game_ids,
+                        "skipped_game_ids": skipped_game_ids,
                         "cancelled": True,
                         "message": "Selected-parser scrape cancelled",
                     }
 
                 if not game_id:
                     error_count += 1
+                    failed_game_ids.append(game_id)
                     logger.error("Skipping selected-parser item without a game ID")
                     if progress_callback:
                         progress_callback(processed_count, error_count, skipped_count, None)
@@ -538,9 +557,11 @@ class ScraperCoordinator:
                             raise
 
                     processed_count += 1
+                    processed_game_ids.append(game_id)
                 except Exception as exc:
                     self.db_session.rollback()
                     error_count += 1
+                    failed_game_ids.append(game_id)
                     logger.error(
                         "Selected parser scrape failed for game %s: %s",
                         game_id,
@@ -561,6 +582,9 @@ class ScraperCoordinator:
                 "processed_count": processed_count,
                 "skipped_count": skipped_count,
                 "error_count": error_count,
+                "processed_game_ids": processed_game_ids,
+                "failed_game_ids": failed_game_ids,
+                "skipped_game_ids": skipped_game_ids,
                 "parsers": parser_names,
                 "message": (
                     f"Processed {processed_count} games with selected parsers; "
