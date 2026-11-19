@@ -77,6 +77,12 @@ Complete documentation for the Scomp sports data scraping and analytics platform
   - Error handling and validation
   - **Detailed reference** for scraping process 🔄
 
+### 🚀 **Operations/** - Production Runbooks
+
+- **[PRODUCTION_DATABASE_CONNECTION_POOLS.md](operations/PRODUCTION_DATABASE_CONNECTION_POOLS.md)**
+  - Proposed PostgreSQL connection budgets for the production API and Celery workers
+  - Production-only deployment, validation, and rollback steps
+
 ---
 
 ## 🎯 Quick Navigation
@@ -108,6 +114,7 @@ Complete documentation for the Scomp sports data scraping and analytics platform
 - **Visualizing Data Flow**: [WORKFLOW_PIPELINE.md](architecture/WORKFLOW_PIPELINE.md)
 - **Database Queries**: [VIEWS_DOCUMENTATION.md](database/VIEWS_DOCUMENTATION.md)
 - **Setting up DB**: [init-db.sql](database/init-db.sql)
+- **Tuning production PostgreSQL connections**: [PRODUCTION_DATABASE_CONNECTION_POOLS.md](operations/PRODUCTION_DATABASE_CONNECTION_POOLS.md)
 - **API Integration**: [VIEWS_SUMMARY.md](api/VIEWS_SUMMARY.md)
 
 ---
