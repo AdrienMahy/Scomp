@@ -48,6 +48,8 @@ export default function Navbar({ currentPage, onPageChange, project, onProjectCh
   ]
   const navigation = project === 'physical' ? physicalNavigation : tacticalNavigation
   if (user?.is_admin) {
+    tacticalNavigation.push({ id: 'metrics', label: 'Supervision', icon: Gauge, group: 'Système' })
+    physicalNavigation.push({ id: 'metrics', label: 'Supervision', icon: Gauge, group: 'Système' })
     tacticalNavigation.push({ id: 'logs', label: 'Journaux d’activité', icon: Activity, group: 'Système' })
     physicalNavigation.push({ id: 'physical-logs', label: 'Journaux d’activité', icon: Activity, group: 'Système' })
     navigation.push({ id: 'admin-users', label: 'Utilisateurs', icon: Shield, group: 'Système' })

@@ -102,6 +102,8 @@ TEAMS_TACTICAL_WEBHOOK_URL=
 
 Keep these URLs in the ignored `config/.env`; never commit or log them. PhysicalData sends an Adaptive Card JSON object at the request root; pass the trigger body to the Workflow's **Post card** action. It reports new, updated, or failed activity imports. TacticalData sends text summaries for terminal workflows and automatic-cycle changes or failures. A Teams delivery error does not fail the scrape.
 
+Automatic PhysicalData PDF generation and Teams delivery are disabled. The report builder remains available in `backend/src/STATSport/orchestration/daily_report.py` for future or manual use.
+
 ### PhysicalData schema migrations
 
 PhysicalData has an independent migration chain so its schema changes are applied to `PHYSICAL_DATABASE_URL`, not TacticalData. From `backend/`, apply pending PhysicalData migrations with:

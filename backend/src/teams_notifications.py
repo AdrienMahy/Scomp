@@ -13,10 +13,12 @@ WEBHOOK_ENV_VARS = {
     "physical": "TEAMS_PHYSICAL_WEBHOOK_URL",
     "tactical": "TEAMS_TACTICAL_WEBHOOK_URL",
 }
-
-
-def _send_teams_payload(channel: str, payload: dict[str, Any]) -> bool:
-    env_var = WEBHOOK_ENV_VARS.get(channel)
+def _send_teams_payload(
+    channel: str,
+    payload: dict[str, Any],
+    env_var_override: str | None = None,
+) -> bool:
+    env_var = env_var_override or WEBHOOK_ENV_VARS.get(channel)
     webhook_url = os.getenv(env_var, "").strip() if env_var else ""
     if not webhook_url:
         return False

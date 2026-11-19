@@ -49,3 +49,4 @@ app.conf.beat_schedule["statsport-yesterday-share-date"] = {
     "options": {"expires": 60 * 60},
     "kwargs": {},
 }
+# Daily PDF delivery is intentionally not scheduled.

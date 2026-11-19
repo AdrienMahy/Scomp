@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import AdminUsersPage from './components/AdminUsersPage'
 import AccountMenu from './components/AccountMenu'
+import PipelineMetricsPage from './components/PipelineMetricsPage'
 import { LoginScreen, PasswordActionScreen } from './components/AuthScreens'
 import { initialiseAuth, loadCurrentUser, logout } from './auth'
 import {
@@ -57,7 +58,7 @@ export default function App() {
     if (currentPage === 'physical-logs') {
       setProject('physical')
       setCurrentPage('physical-overview')
-    } else if (currentPage === 'logs' || currentPage === 'admin-users') {
+    } else if (currentPage === 'metrics' || currentPage === 'logs' || currentPage === 'admin-users') {
       const homePage = user.tactical_access ? 'games' : 'physical-overview'
       setProject(user.tactical_access ? 'tactical' : 'physical')
       setCurrentPage(homePage)
@@ -70,7 +71,7 @@ export default function App() {
 
   useEffect(() => {
     localStorage.setItem('scomp-project', project)
-    setCurrentPage(currentPage => project === 'physical'
+    setCurrentPage(currentPage => currentPage === 'metrics' ? currentPage : project === 'physical'
       ? (currentPage.startsWith('physical-') || currentPage === 'physical' ? currentPage : 'physical-overview')
       : (currentPage.startsWith('physical-') || currentPage === 'physical' ? 'games' : currentPage))
   }, [project])
@@ -82,7 +83,7 @@ export default function App() {
 
     if (taskId && page === 'logs') {
       setCurrentPage('logs')
-    } else if (page && ['scraping', 'games', 'game-list', 'logs', 'enrichment', 'automation', 'physical', 'physical-overview', 'physical-activity', 'physical-players', 'physical-data', 'physical-deleted-sessions', 'physical-automation', 'physical-logs', 'physical-settings', 'settings'].includes(page)) {
+    } else if (page && ['scraping', 'games', 'game-list', 'logs', 'enrichment', 'automation', 'metrics', 'physical', 'physical-overview', 'physical-activity', 'physical-players', 'physical-data', 'physical-deleted-sessions', 'physical-automation', 'physical-logs', 'physical-settings', 'settings'].includes(page)) {
       if (page === 'physical' || page.startsWith('physical-')) setProject('physical')
       setCurrentPage(page)
     }
@@ -107,7 +108,7 @@ export default function App() {
 
   const navigatePage = (page) => {
     if (page === 'physical' || page.startsWith('physical-')) setProject('physical')
-    else if (page !== 'admin-users') setProject('tactical')
+    else if (page !== 'admin-users' && page !== 'metrics') setProject('tactical')
     setCurrentPage(page)
   }
 
@@ -127,11 +128,12 @@ export default function App() {
         <header className="page-topline">
           <div>
             <p className="eyebrow">OPÉRATIONS DE DONNÉES SPORTIVES</p>
-            <p className="page-context">{project === 'physical' ? 'STATSports PhysicalData' : `${scope?.competitionName || 'Sélectionner une compétition'} / ${scope?.seasonName || 'Sélectionner une saison'}`}</p>
+            <p className="page-context">{currentPage === 'metrics' ? 'PhysicalData · TacticalData' : project === 'physical' ? 'STATSports PhysicalData' : `${scope?.competitionName || 'Sélectionner une compétition'} / ${scope?.seasonName || 'Sélectionner une saison'}`}</p>
           </div>
           <div className="page-topline-actions"><AccountMenu user={user} onLogout={() => { logout(); setUser(null) }} /></div>
         </header>
         {user.tactical_access && project === 'tactical' && currentPage === 'scraping' && <ScrapingPage scope={scope} />}
+        {user.is_admin && currentPage === 'metrics' && <PipelineMetricsPage />}
         {project === 'tactical' && currentPage === 'games' && <OverviewPage onNavigate={setCurrentPage} />}
         {project === 'tactical' && currentPage === 'game-list' && <GameListPage scope={scope} />}
         {project === 'tactical' && currentPage === 'logs' && <TaskCenterPage />}

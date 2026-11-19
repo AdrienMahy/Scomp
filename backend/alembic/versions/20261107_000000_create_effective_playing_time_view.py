@@ -1,0 +1,43 @@
+"""Create a per-team view of effective playing time by match."""
+
+from alembic import op
+
+
+revision = "20261107_000000"
+down_revision = "20261028_000000"
+branch_labels = None
+depends_on = None
+
+
+VIEW_SQL = """
+CREATE OR REPLACE VIEW v_effective_playing_time_by_team AS
+WITH game_durations AS (
+    SELECT
+        bip.game_id,
+        SUM(NULLIF(bip.entity->>'duration', '')::NUMERIC) AS effective_playing_time
+    FROM ball_in_play AS bip
+    GROUP BY bip.game_id
+)
+SELECT
+    g.id AS game_id,
+    g.name AS game_name,
+    COALESCE(g.round_name, g.round) AS round,
+    team.name AS team_name,
+    game_durations.effective_playing_time
+FROM games AS g
+CROSS JOIN LATERAL (
+    VALUES (g.home_team_id), (g.away_team_id)
+) AS game_teams(team_id)
+JOIN teams AS team
+    ON team.id = game_teams.team_id
+LEFT JOIN game_durations
+    ON game_durations.game_id = g.id
+"""
+
+
+def upgrade() -> None:
+    op.execute(VIEW_SQL)
+
+
+def downgrade() -> None:
+    op.execute("DROP VIEW IF EXISTS v_effective_playing_time_by_team")

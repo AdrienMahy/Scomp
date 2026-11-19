@@ -11,6 +11,7 @@ from .SportsDynamics.api.routes import competitions, games, teams, players, auto
 from .STATSport.api.routes import physical
 from .auth import User, _hash_password, ensure_auth_tables, require_statsport_access, require_tactical_access
 from .web.auth_routes import admin_router, router as auth_router
+from .web.pipeline_metrics import router as pipeline_metrics_router
 
 # Logging
 logging.basicConfig(level=logging.INFO)
@@ -35,6 +36,7 @@ app.add_middleware(
 # Include routers
 app.include_router(auth_router)
 app.include_router(admin_router)
+app.include_router(pipeline_metrics_router)
 app.include_router(competitions.router, dependencies=[Depends(require_tactical_access)])
 app.include_router(games.router, dependencies=[Depends(require_tactical_access)])
 app.include_router(teams.router, dependencies=[Depends(require_tactical_access)])

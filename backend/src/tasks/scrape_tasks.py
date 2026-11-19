@@ -235,46 +235,47 @@ def _tactical_match_lines(task, result: dict | None = None, db=None) -> tuple[in
         or scrape_result.get("failed_game_ids")
         or []
     )
-    processed_matches = result.get("processed_matches") or []
-    if processed_matches:
-        lines = []
-        for match in processed_matches:
-            name = str(match.get("name") or "Match sans nom").strip()
-            round_name = str(match.get("round") or match.get("round_name") or "").strip()
-            label = f"{round_name} · {name}" if round_name else name
-            lines.append(f"[TRAITÉ] {label}")
-        return len(processed_matches), lines
-
     if not processed_ids and task.workflow == "game_scrape" and result.get("scraped"):
         processed_ids = [result.get("game_id") or task.current_item_id]
     processed_ids = list(dict.fromkeys(str(game_id) for game_id in processed_ids if game_id))
     failed_ids = list(dict.fromkeys(str(game_id) for game_id in failed_ids if game_id))
+    skipped_ids = list(dict.fromkeys(str(game_id) for game_id in (
+        result.get("skipped_game_ids") or scrape_result.get("skipped_game_ids") or []
+    ) if game_id))
     if not processed_ids and not failed_ids and task.workflow == "game_scrape" and not result:
         failed_ids = [str(task.current_item_id)] if task.current_item_id else []
 
+    known_matches = {}
+    for match in (result.get("affected_matches") or []) + (result.get("processed_matches") or []):
+        if match.get("id"):
+            known_matches[str(match["id"])] = match
     games_by_id = {}
-    all_ids = list(dict.fromkeys(processed_ids + failed_ids))
-    if db and all_ids:
+    all_ids = list(dict.fromkeys(processed_ids + failed_ids + skipped_ids))
+    missing_ids = [game_id for game_id in all_ids if game_id not in known_matches]
+    if db and missing_ids:
         games_by_id = {
             str(game.id): game
-            for game in db.query(Game).filter(Game.id.in_(all_ids)).all()
+            for game in db.query(Game).filter(Game.id.in_(missing_ids)).all()
         }
 
     lines = []
-    for game_id in processed_ids:
+    for game_id, match_status in (
+        [(game_id, "TRAITÉ") for game_id in processed_ids]
+        + [(game_id, "ERROR") for game_id in failed_ids]
+        + [(game_id, "IGNORÉ") for game_id in skipped_ids]
+    ):
+        match = known_matches.get(game_id)
         game = games_by_id.get(game_id)
-        if not game:
+        if match:
+            name = str(match.get("name") or "Match sans nom").strip()
+            round_name = str(match.get("round") or match.get("round_name") or task.round_name or "").strip()
+        elif game:
+            name = str(game.name)
+            round_name = str(game.round_name or task.round_name or "").strip()
+        else:
             continue
-        round_name = str(game.round_name or task.round_name or "").strip()
-        label = f"{round_name} · {game.name}" if round_name else str(game.name)
-        lines.append(f"[TRAITÉ] {label}")
-    for game_id in failed_ids:
-        game = games_by_id.get(game_id)
-        if not game:
-            continue
-        round_name = str(game.round_name or task.round_name or "").strip()
-        label = f"{round_name} · {game.name}" if round_name else str(game.name)
-        lines.append(f"[ERROR] {label}")
+        label = f"{round_name} · {name}" if round_name else name
+        lines.append(f"[{match_status}] {label}")
     return len(processed_ids), lines
 
 
@@ -519,6 +520,24 @@ def physical_statsport_automation_task(self):
         return {"status": "completed", "rules": results}
     finally:
         lock.release()
+
+
+def _physical_run_is_active() -> bool:
+    with get_physical_engine().connect() as connection:
+        return bool(connection.execute(text("""
+            SELECT 1
+            FROM scrape_runs
+            WHERE completed_at IS NULL
+              AND started_at >= now() - interval '3 hours'
+            LIMIT 1
+        """)).first())
+
+
+@app.task(bind=True, name="scomp.physical_daily_report")
+def physical_daily_report_task(self, report_date: str | None = None):
+    """Ignore queued legacy report tasks after disabling PDF delivery."""
+    logger.info("PhysicalData daily PDF delivery is disabled")
+    return {"status": "disabled", "report_date": report_date}
 
 
 @app.task(name="scomp.statsport_automation")

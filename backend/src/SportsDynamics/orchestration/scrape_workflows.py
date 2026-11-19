@@ -184,6 +184,8 @@ async def scrape_round(
                     "parsers": selected_parsers,
                     "scrape": result,
                     "processed_game_ids": result.get("processed_game_ids", []),
+                    "failed_game_ids": result.get("failed_game_ids", []),
+                    "skipped_game_ids": result.get("skipped_game_ids", []),
                 }
             tracker.progress(
                 processed=processed + failed + skipped,
@@ -204,6 +206,8 @@ async def scrape_round(
                 "parsers": selected_parsers,
                 "scrape": result,
                 "processed_game_ids": result.get("processed_game_ids", []),
+                "failed_game_ids": result.get("failed_game_ids", []),
+                "skipped_game_ids": result.get("skipped_game_ids", []),
             }
 
         tracker.phase("api_fetch", f"Fetching RGD-finished games for round {round_name}")
@@ -244,6 +248,8 @@ async def scrape_round(
                 "game_ids": game_ids,
                 "scrape": result,
                 "processed_game_ids": result.get("processed_game_ids", []),
+                "failed_game_ids": result.get("failed_game_ids", []),
+                "skipped_game_ids": result.get("skipped_game_ids", []),
             }
         tracker.phase("player_enrichment", "Enriching players from processed lineups")
         enrichment = await _enrich_players(db, competition_id, season_id, game_ids) if processed else {"status": "skipped"}
@@ -261,6 +267,8 @@ async def scrape_round(
         "game_ids": game_ids,
         "scrape": result,
         "processed_game_ids": result.get("processed_game_ids", []),
+        "failed_game_ids": result.get("failed_game_ids", []),
+        "skipped_game_ids": result.get("skipped_game_ids", []),
         "enrichment": enrichment,
     }
 
@@ -395,10 +403,12 @@ async def _scrape_autonomous(
     )
 
     processed = []
+    failed = []
     for game_id in changed_ids:
         raw_game = next(item for item in raw_games if item.get("id") == game_id)
         round_name = (raw_game.get("round") or {}).get("name")
         if not round_name:
+            failed.append(game_id)
             continue
         games = await coordinator.scrape_games(
             {
@@ -413,6 +423,8 @@ async def _scrape_autonomous(
         )
         if games:
             processed.append(game_id)
+        else:
+            failed.append(game_id)
 
     tracker.progress(processed=len(processed), failed=len(changed_ids) - len(processed))
     tracker.phase("player_enrichment", "Enriching players from changed games")
@@ -428,6 +440,7 @@ async def _scrape_autonomous(
         "detected_count": len(changed_ids),
         "processed_count": len(processed),
         "processed_game_ids": processed,
+        "failed_game_ids": failed,
         "processed_matches": [match for match in affected_matches if match["id"] in set(processed)],
         "enrichment": enrichment,
     }

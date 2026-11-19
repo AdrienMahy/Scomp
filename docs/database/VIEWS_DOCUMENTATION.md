@@ -691,6 +691,22 @@ ORDER BY round, team_name;
 | Red cards | ⚠️ Minimal | 1 game (Dunkerque vs Grenoble) |
 | Substitutions | ⚠️ Minimal | 1 game (Dunkerque vs Grenoble) |
 
+## `v_effective_playing_time_by_team`
+
+Cette vue renvoie deux lignes par match ayant des données `ball_in_play`, une
+pour l'équipe à domicile et une pour l'équipe à l'extérieur. Elle additionne
+`ball_in_play.entity.duration` par match ; cette durée est identique sur les
+deux lignes, car le modèle `ball_in_play` ne l'attribue pas à une équipe.
+
+Colonnes : `game_id`, `game_name`, `round`, `competition_name`, `team_name`,
+`effective_playing_time`. L'unité de la somme est celle de `entity.duration`.
+
+```sql
+SELECT game_name, round, competition_name, team_name, effective_playing_time
+FROM v_effective_playing_time_by_team
+ORDER BY game_name, team_name;
+```
+
 ---
 
 ## 📂 Fichiers Associés
