@@ -46,16 +46,8 @@ demande de connexions.
 
 ## 1. Déployer d'abord le support applicatif
 
-Les valeurs de pool ne peuvent pas être réglées uniquement dans Compose tant
-que l'image ne les lit pas. Dans le code actuellement présent :
-
-- `backend/src/config/database.py` fixe TacticalData à `pool_size=10` et
-  `max_overflow=20` ;
-- `backend/src/STATSport/models/database.py` utilise les valeurs par défaut de
-  SQLAlchemy pour PhysicalData.
-
-Préparer et déployer une version applicative qui lit, par moteur, les options
-suivantes depuis l'environnement :
+Le backend lit désormais les options suivantes depuis l'environnement,
+séparément pour chaque moteur :
 
 - `TACTICAL_DB_POOL_SIZE`
 - `TACTICAL_DB_MAX_OVERFLOW`
@@ -66,9 +58,12 @@ suivantes depuis l'environnement :
 - `PHYSICAL_DB_APPLICATION_NAME`
 - `PHYSICAL_DB_IDLE_SESSION_TIMEOUT_MS`
 
-Le moteur TacticalData et le moteur PhysicalData doivent tous deux activer
-`pool_pre_ping=True`. Appliquer les options `connect_args` PostgreSQL seulement
-aux URL PostgreSQL ; conserver le comportement SQLite en développement.
+Les deux moteurs activent `pool_pre_ping=True`. Les tailles de pool ne sont
+appliquées qu'aux URL PostgreSQL, et les options `connect_args` PostgreSQL ne
+sont ajoutées qu'à ces URL ; le pool SQLite de développement conserve ses
+réglages par défaut. Les deux workers de `config/docker-compose.yml` définissent
+déjà leurs budgets de connexion et leur délai d'inactivité ; adapter ces valeurs
+dans la configuration PROD réelle si nécessaire.
 
 Le nom d'application permet d'identifier le service dans `pg_stat_activity`.
 L'option PostgreSQL `idle_session_timeout` est réglée par connexion et non

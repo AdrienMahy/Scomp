@@ -5,7 +5,9 @@ from functools import lru_cache
 from pathlib import Path
 
 from dotenv import dotenv_values
-from sqlalchemy import Engine, create_engine
+from sqlalchemy import Engine
+
+from ...config.database_engine import create_configured_engine
 
 
 def get_physical_database_url() -> str:
@@ -23,4 +25,9 @@ def get_physical_database_url() -> str:
 
 @lru_cache(maxsize=1)
 def get_physical_engine() -> Engine:
-    return create_engine(get_physical_database_url(), pool_pre_ping=True)
+    return create_configured_engine(
+        get_physical_database_url(),
+        env_prefix="PHYSICAL_DB",
+        default_pool_size=5,
+        default_max_overflow=10,
+    )

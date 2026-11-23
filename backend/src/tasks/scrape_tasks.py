@@ -1,17 +1,16 @@
 """Celery scraping tasks"""
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 import asyncio
 import logging
 import os
 from typing import List, Optional
-from zoneinfo import ZoneInfo
 
 import redis
 from sqlalchemy import text
 
 from .celery_config import app
 from ..config.database import SessionLocal
-from ..SportsDynamics.models import Game, ScrapingLog, ScrapingTask, TaskStatus
+from ..SportsDynamics.models import ScrapingTask, TaskStatus
 from ..SportsDynamics.automation import SmartScraper
 from ..STATSport.models.database import get_physical_engine
 from ..STATSport.orchestration.orchestration import scrape_by_share_date
@@ -25,7 +24,6 @@ from ..SportsDynamics.orchestration.scrape_workflows import (
 from ..SportsDynamics.orchestration.task_retention import (
     reconcile_stale_tasks as reconcile_stale_task_records,
 )
-from ..teams_notifications import send_teams_adaptive_card
 
 logger = logging.getLogger(__name__)
 
@@ -52,16 +50,9 @@ def _run_workflow(workflow, task_id: str, *args, **workflow_kwargs):
 
     db = SessionLocal()
     try:
-        result = asyncio.run(
+        return asyncio.run(
             workflow(db, *args, task_id=task_id, **workflow_kwargs)
         )
-        try:
-            task = db.query(ScrapingTask).filter(ScrapingTask.id == task_id).first()
-            if task and _tactical_match_available(task, result=result, db=db):
-                _notify_tactical_task(task, result=result, db=db)
-        except Exception as notification_error:
-            logger.warning("Could not prepare TacticalData notification (%s)", type(notification_error).__name__)
-        return result
     except Exception as exc:
         task = db.query(ScrapingTask).filter(ScrapingTask.id == task_id).first()
         if task:
@@ -69,285 +60,9 @@ def _run_workflow(workflow, task_id: str, *args, **workflow_kwargs):
             task.error_message = str(exc)[:4900]
             task.completed_at = datetime.utcnow()
             db.commit()
-        try:
-            if task and _tactical_match_available(task, db=db):
-                _notify_tactical_task(task, workflow_name=workflow.__name__, error=exc, db=db)
-        except Exception as notification_error:
-            logger.warning("Could not prepare TacticalData failure notification (%s)", type(notification_error).__name__)
         raise
     finally:
         db.close()
-
-
-def _send_tactical_card(
-    status: str,
-    status_color: str,
-    metrics: list[tuple[str, int]],
-    facts: list[tuple[str, str]],
-    matches: list[str] | None = None,
-) -> None:
-    match_blocks = []
-    if matches:
-        displayed_matches = matches[:8]
-        if len(matches) > 8:
-            displayed_matches.append(f"+ {len(matches) - 8} autres")
-        match_blocks = [
-            {
-                "type": "TextBlock",
-                "text": f"Matchs concernés ({len(matches)})",
-                "weight": "Bolder",
-                "spacing": "Medium",
-                "wrap": True,
-            },
-            {
-                "type": "TextBlock",
-                "text": "\n".join(displayed_matches),
-                "spacing": "Small",
-                "wrap": True,
-            },
-        ]
-    card = {
-        "$schema": "https://adaptivecards.io/schemas/adaptive-card.json",
-        "type": "AdaptiveCard",
-        "version": "1.4",
-        "body": [
-            {
-                "type": "TextBlock",
-                "text": "Scomp · TacticalData",
-                "weight": "Bolder",
-                "size": "Small",
-                "color": "Accent",
-                "wrap": True,
-            },
-            {
-                "type": "TextBlock",
-                "text": status,
-                "weight": "Bolder",
-                "size": "Large",
-                "color": status_color,
-                "wrap": True,
-            },
-            {
-                "type": "ColumnSet",
-                "spacing": "Medium",
-                "columns": [
-                    {
-                        "type": "Column",
-                        "width": "stretch",
-                        "items": [
-                            {
-                                "type": "TextBlock",
-                                "text": str(value),
-                                "size": "Large",
-                                "weight": "Bolder",
-                                "horizontalAlignment": "Center",
-                                "wrap": True,
-                            },
-                            {
-                                "type": "TextBlock",
-                                "text": label,
-                                "size": "Small",
-                                "isSubtle": True,
-                                "horizontalAlignment": "Center",
-                                "wrap": True,
-                                "spacing": "None",
-                            },
-                        ],
-                    }
-                    for label, value in metrics
-                ],
-            },
-            {"type": "FactSet", "facts": [{"title": title, "value": value} for title, value in facts]},
-            *match_blocks,
-        ],
-    }
-    send_teams_adaptive_card("tactical", card)
-
-
-def _utc_time(value: datetime | None) -> str:
-    timestamp = value or datetime.now(timezone.utc)
-    if timestamp.tzinfo is None:
-        timestamp = timestamp.replace(tzinfo=timezone.utc)
-    else:
-        timestamp = timestamp.astimezone(timezone.utc)
-    return timestamp.strftime("%H:%M UTC")
-
-
-def _tactical_match_available(task, result: dict | None = None, db=None) -> bool:
-    result = result or {}
-    workflow = task.workflow
-    metadata = task.extra_metadata or {}
-
-    if workflow == "game_scrape":
-        if result:
-            return bool(result.get("scraped"))
-        return bool(
-            db
-            and db.query(ScrapingLog.id)
-            .filter(
-                ScrapingLog.task_id == task.id,
-                ScrapingLog.context == "game_cleaning",
-                ScrapingLog.item_id.isnot(None),
-            )
-            .first()
-        )
-    if workflow == "round_scrape":
-        scrape_result = result.get("scrape") or {}
-        return bool(
-            result.get("game_ids")
-            or task.total_items
-            or task.processed_items
-            or scrape_result.get("processed_count")
-            or scrape_result.get("error_count")
-            or scrape_result.get("skipped_count")
-        )
-    if workflow == "season_initialization":
-        return bool(result.get("games_count") or task.processed_items)
-    if workflow == "autonomous_scrape":
-        detection = metadata.get("change_detection") or {}
-        return bool(
-            result.get("detected_count")
-            or result.get("processed_game_ids")
-            or detection.get("affected_games_count")
-        )
-    if workflow == "player_enrichment" and db:
-        return bool(
-            db.query(Game.id)
-            .filter(
-                Game.competition_id == task.competition_id,
-                Game.season_id == task.season_id,
-            )
-            .first()
-        )
-    return False
-
-
-def _tactical_match_lines(task, result: dict | None = None, db=None) -> tuple[int, list[str]]:
-    result = result or {}
-    scrape_result = result.get("scrape") or {}
-    processed_ids = list(
-        result.get("processed_game_ids")
-        or scrape_result.get("processed_game_ids")
-        or []
-    )
-    failed_ids = list(
-        result.get("failed_game_ids")
-        or scrape_result.get("failed_game_ids")
-        or []
-    )
-    if not processed_ids and task.workflow == "game_scrape" and result.get("scraped"):
-        processed_ids = [result.get("game_id") or task.current_item_id]
-    processed_ids = list(dict.fromkeys(str(game_id) for game_id in processed_ids if game_id))
-    failed_ids = list(dict.fromkeys(str(game_id) for game_id in failed_ids if game_id))
-    skipped_ids = list(dict.fromkeys(str(game_id) for game_id in (
-        result.get("skipped_game_ids") or scrape_result.get("skipped_game_ids") or []
-    ) if game_id))
-    if not processed_ids and not failed_ids and task.workflow == "game_scrape" and not result:
-        failed_ids = [str(task.current_item_id)] if task.current_item_id else []
-
-    known_matches = {}
-    for match in (result.get("affected_matches") or []) + (result.get("processed_matches") or []):
-        if match.get("id"):
-            known_matches[str(match["id"])] = match
-    games_by_id = {}
-    all_ids = list(dict.fromkeys(processed_ids + failed_ids + skipped_ids))
-    missing_ids = [game_id for game_id in all_ids if game_id not in known_matches]
-    if db and missing_ids:
-        games_by_id = {
-            str(game.id): game
-            for game in db.query(Game).filter(Game.id.in_(missing_ids)).all()
-        }
-
-    lines = []
-    for game_id, match_status in (
-        [(game_id, "TRAITÉ") for game_id in processed_ids]
-        + [(game_id, "ERROR") for game_id in failed_ids]
-        + [(game_id, "IGNORÉ") for game_id in skipped_ids]
-    ):
-        match = known_matches.get(game_id)
-        game = games_by_id.get(game_id)
-        if match:
-            name = str(match.get("name") or "Match sans nom").strip()
-            round_name = str(match.get("round") or match.get("round_name") or task.round_name or "").strip()
-        elif game:
-            name = str(game.name)
-            round_name = str(game.round_name or task.round_name or "").strip()
-        else:
-            continue
-        label = f"{round_name} · {name}" if round_name else name
-        lines.append(f"[{match_status}] {label}")
-    return len(processed_ids), lines
-
-
-def _notify_tactical_task(
-    task,
-    workflow_name: str | None = None,
-    error: Exception | None = None,
-    db=None,
-    result: dict | None = None,
-) -> None:
-    status = "failed" if error else getattr(task.status, "value", task.status) if task else "failed"
-    status_labels = {
-        "completed": "Scrape terminé",
-        "partial": "Scrape partiel",
-        "failed": "Scrape en échec",
-        "skipped": "Scrape ignoré",
-        "pending": "Scrape en attente",
-        "running": "Scrape en cours",
-    }
-    status_colors = {
-        "completed": "Good",
-        "partial": "Warning",
-        "failed": "Attention",
-        "skipped": "Accent",
-        "pending": "Default",
-        "running": "Default",
-    }
-    workflow_labels = {
-        "game_scrape": "Collecte d’un match",
-        "player_enrichment": "Enrichissement des joueurs",
-        "round_scrape": "Collecte d’un round",
-        "season_initialization": "Initialisation de saison",
-    }
-    workflow = task.workflow if task else workflow_name or "workflow inconnu"
-    workflow_label = workflow_labels.get(workflow, workflow.replace("_", " ").capitalize())
-    processed_count, match_lines = _tactical_match_lines(task, result=result, db=db)
-    metrics = [
-        ("Matchs traités", processed_count),
-        ("Échecs", int(getattr(task, "failed_items", 0) or 0)),
-    ]
-    if error and metrics[2][1] == 0:
-        metrics[2] = ("Échecs", 1)
-    facts = [("Heure de fin", _utc_time(getattr(task, "completed_at", None)))]
-    if task and task.provider:
-        facts.append(("Fournisseur", str(task.provider)))
-    facts.append(("Workflow", workflow_label))
-    if task and workflow == "game_scrape" and task.current_item_id:
-        cleanup_log = (
-            db.query(ScrapingLog)
-            .filter(
-                ScrapingLog.task_id == task.id,
-                ScrapingLog.context == "game_cleaning",
-                ScrapingLog.item_id == task.current_item_id,
-                ScrapingLog.message.contains("Cleaned "),
-            )
-            .first()
-            if db
-            else None
-        )
-        if cleanup_log:
-            facts.append(("Type", "Mise à jour"))
-    if task and task.id:
-        facts.append(("Tâche", str(task.id)))
-    if error:
-        facts.append(("Erreur", type(error).__name__))
-    _send_tactical_card(
-        status_labels.get(status, f"Scrape · {status}"),
-        status_colors.get(status, "Default"),
-        metrics,
-        facts,
-        matches=match_lines,
-    )
 
 
 @app.task(name="scomp.reconcile_stale_tasks")
@@ -422,45 +137,6 @@ def smart_scrape_cycle(self):
         logger.info(f"✓ Smart scrape cycle completed: {result['status']}")
         logger.info(f"  Competitions: {result['competitions_scraped']}")
         logger.info(f"  Games updated: {result['games_updated']}")
-
-        status = str(result.get("status", "completed")).lower()
-        games_updated = int(result.get("games_updated") or 0)
-        games_checked = int(result.get("games_checked") or 0)
-        if (games_updated or games_checked) and (
-            games_updated or status in {"failed", "partial", "error"}
-        ):
-            failed = int(result.get("failed_items") or result.get("failed") or 0)
-            if status in {"failed", "error"} and not failed:
-                failed = 1
-            status_label = {
-                "completed": "Cycle automatique terminé",
-                "partial": "Cycle automatique partiel",
-                "failed": "Cycle automatique en échec",
-                "error": "Cycle automatique en échec",
-            }.get(status, f"Cycle automatique · {status}")
-            status_color = "Attention" if status in {"failed", "error"} else "Warning" if status == "partial" else "Good"
-            match_rows = result.get("processed_matches") or []
-            match_tag = "TRAITÉ"
-            if not match_rows:
-                match_rows = result.get("affected_matches") or []
-                match_tag = "DÉTECTÉ"
-            match_lines = []
-            for match in match_rows:
-                name = str(match.get("name") or "Match sans nom").strip()
-                round_name = str(match.get("round") or match.get("round_name") or "").strip()
-                label = f"{round_name} · {name}" if round_name else name
-                match_lines.append(f"[{match_tag}] {label}")
-            _send_tactical_card(
-                status_label,
-                status_color,
-                [
-                    ("Compétitions", int(result.get("competitions_scraped") or 0)),
-                    ("Matchs traités", games_updated),
-                    ("Échecs", failed),
-                ],
-                [("Heure de fin", _utc_time(datetime.now(timezone.utc)))],
-                matches=match_lines,
-            )
         
         return result
     
@@ -522,24 +198,6 @@ def physical_statsport_automation_task(self):
         lock.release()
 
 
-def _physical_run_is_active() -> bool:
-    with get_physical_engine().connect() as connection:
-        return bool(connection.execute(text("""
-            SELECT 1
-            FROM scrape_runs
-            WHERE completed_at IS NULL
-              AND started_at >= now() - interval '3 hours'
-            LIMIT 1
-        """)).first())
-
-
-@app.task(bind=True, name="scomp.physical_daily_report")
-def physical_daily_report_task(self, report_date: str | None = None):
-    """Ignore queued legacy report tasks after disabling PDF delivery."""
-    logger.info("PhysicalData daily PDF delivery is disabled")
-    return {"status": "disabled", "report_date": report_date}
-
-
 @app.task(name="scomp.statsport_automation")
 def statsport_automation_task(
     share_date: str | None = None,
@@ -582,17 +240,3 @@ def statsport_activity_task(session_date: str, activity_id: str):
     from ..STATSport.orchestration.orchestration import scrape_activity
 
     return asyncio.run(scrape_activity(session_date, activity_id))
-
-
-@app.task(name="scomp.statsport_yesterday_share_date")
-def statsport_yesterday_share_date_task():
-    """Scrape STATSports activities whose ShareDate was yesterday."""
-    local_now = datetime.now(ZoneInfo(os.getenv("SCOMP_TIMEZONE", "Europe/Paris")))
-    yesterday = (local_now - timedelta(days=1)).date().isoformat()
-    return asyncio.run(
-        scrape_by_share_date(
-            yesterday,
-            scrape_type="statsport_yesterday_share_date",
-            display_name="Yesterday ShareDate scrape",
-        )
-    )

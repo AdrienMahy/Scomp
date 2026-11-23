@@ -1,15 +1,16 @@
 """Database connection and session management"""
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from ..SportsDynamics.models.base import Base
+from .database_engine import create_configured_engine
 from .settings import settings
 
 # Create database engine
-engine = create_engine(
+engine = create_configured_engine(
     settings.database.url,
+    env_prefix="TACTICAL_DB",
+    default_pool_size=10,
+    default_max_overflow=20,
     echo=settings.debug,
-    pool_size=10,
-    max_overflow=20,
 )
 
 # Session factory

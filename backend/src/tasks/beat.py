@@ -1,5 +1,5 @@
 """Celery Beat scheduling configuration"""
-from celery.schedules import crontab, schedule
+from celery.schedules import schedule
 from .celery_config import app
 from ..SportsDynamics.automation.scheduler_config import AutomationConfig
 
@@ -39,14 +39,6 @@ app.conf.beat_schedule["reconcile-stale-tasks"] = {
     "kwargs": {},
 }
 
-# Use the local project timezone for clock-based schedules.
-app.conf.timezone = app.conf.timezone or 'Europe/Paris'
+# Enable UTC timezone
+app.conf.timezone = 'UTC'
 app.conf.enable_utc = True
-
-app.conf.beat_schedule["statsport-yesterday-share-date"] = {
-    "task": "scomp.statsport_yesterday_share_date",
-    "schedule": crontab(minute=30, hour=8),
-    "options": {"expires": 60 * 60},
-    "kwargs": {},
-}
-# Daily PDF delivery is intentionally not scheduled.
